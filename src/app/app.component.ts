@@ -1,19 +1,17 @@
-import {Component, OnInit} from "@angular/core";
-import {PrimeNGConfig} from "primeng/api";
+import {Component, Inject} from "@angular/core";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+	selector: "app-root",
+	templateUrl: "./app.component.html",
+	styleUrls: ["./app.component.scss"]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  constructor(
-    private primengConfig: PrimeNGConfig) {
-  }
-
-  ngOnInit(): void {
-    this.primengConfig.ripple = true;
-  }
+	constructor(
+    @Inject(DOCUMENT) private readonly doc: Document) {
+		this.doc.body.classList.remove("pending");
+	}
 
 }
+

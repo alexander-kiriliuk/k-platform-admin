@@ -1,0 +1,12 @@
+.form {
+  @apply px-6 py-2 flex flex-col gap-6 items-center;
+}
+
+img {
+  width: 240px;
+  @apply mb-8;
+}
+
+button {
+  @apply mt-4;
+}
