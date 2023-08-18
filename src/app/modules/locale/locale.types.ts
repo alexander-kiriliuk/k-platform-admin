@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {Media} from "../media/media.types";
 
-import {AuthComponent} from "./auth.component";
+export interface Language {
+  id: string;
+  name: string;
+  icon: Media;
+}
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+export interface LocalizedString {
+  id: number;
+  code: string;
+  lang: Language;
+  value: string;
+}
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
-
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+export interface LocalizedMedia {
+  id: number;
+  code: string;
+  lang: Language;
+  value: Media;
+}

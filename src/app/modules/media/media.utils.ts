@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {DeviceDetectorService} from "ngx-device-detector";
 
-import {AuthComponent} from "./auth.component";
+export namespace MediaUtils {
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+  export function detectWebpSupportFactory (ds: DeviceDetectorService) {
+  	const browser = ds.browser.toLowerCase();
+  	const browserVer = parseInt(ds.browser_version, 10);
+  	// TODO test it and extend
+  	// const os = ds.os.toLowerCase();
+  	// console.log(browser, browserVer, os);
+  	if (browser === "chrome" && browserVer > 32) {
+  		return true;
+  	}
+  	if (browser === "opera" && browserVer > 19) {
+  		return true;
+  	}
+  	return browser === "firefox" && browserVer > 65;
+  }
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
+}
 
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+

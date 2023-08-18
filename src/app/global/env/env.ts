@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {Env} from "../types";
 
-import {AuthComponent} from "./auth.component";
-
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
-
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
-
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+export const environment: Env = {
+	production: false,
+	frontEndUrl: "http://localhost:3002",
+	apiUrl: "http://localhost:3001/api/v1",
+	mediaUrl: "http://localhost:3001/media",
+	fileUrl: "http://localhost:3001/file",
+};

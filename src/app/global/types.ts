@@ -14,24 +14,33 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {Media} from "../modules/media/media.types";
+import {LocalizedString} from "../modules/locale/locale.types";
 
-import {AuthComponent} from "./auth.component";
+export type Env = {
+  production: boolean;
+  frontEndUrl: string;
+  apiUrl: string;
+  mediaUrl: string;
+  fileUrl: string;
+}
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+export interface User {
+  id: string;
+  avatar: Media;
+  password: string;
+  login: string;
+  email: string;
+  phone: string;
+  firstName: LocalizedString[];
+  lastName: LocalizedString[];
+  active: boolean;
+  roles: UserRole[];
+  tsCreated: Date;
+}
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
-
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+export interface UserRole {
+  code: string;
+  name: LocalizedString[];
+  tsCreated: Date;
+}

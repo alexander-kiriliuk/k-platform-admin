@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {InjectionToken} from "@angular/core";
 
-import {AuthComponent} from "./auth.component";
+export const MEDIA_URL = new InjectionToken<string>("MEDIA_URL");
+export const WEBP_SUPPORT = new InjectionToken<boolean>("WEBP_SUPPORT");
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+export const SVG_MEDIA_TYPE = "svg-media";
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
-
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+export enum ReservedMediaSize {
+  THUMBNAIL = "thumbnail",
+  ORIGINAL = "original"
+}

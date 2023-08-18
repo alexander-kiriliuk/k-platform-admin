@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {Injectable} from "@angular/core";
+import {Device} from "./device.constants";
 
-import {AuthComponent} from "./auth.component";
+@Injectable()
+export class DeviceInfoImpl implements Device {
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+	private readonly _isDesktop: boolean;
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
+	constructor(
+    private ds: DeviceDetectorService) {
+		this._isDesktop = this.ds.isDesktop();
+	}
 
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+	get isDesktop() {
+		return this._isDesktop;
+	}
+
+}

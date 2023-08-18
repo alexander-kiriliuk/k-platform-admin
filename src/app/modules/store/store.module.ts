@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {ModuleWithProviders, NgModule} from "@angular/core";
+import {Store} from "./store";
 
-import {AuthComponent} from "./auth.component";
+@NgModule()
+export class StoreModule {
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+	static forRoot(): ModuleWithProviders<StoreModule> {
+		return {
+			ngModule: StoreModule,
+			providers: [
+				{
+					provide: Store,
+					useFactory: () => new Store()
+				}
+			]
+		};
+	}
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
-
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+}

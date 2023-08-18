@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+export namespace StringUtils {
 
-import {AuthComponent} from "./auth.component";
+  export function fillParams(url: string, ...params: string[]) {
+  	let counter = -1;
+  	url.replace(/((:)(.*?))([\/]|$)/g, (substring, args) => {
+  		counter++;
+  		url = url.replace(args, params[counter]);
+  		return url;
+  	});
+  	return url;
+  }
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+  export function clearSpaces(str: string) {
+  	return str?.replace(/[^\S\r\n]{2,}/g, " ");
+  }
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
+}
 
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
