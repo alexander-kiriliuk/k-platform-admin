@@ -18,19 +18,19 @@ import {DeviceDetectorService} from "ngx-device-detector";
 
 export namespace MediaUtils {
 
-  export function detectWebpSupportFactory (ds: DeviceDetectorService) {
-  	const browser = ds.browser.toLowerCase();
-  	const browserVer = parseInt(ds.browser_version, 10);
-  	// TODO test it and extend
-  	// const os = ds.os.toLowerCase();
-  	// console.log(browser, browserVer, os);
-  	if (browser === "chrome" && browserVer > 32) {
-  		return true;
-  	}
-  	if (browser === "opera" && browserVer > 19) {
-  		return true;
-  	}
-  	return browser === "firefox" && browserVer > 65;
+  export function detectWebpSupportFactory(ds: DeviceDetectorService) {
+    const browser = ds.browser.toLowerCase();
+    const browserVer = parseInt(ds.browser_version, 10);
+    // TODO test it and extend
+    // const os = ds.os.toLowerCase();
+    // console.log(browser, browserVer, os);
+    if (browser === "chrome" && browserVer > 32) {
+      return true;
+    }
+    if (browser === "opera" && browserVer > 19) {
+      return true;
+    }
+    return browser === "firefox" && browserVer > 65;
   }
 
 }

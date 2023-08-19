@@ -18,14 +18,14 @@ import {FormControl} from "@angular/forms";
 import {User} from "../global/types";
 
 export interface LoginForm {
-  login: FormControl<string | null>;
-  password: FormControl<string | null>;
+  login: FormControl<string>;
+  password: FormControl<string>;
 }
 
 export interface LoginPayload {
   login: string;
   password: string;
-  ipAddress: string;
+  ipAddress?: string;
 }
 
 export interface JwtDto {

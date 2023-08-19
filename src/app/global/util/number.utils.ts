@@ -17,10 +17,10 @@
 export namespace NumberUtils {
 
   export function getRandomInt(maxVal?: number): number {
-  	if (!maxVal) {
-  		maxVal = Number.MAX_SAFE_INTEGER;
-  	}
-  	return Math.floor((Math.random() * maxVal) + 1);
+    if (!maxVal) {
+      maxVal = Number.MAX_SAFE_INTEGER;
+    }
+    return Math.floor((Math.random() * maxVal) + 1);
   }
 
 }

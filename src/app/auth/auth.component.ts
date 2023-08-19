@@ -24,17 +24,44 @@ import {CardModule} from "primeng/card";
 import {ImageModule} from "primeng/image";
 import {createLoginForm} from "./auth.constants";
 import {ReactiveFormsModule} from "@angular/forms";
+import {AuthService} from "./auth.service";
 
 @Component({
-	selector: "auth",
-	standalone: true,
-	templateUrl: "./auth.component.html",
-	styleUrls: ["./auth.component.scss"],
-	imports: [CommonModule, InputTextModule, PasswordModule, ButtonModule, RippleModule, CardModule, ImageModule, ReactiveFormsModule],
+  selector: "auth",
+  standalone: true,
+  templateUrl: "./auth.component.html",
+  styleUrls: ["./auth.component.scss"],
+  imports: [
+    CommonModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    RippleModule,
+    CardModule,
+    ImageModule,
+    ReactiveFormsModule
+  ],
+  providers: [
+    AuthService
+  ]
 })
 export class AuthComponent {
 
-	readonly form = createLoginForm();
+  readonly form = createLoginForm();
+
+  constructor(
+    private readonly authService: AuthService) {
+  }
+
+  onSubmit() {
+    const data = this.form.value;
+    this.authService.login({
+      login: data.login,
+      password: data.password
+    }).subscribe(v => {
+      console.log(v);
+    });
+  }
 
 }
 

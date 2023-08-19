@@ -17,17 +17,17 @@
 export namespace StringUtils {
 
   export function fillParams(url: string, ...params: string[]) {
-  	let counter = -1;
-  	url.replace(/((:)(.*?))([\/]|$)/g, (substring, args) => {
-  		counter++;
-  		url = url.replace(args, params[counter]);
-  		return url;
-  	});
-  	return url;
+    let counter = -1;
+    url.replace(/((:)(.*?))(\/|$)/g, (substring, args) => {
+      counter++;
+      url = url.replace(args, params[counter]);
+      return url;
+    });
+    return url;
   }
 
   export function clearSpaces(str: string) {
-  	return str?.replace(/[^\S\r\n]{2,}/g, " ");
+    return str?.replace(/[^\S\r\n]{2,}/g, " ");
   }
 
 }

@@ -1,14 +1,14 @@
 <p-card>
-  <div class="form" [formGroup]="form">
-    <img src="/assets/icons/logo-dark.svg" alt="Logo" />
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <img src="/assets/icons/logo-dark.svg" alt="Logo"/>
     <div class="p-input-icon-right">
       <i class="pi pi-user"></i>
-      <input [formControl]="form.controls.login" pInputText placeholder="Логин"/>
+      <input pInputText placeholder="Логин" [formControl]="form.controls.login"/>
     </div>
     <div class="p-input-icon-right">
       <i class="pi pi-lock"></i>
-      <p-password  [formControl]="form.controls.password" placeholder="Пароль" [toggleMask]="true" [feedback]="false"/>
+      <p-password placeholder="Пароль" [formControl]="form.controls.password" [toggleMask]="true" [feedback]="false"/>
     </div>
-    <button [disabled]="!form.valid" pButton pRipple label="Войти" icon="pi pi-sign-in" iconPos="right"></button>
-  </div>
+    <button pButton pRipple label="Войти" icon="pi pi-sign-in" iconPos="right" [disabled]="!form.valid"></button>
+  </form>
 </p-card>
