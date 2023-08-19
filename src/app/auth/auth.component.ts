@@ -25,6 +25,8 @@ import {ImageModule} from "primeng/image";
 import {createLoginForm} from "./auth.constants";
 import {ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "./auth.service";
+import {Store} from "../modules/store/store";
+import {AuthEvent} from "./auth.event";
 
 @Component({
   selector: "auth",
@@ -50,6 +52,7 @@ export class AuthComponent {
   readonly form = createLoginForm();
 
   constructor(
+    private readonly store: Store,
     private readonly authService: AuthService) {
   }
 
@@ -59,7 +62,7 @@ export class AuthComponent {
       login: data.login,
       password: data.password
     }).subscribe(v => {
-      console.log(v);
+      this.store.emit(AuthEvent.Success, v);
     });
   }
 

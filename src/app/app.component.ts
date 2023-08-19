@@ -20,33 +20,51 @@ import {ProfileService} from "./modules/profile/profile.service";
 import {finalize, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {catchError} from "rxjs/operators";
+import {Store} from "./modules/store/store";
+import {JwtDto} from "./auth/auth.types";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {AuthEvent} from "./auth/auth.event";
 
+@UntilDestroy()
 @Component({
-	selector: "app-root",
-	templateUrl: "./app.component.html",
-	styleUrls: ["./app.component.scss"]
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
 
-	constructor(
+  constructor(
     @Inject(DOCUMENT) private readonly doc: Document,
     private readonly router: Router,
+    private readonly store: Store,
     private readonly profileService: ProfileService) {
-	}
+    this.store.on<JwtDto>(AuthEvent.Success)
+      .pipe(untilDestroyed(this))
+      .subscribe(msg => {
+        console.log(msg.payload.accessToken);
+        // todo save tokens to? or set cookies?
+        this.checkProfile();
+      });
+  }
 
-	ngOnInit(): void {
-		this.profileService.currentUser().pipe(
-			finalize(() => {
-				this.doc.body.classList.remove("pending");
-			}),
-			catchError((error) => {
-				this.router.navigate(["/auth"]);
-				return throwError(() => error);
-			})
-		).subscribe(v => {
-			console.log(v);
-		});
-	}
+  ngOnInit(): void {
+    this.checkProfile();
+  }
+
+  private checkProfile() {
+    this.profileService.currentUser().pipe(
+      finalize(() => {
+        this.doc.body.classList.remove("pending");
+      }),
+      catchError((error) => {
+        this.router.navigate(["/auth"]);
+        return throwError(() => error);
+      })
+    ).subscribe(() => {
+        // todo create global state for current user?
+        this.router.navigate(["/dashboard"]);
+      });
+  }
 
 }
 

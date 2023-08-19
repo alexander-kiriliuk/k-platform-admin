@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-import {FormControl} from "@angular/forms";
-import {User} from "../global/types";
+export namespace AuthEvent {
 
-export interface LoginForm {
-  login: FormControl<string>;
-  password: FormControl<string>;
-}
+  export const Success = "auth:success";
 
-export interface LoginPayload {
-  login: string;
-  password: string;
-}
-
-export interface JwtDto {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
 }
