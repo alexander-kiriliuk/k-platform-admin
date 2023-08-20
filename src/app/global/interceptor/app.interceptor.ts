@@ -15,8 +15,15 @@
  */
 
 import {Injectable} from "@angular/core";
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from "@angular/common/http";
+import {Observable, switchMap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {environment} from "../env/env";
@@ -24,37 +31,48 @@ import {environment} from "../env/env";
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
-	constructor(
-    private readonly router: Router) {
-	}
+  constructor(
+    private readonly router: Router,
+    private readonly http: HttpClient) {
+  }
 
-	intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-		request = request.clone({
-			withCredentials: true,
-			url: this.normalizeUrl(request.url)
-		});
-		return next.handle(request).pipe(
-			// todo add tokens to req
-			catchError((error: HttpErrorResponse) => {
-				if (error.status === 404) {
-					this.router.navigate(["/404"], {skipLocationChange: true});
-				}
-				if (error.status >= 500) {
-					this.router.navigate(["/500"]);
-				}
-				return throwError(() => error);
-			})
-		);
-	}
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    request = request.clone({
+      withCredentials: true,
+      url: this.normalizeUrl(request.url)
+    });
+    return next.handle(request).pipe(
+      catchError((response: HttpErrorResponse) => {
+        if (response.error.message === "ERR_TOKEN_A") {
+          return this.exchangeToken().pipe(
+            switchMap(() => {
+              const newRequest = request.clone();
+              return next.handle(newRequest);
+            }),
+            catchError((exchangeError) => {
+              // todo show popup
+              this.router.navigate(["/auth"]);
+              return throwError(exchangeError);
+            })
+          );
+        }
+        return throwError(() => response);
+      })
+    );
+  }
 
-	private normalizeUrl(url: string) {
-		const segments = url.split("/");
-		const lastSegment = segments[segments.length - 1];
-		if (url.indexOf("//") !== -1 || lastSegment.indexOf(".") !== -1) {
-			return encodeURI(url);
-		}
-		url = `${environment.apiUrl}${url}`;
-		return encodeURI(url);
-	}
+  private exchangeToken(){
+    return this.http.post("/auth/exchange-token", {});
+  }
+
+  private normalizeUrl(url: string) {
+    const segments = url.split("/");
+    const lastSegment = segments[segments.length - 1];
+    if (url.indexOf("//") !== -1 || lastSegment.indexOf(".") !== -1) {
+      return encodeURI(url);
+    }
+    url = `${environment.apiUrl}${url}`;
+    return encodeURI(url);
+  }
 
 }

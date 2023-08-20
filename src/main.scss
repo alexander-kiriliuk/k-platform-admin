@@ -1,8 +1,8 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-@import "./assets/styles/theme-light.css";
-// @import "./assets/styles/theme-dark.css";
+// @import "./assets/styles/theme-light.css";
+@import "./assets/styles/theme-dark.css";
 
 @tailwind base;
 @tailwind components;
@@ -19,7 +19,7 @@ body {
     @apply flex flex-col items-center;
     &:after {
       @apply absolute top-40 animate-ping animate-once animate-duration-[2000ms] animate-delay-0 animate-ease-in-out animate-reverse animate-fill-both;
-      content: url("assets/icons/logo-dark.svg");
+      content: url("assets/icons/logo-light.svg");
       width: max-content;
       height: max-content;
     }

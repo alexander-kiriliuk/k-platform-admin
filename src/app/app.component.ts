@@ -40,11 +40,7 @@ export class AppComponent implements OnInit {
     private readonly profileService: ProfileService) {
     this.store.on<JwtDto>(AuthEvent.Success)
       .pipe(untilDestroyed(this))
-      .subscribe(msg => {
-        console.log(msg.payload.accessToken);
-        // todo save tokens to? or set cookies?
-        this.checkProfile();
-      });
+      .subscribe(() => this.checkProfile());
   }
 
   ngOnInit(): void {

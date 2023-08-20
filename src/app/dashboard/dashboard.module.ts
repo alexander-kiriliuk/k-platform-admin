@@ -18,16 +18,18 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {DashboardRoutingModule} from "./dashboard-routing.module";
 import {DashboardComponent} from "./dashboard.component";
+import {ScrollPanelModule} from "primeng/scrollpanel";
 
 
 @NgModule({
-	declarations: [
-		DashboardComponent
-	],
-	imports: [
-		CommonModule,
-		DashboardRoutingModule
-	]
+  declarations: [
+    DashboardComponent
+  ],
+  imports: [
+    CommonModule,
+    DashboardRoutingModule,
+    ScrollPanelModule,
+  ]
 })
 export class DashboardModule {
 }

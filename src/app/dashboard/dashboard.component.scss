@@ -1,0 +1,27 @@
+:host {
+  @apply flex flex-col w-full h-full;
+  --header-h: 7vh;
+  --side-menu-w: 15vw;
+}
+
+.head {
+  height: var(--header-h);
+  background: var(--indigo-800);
+}
+
+.content-wrapper {
+  @apply flex;
+}
+
+.menu {
+  @apply overflow-auto;
+  width: var(--side-menu-w);
+  max-height: calc(100vh - var(--header-h));
+  background: var(--purple-900);
+}
+
+.content-area {
+  background: var(--blue-800);
+  width: calc(100vw - var(--side-menu-w));
+  max-height: calc(100vh - var(--header-h));
+}

@@ -23,4 +23,6 @@ import {Component} from "@angular/core";
 })
 export class DashboardComponent {
 
+  readonly Array = Array;
+
 }

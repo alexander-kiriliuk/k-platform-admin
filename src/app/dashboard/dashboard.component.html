@@ -1,1 +1,18 @@
-<p>dashboard works!</p>
+<div class="head">
+  head
+</div>
+<div class="content-wrapper">
+  <p-scrollPanel class="menu" [style]="{ width: '100%', height: '100%' }">
+    <ul>
+      <li *ngFor="let item of Array(20); let i = index">
+        {{i}} > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </li>
+    </ul>
+  </p-scrollPanel>
+  <p-scrollPanel class="content-area" [style]="{ width: '100%', height: '100%' }">
+    <div *ngFor="let item of Array(60); let i = index">
+      {{i}} > dashboard works!
+    </div>
+  </p-scrollPanel>
+</div>
