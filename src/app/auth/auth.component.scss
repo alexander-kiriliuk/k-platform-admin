@@ -10,3 +10,13 @@ img {
 button {
   @apply mt-4;
 }
+
+.logo {
+  @apply relative w-full;
+  height: 100px;
+  &:after {
+    content: "";
+    background: no-repeat var(--logo-url) center left;
+    @apply absolute left-3 right-3 top-3 bottom-3 bg-contain;
+  }
+}
