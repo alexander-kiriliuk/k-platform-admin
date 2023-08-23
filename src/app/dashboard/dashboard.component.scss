@@ -28,7 +28,7 @@
   @apply relative;
   &:after {
     content:"";
-    background: no-repeat var(--logo-url) center left;
+    background: no-repeat var(--logo-s-url) center left;
     @apply absolute left-4 right-4 top-4 bottom-4 bg-contain;
   }
 }
