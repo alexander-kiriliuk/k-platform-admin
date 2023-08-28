@@ -3,8 +3,9 @@
   /* Custom properties */
 
   --neutral-a: #EFF3F8;
+  --neutral-b: #F6F9FC;
 
-  --shadow-a: 0 4px 30px 0 rgba(221, 224, 255, 0.54), 0 4px 50px 0 #D9DDFC;
+  --shadow-a: 0 4px 30px 0 rgba(221, 224, 255, 0.54), 0 4px 40px 0 #D9DDFC;
 
   --logo-url: url("/assets/icons/logo-dark.svg");
   --logo-s-url: url("/assets/icons/logo-s-dark.svg");

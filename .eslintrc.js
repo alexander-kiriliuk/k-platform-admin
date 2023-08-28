@@ -31,6 +31,8 @@ module.exports = {
       parser: "@angular-eslint/template-parser",
       plugins: ["@angular-eslint/template"],
       rules: {
+        "@angular-eslint/template/interactive-supports-focus": "off",
+        "@angular-eslint/template/click-events-have-key-events": "off",
         "@angular-eslint/template/elements-content": "off",
         "@angular-eslint/template/attributes-order": [
           "warn",

@@ -1,0 +1,24 @@
+<ng-template #list let-data="data" let-parent="parent" let-depth="depth">
+  <ul
+    [ngStyle]="{visibility: depth === 0 || openedNodes[parent?.id] ? 'visible' : 'hidden'}"
+    [@expandCollapse]="openedNodes[parent?.id] ? 'expanded' : 'collapsed'"
+  >
+    <li
+      *ngFor="let item of data;"
+      [ngClass]="{ active: openedNodes[item.id] !== undefined }"
+    >
+      <a (click)="openBranch(item)">
+        <span>
+          <i *ngIf="item.attrs" [ngClass]="item.attrs"></i>
+          {{ item.name }}
+        </span>
+        <i *ngIf="item.children?.length" stop-propagation class="ctrl pi pi-angle-down" (click)="closeBranch(item)"></i>
+      </a>
+      <ng-container *ngIf="item.children?.length">
+        <ng-container [ngTemplateOutlet]="list"
+                      [ngTemplateOutletContext]="{ data: item.children, parent: item, depth: depth + 1 }"/>
+      </ng-container>
+    </li>
+  </ul>
+</ng-template>
+<ng-container [ngTemplateOutlet]="list" [ngTemplateOutletContext]="{ data: data, depth: 0 }" />

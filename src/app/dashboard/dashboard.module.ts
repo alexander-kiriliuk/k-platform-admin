@@ -19,6 +19,7 @@ import {CommonModule} from "@angular/common";
 import {DashboardRoutingModule} from "./dashboard-routing.module";
 import {DashboardComponent} from "./dashboard.component";
 import {ScrollPanelModule} from "primeng/scrollpanel";
+import {MenuTreeModule} from "./menu/menu-tree.module";
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {ScrollPanelModule} from "primeng/scrollpanel";
     CommonModule,
     DashboardRoutingModule,
     ScrollPanelModule,
+    MenuTreeModule,
   ]
 })
 export class DashboardModule {

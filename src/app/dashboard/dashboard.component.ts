@@ -17,12 +17,10 @@
 import {Component} from "@angular/core";
 
 @Component({
-	selector: "dashboard",
-	templateUrl: "./dashboard.component.html",
-	styleUrls: ["./dashboard.component.scss"]
+  selector: "dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"]
 })
 export class DashboardComponent {
-
-  readonly Array = Array;
 
 }
