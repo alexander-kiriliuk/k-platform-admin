@@ -1,5 +1,6 @@
 :host {
   @apply flex flex-col w-full h-full;
+  --sb-footer-h: 5vh;
 }
 
 .content-wrapper {
@@ -9,6 +10,9 @@
 .content-area {
   width: calc(100vw - var(--side-menu-w));
   max-height: calc(100vh - var(--header-bar-h));
+  @screen max-lg {
+    @apply w-full;
+  }
 }
 
 .content-block {
@@ -16,12 +20,53 @@
 }
 
 .sidebar {
+  min-width: 280px;
   width: var(--side-menu-w);
   max-height: 100vh;
   height: 100vh;
-  background: var(--surface-a);
   box-shadow: var(--shadow-a);
   @apply rounded-r-2xl overflow-hidden;
+
+  @screen max-lg {
+    left: -500px;
+    animation: sidebarAnimation 300ms ease-in-out;
+    animation-fill-mode: forwards;
+    @apply hidden;
+
+    .close {
+      @apply block;
+    }
+
+    &.over {
+      @apply block fixed z-50;
+    }
+  }
+
+  &-overlay {
+    background: var(--surface-d);
+    @apply fixed left-0 top-0 bottom-0 right-0 z-0 hidden;
+    @screen max-lg {
+      @apply block;
+    }
+  }
+
+  &-content {
+    @apply h-full relative;
+    background: var(--surface-a);
+  }
+
+  &-data{
+    height: calc(100vh - var(--logo-bar-h) - var(--sb-footer-h));
+  }
+
+  &-footer {
+    height: var(--sb-footer-h);
+    @apply py-2 px-6 flex items-center justify-end;
+    a {
+      @apply cursor-pointer inline-flex items-center gap-x-2;
+    }
+  }
+
 }
 
 .logo-bar {
@@ -36,10 +81,36 @@
 
 .head-bar {
   height: var(--header-bar-h);
-  @apply px-6 flex items-center;
+  @apply px-6 flex items-center justify-between;
+  @screen max-lg {
+    @apply px-4;
+  }
+  & > div {
+    @apply flex gap-x-4 items-center;
+    a {
+      @apply inline-flex gap-x-2 items-center cursor-pointer;
+    }
+  }
 }
 
 .menu-bar {
   @apply py-2;
-  padding-bottom: var(--logo-bar-h);
+}
+
+.menu-ctrl {
+  @apply hidden cursor-pointer;
+  @screen max-lg {
+    @apply inline;
+  }
+}
+
+@keyframes sidebarAnimation {
+  from {
+    opacity: 0;
+    left: -500px;
+  }
+  to {
+    opacity: 1;
+    left: 0;
+  }
 }

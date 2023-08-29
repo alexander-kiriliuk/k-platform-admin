@@ -1,13 +1,13 @@
 {
   "name": "k-platform-admin",
   "version": "0.0.1",
+  "author": "Alexander Kiriliuk",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "lint": "eslint --fix --ext .js,.ts,.html ."
+    "build": "ng build --configuration production",
+    "lint": "eslint --fix --ext .js,.ts,.html .",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {

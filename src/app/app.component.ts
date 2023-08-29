@@ -24,6 +24,7 @@ import {Store} from "./modules/store/store";
 import {JwtDto} from "./auth/auth.types";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {AuthEvent} from "./auth/auth.event";
+import {AuthService} from "./auth/auth.service";
 
 @UntilDestroy()
 @Component({
@@ -36,15 +37,30 @@ export class AppComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private readonly doc: Document,
     private readonly router: Router,
+    private readonly authService: AuthService,
     private readonly store: Store,
     private readonly profileService: ProfileService) {
     this.store.on<JwtDto>(AuthEvent.Success)
       .pipe(untilDestroyed(this))
       .subscribe(() => this.checkProfile());
+    this.store.on<JwtDto>(AuthEvent.Logout)
+      .pipe(untilDestroyed(this))
+      .subscribe(() => this.logout());
   }
 
   ngOnInit(): void {
     this.checkProfile();
+  }
+
+  private logout() {
+    this.authService.logout().pipe(
+      catchError((error) => {
+        // todo show popup
+        return throwError(() => error);
+      })
+    ).subscribe(() => {
+      this.router.navigate(["/auth"]);
+    });
   }
 
   private checkProfile() {
@@ -57,9 +73,9 @@ export class AppComponent implements OnInit {
         return throwError(() => error);
       })
     ).subscribe(() => {
-        // todo create global state for current user?
-        this.router.navigate(["/dashboard"]);
-      });
+      // todo create global state for current user?
+      this.router.navigate(["/dashboard"]);
+    });
   }
 
 }

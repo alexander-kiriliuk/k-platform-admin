@@ -1,10 +1,29 @@
+:host {
+  background: var(--neutral-a);
+  @apply flex justify-between w-full h-full;
+  & > div {
+    @apply flex items-center justify-center w-full;
+  }
+
+  @screen max-lg {
+    ::ng-deep {
+      .p-card {
+        @apply shadow-none;
+        &-body {
+          @apply p-0;
+        }
+      }
+    }
+  }
+}
+
 form {
   @apply px-6 py-2 flex flex-col gap-6 items-center;
 }
 
 img {
-  width: 240px;
-  @apply mb-8;
+  max-width: 240px;
+  @apply mb-8 w-full;
 }
 
 button {
@@ -14,9 +33,18 @@ button {
 .logo {
   @apply relative w-full;
   height: 100px;
+
   &:after {
     content: "";
     background: no-repeat var(--logo-url) center left;
     @apply absolute left-3 right-3 top-3 bottom-3 bg-contain;
+  }
+}
+
+.promo {
+  background: var(--neutral-b);
+  background-image: url("/assets/icons/promo.svg");
+  @screen max-lg {
+    @apply hidden #{!important};
   }
 }

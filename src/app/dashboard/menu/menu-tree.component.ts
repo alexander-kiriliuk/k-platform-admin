@@ -1,8 +1,25 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from "@angular/core";
+/*
+ * Copyright 2023 Alexander Kiriliuk
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {UntilDestroy} from "@ngneat/until-destroy";
 import {NavNodeData} from "./menu-tree.types";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {MENU_STORE_KEY} from "./menu-tree.constants";
 
 @UntilDestroy()
 @Component({
@@ -11,14 +28,14 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   styleUrls: ["./menu-tree.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
-    trigger("expandCollapse", [
-      state("collapsed", style({ height: "0", overflow: "hidden", opacity: 0 })),
-      state("expanded", style({ height: "*", overflow: "hidden", opacity: 1 })),
+    trigger("toggleNode", [
+      state("collapsed", style({height: "0", overflow: "hidden", opacity: 0})),
+      state("expanded", style({height: "*", overflow: "hidden", opacity: 1})),
       transition("collapsed <=> expanded", animate("400ms ease-out")),
     ]),
   ],
 })
-export class MenuTreeComponent {
+export class MenuTreeComponent implements AfterViewInit {
   openedNodes: { [k: number]: boolean } = {};
   data: NavNodeData[] = [
     {
@@ -93,19 +110,35 @@ export class MenuTreeComponent {
     return decodeURIComponent(this.router.url);
   }
 
+  ngAfterViewInit(): void {
+    const payload = localStorage.getItem(MENU_STORE_KEY);
+    if (!payload) {
+      return;
+    }
+    this.openedNodes = JSON.parse(payload);
+    this.cdr.detectChanges();
+  }
+
   openBranch(item: NavNodeData) {
     if (!item.children?.length) {
       return;
     }
     this.openedNodes[item.id] = true;
+    this.syncNodes();
   }
 
-  closeBranch(item: NavNodeData){
-    if(!this.openedNodes[item.id]){
+  closeBranch(item: NavNodeData) {
+    if (!this.openedNodes[item.id]) {
       this.openBranch(item);
       return;
     }
     delete this.openedNodes[item.id];
+    this.syncNodes();
+  }
+
+  private syncNodes() {
+    const payload = JSON.stringify(this.openedNodes);
+    localStorage.setItem(MENU_STORE_KEY, payload);
   }
 
 }

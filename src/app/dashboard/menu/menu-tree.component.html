@@ -1,7 +1,7 @@
 <ng-template #list let-data="data" let-parent="parent" let-depth="depth">
   <ul
     [ngStyle]="{visibility: depth === 0 || openedNodes[parent?.id] ? 'visible' : 'hidden'}"
-    [@expandCollapse]="openedNodes[parent?.id] ? 'expanded' : 'collapsed'"
+    [@toggleNode]="openedNodes[parent?.id] ? 'expanded' : 'collapsed'"
   >
     <li
       *ngFor="let item of data;"

@@ -18,4 +18,6 @@ export namespace AuthEvent {
 
   export const Success = "auth:success";
 
+  export const Logout = "auth:logout";
+
 }

@@ -20,6 +20,8 @@ import {DashboardRoutingModule} from "./dashboard-routing.module";
 import {DashboardComponent} from "./dashboard.component";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {MenuTreeModule} from "./menu/menu-tree.module";
+import {AvatarModule} from "primeng/avatar";
+import {MenuModule} from "primeng/menu";
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import {MenuTreeModule} from "./menu/menu-tree.module";
     DashboardRoutingModule,
     ScrollPanelModule,
     MenuTreeModule,
+    AvatarModule,
+    MenuModule,
   ]
 })
 export class DashboardModule {

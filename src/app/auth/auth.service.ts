@@ -13,4 +13,8 @@ export class AuthService {
     return this.http.post<JwtDto>("/auth/login", payload);
   }
 
+  logout() {
+    return this.http.post<void>("/auth/logout", null);
+  }
+
 }

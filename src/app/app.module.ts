@@ -28,6 +28,7 @@ import {DEVICE} from "./modules/device/device.constants";
 import {DeviceInfoImpl} from "./modules/device/device-info.impl";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AppInterceptor} from "./global/interceptor/app.interceptor";
+import {AuthService} from "./auth/auth.service";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 
 @NgModule({
@@ -43,6 +44,7 @@ import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 		StoreModule.forRoot()
 	],
 	providers: [
+    AuthService,
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AppInterceptor,

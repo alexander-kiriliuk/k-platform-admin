@@ -16,6 +16,13 @@
 
 import {Media} from "../modules/media/media.types";
 import {LocalizedString} from "../modules/locale/locale.types";
+import {MenuItemCommandEvent} from "primeng/api";
+
+export type SystemTheme = "light" | "dark";
+
+export interface MenuCommandHandler {
+  onMenuCommand: (event: MenuItemCommandEvent, id?: string) => void;
+}
 
 export type Env = {
   production: boolean;

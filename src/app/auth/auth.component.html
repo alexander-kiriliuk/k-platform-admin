@@ -1,14 +1,17 @@
-<p-card>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="logo"></div>
-    <div class="p-input-icon-right">
-      <i class="pi pi-user"></i>
-      <input pInputText placeholder="Логин" [formControl]="form.controls.login"/>
-    </div>
-    <div class="p-input-icon-right">
-      <i class="pi pi-lock"></i>  <!--TODO add internationalization supports-->
-      <p-password placeholder="Пароль" [formControl]="form.controls.password" [toggleMask]="true" [feedback]="false"/>
-    </div>
-    <button pButton pRipple label="Войти" icon="pi pi-sign-in" iconPos="right" [disabled]="!form.valid"></button>
-  </form>
-</p-card>
+<div>
+  <p-card>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="logo"></div>
+      <div class="p-input-icon-right">
+        <i class="pi pi-user"></i>
+        <input pInputText placeholder="Логин" [formControl]="form.controls.login"/>
+      </div>
+      <div class="p-input-icon-right">
+        <i class="pi pi-lock"></i>  <!--TODO add internationalization supports-->
+        <p-password placeholder="Пароль" [formControl]="form.controls.password" [toggleMask]="true" [feedback]="false"/>
+      </div>
+      <button pButton pRipple label="Войти" icon="pi pi-sign-in" iconPos="right" [disabled]="!form.valid"></button>
+    </form>
+  </p-card>
+</div>
+<div class="promo"></div>

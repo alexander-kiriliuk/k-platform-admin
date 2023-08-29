@@ -15,12 +15,52 @@
  */
 
 import {Component} from "@angular/core";
+import {MenuItemCommandEvent} from "primeng/api";
+import {DomUtils} from "../global/util/dom.utils";
+import {MenuCommandHandler} from "../global/types";
+import {Dashboard} from "./dashboard.constants";
+import {Store} from "../modules/store/store";
+import {AuthEvent} from "../auth/auth.event";
+import getCurrentTheme = DomUtils.getCurrentTheme;
+import setTheme = DomUtils.setTheme;
 
 @Component({
   selector: "dashboard",
   templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"]
+  styleUrls: ["./dashboard.component.scss"],
 })
-export class DashboardComponent {
+export class DashboardComponent implements MenuCommandHandler {
+
+  readonly menuModel = Dashboard.createMenuModel(this);
+  sidebarOverMode: boolean;
+
+  constructor(
+    private readonly store: Store) {
+  }
+
+  get themeBtnClass() {
+    return this.currentTheme === "dark" ? "pi-sun" : "pi-moon";
+  }
+
+  get currentTheme() {
+    return getCurrentTheme();
+  }
+
+  toggleTheme() {
+    const theme = this.currentTheme;
+    theme === "dark" ? setTheme("light") : setTheme("dark");
+  }
+
+  toggleSideBarMode() {
+    this.sidebarOverMode = !this.sidebarOverMode;
+  }
+
+  onMenuCommand(event: MenuItemCommandEvent, id: string): void {
+    switch (id) {
+      case "exit":
+        this.store.emit(AuthEvent.Logout);
+        break;
+    }
+  }
 
 }
