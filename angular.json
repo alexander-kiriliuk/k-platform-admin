@@ -27,7 +27,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              {
+                "glob": "**/i18n/**",
+                "input": "src/app",
+                "output": "assets"
+              }
             ],
             "styles": [
               "src/main.scss"

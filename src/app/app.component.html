@@ -1,2 +1,6 @@
-<!--<p-progressSpinner></p-progressSpinner>-->
-<router-outlet></router-outlet>
+<ng-template #progress>
+  <p-progressSpinner />
+</ng-template>
+<ng-container *ngIf="ready; else progress">
+  <router-outlet></router-outlet>
+</ng-container>

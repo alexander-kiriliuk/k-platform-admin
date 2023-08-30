@@ -12,9 +12,8 @@
         </p-scrollPanel>
       </div>
       <div class="sidebar-footer">
-        <a (click)="toggleTheme()">
-          {{currentTheme === 'light' ? 'Темная тема' : 'Светлая тема'}} <i class="pi" [ngClass]="themeBtnClass"></i>
-        </a>
+        <lang-switcher />
+        <theme-switcher />
       </div>
     </div>
   </div>

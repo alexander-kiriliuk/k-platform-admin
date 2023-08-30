@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+export namespace LangUtils {
 
-import {AuthComponent} from "./auth.component";
+  export const AvailableLangs = ["ru", "en"];
+  export const DefaultLang = "en";
 
-describe("AuthComponent", () => {
-	let component: AuthComponent;
-	let fixture: ComponentFixture<AuthComponent>;
+  const LANG_KEY = "lang_key";
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			imports: [AuthComponent]
-		});
-		fixture = TestBed.createComponent(AuthComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
+  export function getCurrentLang() {
+    const lang = localStorage.getItem(LANG_KEY);
+    if (lang) {
+      return lang;
+    }
+    return navigator.language.split("-")[0];
+  }
 
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+  export function setLang(lang: string) {
+    localStorage.setItem(LANG_KEY, lang);
+  }
+
+}
+

@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {inject, Injectable} from "@angular/core";
+import {TranslocoService} from "@ngneat/transloco";
+import {filter, take} from "rxjs/operators";
 
-import {DashboardComponent} from "./dashboard.component";
+@Injectable({providedIn: "root"})
+export class TranslationManager {
 
-describe("DashboardComponent", () => {
-	let component: DashboardComponent;
-	let fixture: ComponentFixture<DashboardComponent>;
+  readonly translocoService = inject(TranslocoService);
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [DashboardComponent]
-		});
-		fixture = TestBed.createComponent(DashboardComponent);
-		component = fixture.componentInstance;
-		fixture.detectChanges();
-	});
+  waitFor(scope: string) {
+    return this.translocoService.events$.pipe(
+      filter(e => e.type === "translationLoadSuccess" && e.payload.scope === scope),
+      take(1),
+    );
+  }
 
-	it("should create", () => {
-		expect(component).toBeTruthy();
-	});
-});
+}

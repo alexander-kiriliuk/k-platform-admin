@@ -22,11 +22,18 @@ import {ScrollPanelModule} from "primeng/scrollpanel";
 import {MenuTreeModule} from "./menu/menu-tree.module";
 import {AvatarModule} from "primeng/avatar";
 import {MenuModule} from "primeng/menu";
+import {provideTranslocoScope, TranslocoPipe} from "@ngneat/transloco";
+import {ThemeSwitcherComponent} from "./theme-switcher/theme-switcher.component";
+import {LangSwitcherComponent} from "./lang-switcher/lang-switcher.component";
+import {DropdownModule} from "primeng/dropdown";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    ThemeSwitcherComponent,
+    LangSwitcherComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +42,12 @@ import {MenuModule} from "primeng/menu";
     MenuTreeModule,
     AvatarModule,
     MenuModule,
+    TranslocoPipe,
+    DropdownModule,
+    ReactiveFormsModule,
+  ],
+  providers: [
+    provideTranslocoScope("dashboard")
   ]
 })
 export class DashboardModule {

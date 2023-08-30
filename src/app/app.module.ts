@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {NgModule} from "@angular/core";
+import {isDevMode, NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
@@ -28,42 +28,52 @@ import {DEVICE} from "./modules/device/device.constants";
 import {DeviceInfoImpl} from "./modules/device/device-info.impl";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AppInterceptor} from "./global/interceptor/app.interceptor";
-import {AuthService} from "./auth/auth.service";
+import {provideTransloco} from "@ngneat/transloco";
+import {TranslocoHttpLoader} from "./global/internationalization/transloco-http-loader";
+import {LangUtils} from "./global/util/lang.utils";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 
 @NgModule({
-	declarations: [
-		AppComponent,
-	],
-	imports: [
-		BrowserModule,
-		BrowserAnimationsModule,
-		AppRoutingModule,
-		HttpClientModule,
-		ProgressSpinnerModule,
-		StoreModule.forRoot()
-	],
-	providers: [
-    AuthService,
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: AppInterceptor,
-			multi: true
-		},
-		{
-			provide: WEBP_SUPPORT,
-			useFactory: detectWebpSupportFactory,
-			deps: [
-				DeviceDetectorService
-			]
-		},
-		{
-			provide: DEVICE,
-			useClass: DeviceInfoImpl,
-			deps: [DeviceDetectorService]
-		}
-	],
-	bootstrap: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ProgressSpinnerModule,
+    StoreModule.forRoot()
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptor,
+      multi: true
+    },
+    {
+      provide: WEBP_SUPPORT,
+      useFactory: detectWebpSupportFactory,
+      deps: [
+        DeviceDetectorService
+      ]
+    },
+    {
+      provide: DEVICE,
+      useClass: DeviceInfoImpl,
+      deps: [DeviceDetectorService]
+    },
+    provideTransloco({
+      config: {
+        availableLangs: LangUtils.AvailableLangs,
+        defaultLang: LangUtils.DefaultLang,
+        reRenderOnLangChange: true,
+        prodMode: !isDevMode()
+      },
+      loader: TranslocoHttpLoader
+    })
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

@@ -27,6 +27,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Store} from "../modules/store/store";
 import {AuthEvent} from "./auth.event";
+import {provideTranslocoScope, TranslocoPipe} from "@ngneat/transloco";
 
 @Component({
   selector: "auth",
@@ -41,10 +42,11 @@ import {AuthEvent} from "./auth.event";
     RippleModule,
     CardModule,
     ImageModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslocoPipe
   ],
   providers: [
-    AuthService
+    provideTranslocoScope("auth")
   ]
 })
 export class AuthComponent {

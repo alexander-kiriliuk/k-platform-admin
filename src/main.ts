@@ -19,9 +19,9 @@ import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {AppModule} from "./app/app.module";
 import {environment} from "./app/global/env/env";
 import {enableProdMode} from "@angular/core";
-import {DomUtils} from "./app/global/util/dom.utils";
+import {ThemeUtils} from "./app/global/util/theme.utils";
 
-DomUtils.setDefaultTheme();
+ThemeUtils.setDefaultTheme();
 
 if (environment.production) {
   enableProdMode();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component, Inject, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, Inject, OnInit} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 import {ProfileService} from "./modules/profile/profile.service";
 import {finalize, throwError} from "rxjs";
@@ -25,6 +25,9 @@ import {JwtDto} from "./auth/auth.types";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {AuthEvent} from "./auth/auth.event";
 import {AuthService} from "./auth/auth.service";
+import {TranslocoService} from "@ngneat/transloco";
+import {LangUtils} from "./global/util/lang.utils";
+import getCurrentLang = LangUtils.getCurrentLang;
 
 @UntilDestroy()
 @Component({
@@ -34,11 +37,15 @@ import {AuthService} from "./auth/auth.service";
 })
 export class AppComponent implements OnInit {
 
+  ready: boolean;
+
   constructor(
     @Inject(DOCUMENT) private readonly doc: Document,
     private readonly router: Router,
     private readonly authService: AuthService,
     private readonly store: Store,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly ts: TranslocoService,
     private readonly profileService: ProfileService) {
     this.store.on<JwtDto>(AuthEvent.Success)
       .pipe(untilDestroyed(this))
@@ -46,6 +53,7 @@ export class AppComponent implements OnInit {
     this.store.on<JwtDto>(AuthEvent.Logout)
       .pipe(untilDestroyed(this))
       .subscribe(() => this.logout());
+    this.ts.setActiveLang(getCurrentLang());
   }
 
   ngOnInit(): void {
@@ -67,6 +75,8 @@ export class AppComponent implements OnInit {
     this.profileService.currentUser().pipe(
       finalize(() => {
         this.doc.body.classList.remove("pending");
+        this.ready = true;
+        this.cdr.markForCheck();
       }),
       catchError((error) => {
         this.router.navigate(["/auth"]);

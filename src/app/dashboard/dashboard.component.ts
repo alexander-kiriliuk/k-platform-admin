@@ -15,14 +15,13 @@
  */
 
 import {Component} from "@angular/core";
-import {MenuItemCommandEvent} from "primeng/api";
-import {DomUtils} from "../global/util/dom.utils";
+import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 import {MenuCommandHandler} from "../global/types";
-import {Dashboard} from "./dashboard.constants";
 import {Store} from "../modules/store/store";
 import {AuthEvent} from "../auth/auth.event";
-import getCurrentTheme = DomUtils.getCurrentTheme;
-import setTheme = DomUtils.setTheme;
+import {TranslationManager} from "../global/internationalization/translation-manager";
+import {Dashboard} from "./dashboard.constants";
+
 
 @Component({
   selector: "dashboard",
@@ -31,24 +30,15 @@ import setTheme = DomUtils.setTheme;
 })
 export class DashboardComponent implements MenuCommandHandler {
 
-  readonly menuModel = Dashboard.createMenuModel(this);
+  menuModel: MenuItem[] = [];
   sidebarOverMode: boolean;
 
-  constructor(
-    private readonly store: Store) {
-  }
-
-  get themeBtnClass() {
-    return this.currentTheme === "dark" ? "pi-sun" : "pi-moon";
-  }
-
-  get currentTheme() {
-    return getCurrentTheme();
-  }
-
-  toggleTheme() {
-    const theme = this.currentTheme;
-    theme === "dark" ? setTheme("light") : setTheme("dark");
+  constructor(  // todo use inject anywhere
+    private readonly store: Store,
+    private readonly tm: TranslationManager) {
+    this.tm.waitFor("dashboard").subscribe(() =>
+      this.menuModel = Dashboard.createMenuModel(this, this.tm.translocoService)
+    );
   }
 
   toggleSideBarMode() {

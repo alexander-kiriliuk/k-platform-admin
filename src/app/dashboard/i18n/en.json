@@ -1,0 +1,11 @@
+{
+  "theme": {
+    "light": "Light theme",
+    "dark": "Dark theme"
+  },
+  "menu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "exit": "Exit"
+  }
+}

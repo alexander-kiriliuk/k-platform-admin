@@ -21,16 +21,13 @@ export namespace MediaUtils {
   export function detectWebpSupportFactory(ds: DeviceDetectorService) {
     const browser = ds.browser.toLowerCase();
     const browserVer = parseInt(ds.browser_version, 10);
-    // TODO test it and extend
-    // const os = ds.os.toLowerCase();
-    // console.log(browser, browserVer, os);
-    if (browser === "chrome" && browserVer > 32) {
-      return true;
-    }
-    if (browser === "opera" && browserVer > 19) {
-      return true;
-    }
-    return browser === "firefox" && browserVer > 65;
+    const os = ds.os.toLowerCase();
+    return (browser === "chrome" && browserVer >= 23) ||
+      (browser === "opera" && browserVer >= 12.1) ||
+      (browser === "edge" && browserVer >= 18) ||
+      (browser === "firefox" && browserVer >= 65) ||
+      (browser === "safari" && browserVer >= 14) ||
+      (browser === "ios" && os.includes("11"));
   }
 
 }

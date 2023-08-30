@@ -16,7 +16,7 @@
 
 import {SystemTheme} from "../types";
 
-export namespace DomUtils {
+export namespace ThemeUtils {
 
   const THEME_KEY = "theme_key";
   const THEME_ID = "app-theme-lnk";

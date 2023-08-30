@@ -16,23 +16,24 @@
 
 import {MenuCommandHandler} from "../global/types";
 import {MenuItem} from "primeng/api";
+import {TranslocoService} from "@ngneat/transloco";
 
 export namespace Dashboard {
 
-  export function createMenuModel(commandHandler: MenuCommandHandler): MenuItem[] {
+  export function createMenuModel(commandHandler: MenuCommandHandler, ts: TranslocoService): MenuItem[] {
     return [
       {
-        label: "Профиль",
+        label: ts.translate("dashboard.menu.profile"),
         icon: "pi pi-cog",
         command: e => commandHandler.onMenuCommand(e, "profile")
       },
       {
-        label: "Найтройки",
+        label: ts.translate("dashboard.menu.settings"),
         icon: "pi pi-wrench",
         command: e => commandHandler.onMenuCommand(e, "settings")
       },
       {
-        label: "Выход",
+        label: ts.translate("dashboard.menu.exit"),
         icon: "pi pi-sign-out",
         command: e => commandHandler.onMenuCommand(e, "exit")
       }
