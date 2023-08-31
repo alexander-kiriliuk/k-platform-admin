@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 import {ProfileService} from "./modules/profile/profile.service";
 import {finalize, throwError} from "rxjs";
@@ -28,9 +28,9 @@ import {AuthService} from "./auth/auth.service";
 import {TranslocoService} from "@ngneat/transloco";
 import {LangUtils} from "./global/util/lang.utils";
 import {ToastKey, ToastType} from "./global/constants";
-import {ToastEvent} from "./global/events";
+import {CurrentUserEvent, ToastEvent} from "./global/events";
 import {MessageService} from "primeng/api";
-import {ToastData} from "./global/types";
+import {ToastData, User} from "./global/types";
 import {StoreMessage} from "./modules/store/store-message";
 import getCurrentLang = LangUtils.getCurrentLang;
 
@@ -38,7 +38,8 @@ import getCurrentLang = LangUtils.getCurrentLang;
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  styleUrls: ["./app.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
 
@@ -91,8 +92,8 @@ export class AppComponent implements OnInit {
         this.router.navigate(["/auth"]);
         return throwError(() => error);
       })
-    ).subscribe(() => {
-      // todo create global state for current user?
+    ).subscribe(data => {
+      this.store.emit<User>(CurrentUserEvent.Set, data);
       this.router.navigate(["/dashboard"]);
     });
   }

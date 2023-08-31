@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-export enum ToastEvent {
-  All  = "toast:message:*",
-  Error  = "toast:message:error",
-  Warn  = "toast:message:warn",
-  Info  = "toast:message:info",
-  Success  = "toast:message:success",
-}
-
-export enum CurrentUserEvent {
-  Set  = "current:user:set",
-  Update  = "current:user:update",
+export function AppInitializer() {
+  return () => {
+  };
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {isDevMode, NgModule} from "@angular/core";
+import {APP_INITIALIZER, isDevMode, NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {AppRoutingModule} from "./app-routing.module";
 import {AppComponent} from "./app.component";
@@ -33,6 +33,8 @@ import {TranslocoHttpLoader} from "./global/internationalization/transloco-http-
 import {LangUtils} from "./global/util/lang.utils";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
+import {CurrentUser} from "./global/service/current-user";
+import {AppInitializer} from "./global/service/app-initializer";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 
 @NgModule({
@@ -50,6 +52,12 @@ import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
   ],
   providers: [
     MessageService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: AppInitializer,
+      multi: true,
+      deps: [CurrentUser]
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,

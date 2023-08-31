@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-import {Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 import {MenuCommandHandler} from "../global/types";
 import {Store} from "../modules/store/store";
 import {AuthEvent} from "../auth/auth.event";
 import {TranslationManager} from "../global/internationalization/translation-manager";
 import {Dashboard} from "./dashboard.constants";
+import {CurrentUser} from "../global/service/current-user";
 
 
 @Component({
   selector: "dashboard",
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements MenuCommandHandler {
 
   menuModel: MenuItem[] = [];
   sidebarOverMode: boolean;
+  readonly currentUser = inject(CurrentUser);
   private readonly store = inject(Store);
   private readonly tm = inject(TranslationManager);
 

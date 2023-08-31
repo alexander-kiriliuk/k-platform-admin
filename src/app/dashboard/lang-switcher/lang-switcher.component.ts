@@ -1,4 +1,4 @@
-import {Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {FormControl} from "@angular/forms";
 import {LangUtils} from "../../global/util/lang.utils";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
@@ -10,7 +10,8 @@ import setLang = LangUtils.setLang;
 @Component({
   selector: "lang-switcher",
   templateUrl: "./lang-switcher.component.html",
-  styleUrls: ["./lang-switcher.component.scss"]
+  styleUrls: ["./lang-switcher.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LangSwitcherComponent {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
@@ -38,6 +38,7 @@ import {ToastData} from "../global/types";
   standalone: true,
   templateUrl: "./auth.component.html",
   styleUrls: ["./auth.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     InputTextModule,

@@ -12,8 +12,8 @@
         </p-scrollPanel>
       </div>
       <div class="sidebar-footer">
-        <lang-switcher />
-        <theme-switcher />
+        <lang-switcher/>
+        <theme-switcher/>
       </div>
     </div>
   </div>
@@ -25,9 +25,9 @@
       </div>
       <div>
         <p-menu #menu [model]="menuModel" [popup]="true"/>
-        <a (click)="menu.toggle($event)">
+        <a *ngIf="(currentUser.asObservable | async) as user" (click)="menu.toggle($event)">
           <p-avatar label="SU" shape="circle"/>
-          <span class="user-login">Some Username</span>
+          <span class="user-login">{{currentUser.fullName}}</span>
         </a>
       </div>
     </div>
