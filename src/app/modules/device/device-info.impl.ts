@@ -15,21 +15,21 @@
  */
 
 import {DeviceDetectorService} from "ngx-device-detector";
-import {Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {Device} from "./device.constants";
 
 @Injectable()
 export class DeviceInfoImpl implements Device {
 
-	private readonly _isDesktop: boolean;
+  private readonly _isDesktop: boolean;
+  private readonly ds = inject(DeviceDetectorService);
 
-	constructor(
-    private ds: DeviceDetectorService) {
-		this._isDesktop = this.ds.isDesktop();
-	}
+  constructor() {
+    this._isDesktop = this.ds.isDesktop();
+  }
 
-	get isDesktop() {
-		return this._isDesktop;
-	}
+  get isDesktop() {
+    return this._isDesktop;
+  }
 
 }

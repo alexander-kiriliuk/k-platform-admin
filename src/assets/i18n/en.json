@@ -1,2 +1,6 @@
 {
+  "msg": {
+    "error": "Error",
+    "warn": "Warning"
+  }
 }

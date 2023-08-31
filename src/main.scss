@@ -29,8 +29,20 @@ body {
 
 .heading-xl {
   @apply text-xl font-medium;
+  @screen max-xl {
+    @apply text-lg;
+  }
+  @screen max-lg {
+    @apply text-base;
+  }
 }
 
 .heading-2xl {
   @apply text-2xl font-medium;
+  @screen max-xl {
+    @apply text-xl;
+  }
+  @screen max-lg {
+    @apply text-lg;
+  }
 }

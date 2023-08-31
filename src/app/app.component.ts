@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {ChangeDetectorRef, Component, Inject, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 import {ProfileService} from "./modules/profile/profile.service";
 import {finalize, throwError} from "rxjs";
@@ -27,6 +27,11 @@ import {AuthEvent} from "./auth/auth.event";
 import {AuthService} from "./auth/auth.service";
 import {TranslocoService} from "@ngneat/transloco";
 import {LangUtils} from "./global/util/lang.utils";
+import {ToastKey, ToastType} from "./global/constants";
+import {ToastEvent} from "./global/events";
+import {MessageService} from "primeng/api";
+import {ToastData} from "./global/types";
+import {StoreMessage} from "./modules/store/store-message";
 import getCurrentLang = LangUtils.getCurrentLang;
 
 @UntilDestroy()
@@ -38,22 +43,26 @@ import getCurrentLang = LangUtils.getCurrentLang;
 export class AppComponent implements OnInit {
 
   ready: boolean;
+  readonly toastKey = ToastKey.Global;
+  private readonly doc: Document = inject(DOCUMENT);
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly store = inject(Store);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly ts = inject(TranslocoService);
+  private readonly profileService = inject(ProfileService);
+  private readonly messageService = inject(MessageService);
 
-  constructor(
-    @Inject(DOCUMENT) private readonly doc: Document,
-    private readonly router: Router,
-    private readonly authService: AuthService,
-    private readonly store: Store,
-    private readonly cdr: ChangeDetectorRef,
-    private readonly ts: TranslocoService,
-    private readonly profileService: ProfileService) {
+  constructor() {
+    this.ts.setActiveLang(getCurrentLang());
     this.store.on<JwtDto>(AuthEvent.Success)
       .pipe(untilDestroyed(this))
       .subscribe(() => this.checkProfile());
     this.store.on<JwtDto>(AuthEvent.Logout)
       .pipe(untilDestroyed(this))
       .subscribe(() => this.logout());
-    this.ts.setActiveLang(getCurrentLang());
+    this.store.on<ToastData>(ToastEvent.All).pipe(untilDestroyed(this))
+      .subscribe(v => this.handleGlobalMessage(v));
   }
 
   ngOnInit(): void {
@@ -62,9 +71,9 @@ export class AppComponent implements OnInit {
 
   private logout() {
     this.authService.logout().pipe(
-      catchError((error) => {
-        // todo show popup
-        return throwError(() => error);
+      catchError((res) => {
+        this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
+        return throwError(() => res);
       })
     ).subscribe(() => {
       this.router.navigate(["/auth"]);
@@ -86,6 +95,32 @@ export class AppComponent implements OnInit {
       // todo create global state for current user?
       this.router.navigate(["/dashboard"]);
     });
+  }
+
+  private handleGlobalMessage(data: StoreMessage<ToastData>) {
+    let severity = ToastType.Info;
+    let summary: string = data.payload?.title;
+    const detail: string = data.payload?.message;
+    switch (data.key) {
+      case ToastEvent.Error:
+        severity = ToastType.Error;
+        if (!summary) {
+          summary = this.ts.translate("msg.error");
+        }
+        break;
+      case ToastEvent.Success:
+        severity = ToastType.Success;
+        break;
+      case ToastEvent.Warn:
+        severity = ToastType.Warn;
+        if (!summary) {
+          summary = this.ts.translate("msg.warn");
+        }
+        break;
+      case ToastEvent.Info:
+        break;
+    }
+    this.messageService.add({key: ToastKey.Global, severity, summary, detail});
   }
 
 }

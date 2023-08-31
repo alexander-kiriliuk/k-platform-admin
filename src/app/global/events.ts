@@ -14,3 +14,10 @@
  * limitations under the License.
  */
 
+export enum ToastEvent {
+  All  = "show:message:*",
+  Error  = "show:message:error",
+  Warn  = "show:message:warn",
+  Info  = "show:message:info",
+  Success  = "show:message:success",
+}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component} from "@angular/core";
+import {Component, inject} from "@angular/core";
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 import {MenuCommandHandler} from "../global/types";
 import {Store} from "../modules/store/store";
@@ -32,10 +32,10 @@ export class DashboardComponent implements MenuCommandHandler {
 
   menuModel: MenuItem[] = [];
   sidebarOverMode: boolean;
+  private readonly store = inject(Store);
+  private readonly tm = inject(TranslationManager);
 
-  constructor(  // todo use inject anywhere
-    private readonly store: Store,
-    private readonly tm: TranslationManager) {
+  constructor() {
     this.tm.waitFor("dashboard").subscribe(() =>
       this.menuModel = Dashboard.createMenuModel(this, this.tm.translocoService)
     );

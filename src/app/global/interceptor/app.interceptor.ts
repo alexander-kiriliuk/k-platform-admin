@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {
   HttpClient,
   HttpErrorResponse,
@@ -31,10 +31,8 @@ import {environment} from "../env/env";
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
-  constructor(
-    private readonly router: Router,
-    private readonly http: HttpClient) {
-  }
+  private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     request = request.clone({
@@ -50,7 +48,6 @@ export class AppInterceptor implements HttpInterceptor {
               return next.handle(newRequest);
             }),
             catchError((exchangeError) => {
-              // todo show popup
               this.router.navigate(["/auth"]);
               return throwError(exchangeError);
             })
@@ -61,7 +58,7 @@ export class AppInterceptor implements HttpInterceptor {
     );
   }
 
-  private exchangeToken(){
+  private exchangeToken() {
     return this.http.post("/auth/exchange-token", {});
   }
 

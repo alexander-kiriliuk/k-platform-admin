@@ -17,6 +17,9 @@
 
 .content-block {
   @apply py-4 px-6;
+  @screen max-lg {
+    @apply py-2 px-4;
+  }
 }
 
 .sidebar {
@@ -55,7 +58,7 @@
     background: var(--surface-a);
   }
 
-  &-data{
+  &-data {
     height: calc(100vh - var(--logo-bar-h) - var(--sb-footer-h));
   }
 
@@ -81,6 +84,7 @@
   @apply px-6 flex items-center justify-between;
   @screen max-lg {
     @apply px-4;
+    background: var(--surface-a);
   }
   & > div {
     @apply flex gap-x-4 items-center;
@@ -98,6 +102,12 @@
   @apply hidden cursor-pointer;
   @screen max-lg {
     @apply inline;
+  }
+}
+
+.user-login {
+  @screen max-lg {
+    @apply hidden;
   }
 }
 

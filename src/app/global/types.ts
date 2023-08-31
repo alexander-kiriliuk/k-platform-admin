@@ -32,6 +32,11 @@ export type Env = {
   fileUrl: string;
 }
 
+export interface ToastData {
+  title?: string;
+  message?: string;
+}
+
 export interface User {
   id: string;
   avatar: Media;

@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-export namespace AuthEvent {
-
-  export const Success = "auth:success";
-
-  export const Logout = "auth:logout";
-
+export enum AuthEvent {
+  Success = "auth:success",
+  Logout = "auth:logout"
 }

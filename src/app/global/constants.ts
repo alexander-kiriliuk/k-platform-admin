@@ -13,3 +13,14 @@
  *   See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+export enum ToastKey {
+  Global = "global"
+}
+
+export enum ToastType {
+  Error  = "error",
+  Warn  = "warn",
+  Info  = "info",
+  Success  = "success",
+}

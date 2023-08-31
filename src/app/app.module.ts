@@ -31,6 +31,8 @@ import {AppInterceptor} from "./global/interceptor/app.interceptor";
 import {provideTransloco} from "@ngneat/transloco";
 import {TranslocoHttpLoader} from "./global/internationalization/transloco-http-loader";
 import {LangUtils} from "./global/util/lang.utils";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 
 @NgModule({
@@ -43,9 +45,11 @@ import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
     AppRoutingModule,
     HttpClientModule,
     ProgressSpinnerModule,
-    StoreModule.forRoot()
+    StoreModule.forRoot(),
+    ToastModule
   ],
   providers: [
+    MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,
