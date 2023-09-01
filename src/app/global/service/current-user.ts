@@ -19,12 +19,14 @@ import {BehaviorSubject} from "rxjs";
 import {User} from "../types";
 import {Store} from "../../modules/store/store";
 import {CurrentUserEvent} from "../events";
+import {LocalizePipe} from "../../modules/locale/localize.pipe";
 
 @Injectable({providedIn: "root"})
 export class CurrentUser {
 
   private readonly sub = new BehaviorSubject<User>(null);
   private readonly store = inject(Store);
+  private readonly localizePipe = inject(LocalizePipe);
   readonly asObservable = this.sub.asObservable();
 
   constructor() {
@@ -35,8 +37,15 @@ export class CurrentUser {
   }
 
   get fullName() {
-    const usr = this.sub.value; // todo detect lang, write pipe? fullName?
-    return `${usr.firstName[0].value} ${usr.lastName[0].value}`;
+    const usr = this.sub.value;
+    const result: string[] = [];
+    if (usr.firstName) {
+      result.push(this.localizePipe.transform(usr.firstName) as string);
+    }
+    if (usr.lastName) {
+      result.push(this.localizePipe.transform(usr.lastName) as string);
+    }
+    return result.length > 1 ? result.join(" ") : usr.login;
   }
 
   private setUser(user: User) {

@@ -35,6 +35,7 @@ import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {CurrentUser} from "./global/service/current-user";
 import {AppInitializer} from "./global/service/app-initializer";
+import {LocalizePipe} from "./modules/locale/localize.pipe";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 
 @NgModule({
@@ -51,6 +52,7 @@ import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
     ToastModule
   ],
   providers: [
+    LocalizePipe,
     MessageService,
     {
       provide: APP_INITIALIZER,
