@@ -36,6 +36,10 @@ export class CurrentUser {
       .subscribe(v => this.updateUser(v.payload));
   }
 
+  get data() {
+    return this.sub.value;
+  }
+
   get fullName() {
     const usr = this.sub.value;
     const result: string[] = [];
@@ -46,6 +50,13 @@ export class CurrentUser {
       result.push(this.localizePipe.transform(usr.lastName) as string);
     }
     return result.length > 1 ? result.join(" ") : usr.login;
+  }
+
+  get initials() {
+    let res = "";
+    const parts = this.fullName.split(" ");
+    parts.forEach(str => res += str.charAt(0));
+    return res.substring(0, 2);
   }
 
   private setUser(user: User) {

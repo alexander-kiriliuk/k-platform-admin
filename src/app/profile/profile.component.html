@@ -1,0 +1,48 @@
+<div class="wrap" [formGroup]="form">
+  <div>
+    <div class="p-float-label">
+      <input pInputText id="id" formControlName="id"/>
+      <label for="id">ID</label>
+    </div>
+    <div class="p-float-label">
+      <input pInputText id="login" formControlName="login"/>
+      <label for="login">Login</label>
+    </div>
+    <div class="p-float-label">
+      <input pInputText id="email" formControlName="email"/>
+      <label for="email">Email</label>
+    </div>
+    <div class="p-float-label">
+      <input pInputText id="phone" formControlName="phone"/>
+      <label for="phone">Email</label>
+    </div>
+    <div class="p-float-label">
+      <p-password
+        formControlName="password"
+        [toggleMask]="false"
+        [feedback]="false"/>
+      <label for="password">Password</label>
+    </div>
+  </div>
+  <div>
+    <div>
+      <p-checkbox inputId="active" formControlName="active" label="Active" [binary]="true"/>
+    </div>
+    <div>
+      <media-res [zoom]="true" [src]="currentUser.data.avatar"/>
+    </div>
+    <div>
+      {{form.controls.firstName.value}}
+    </div>
+    <div>
+      {{form.controls.lastName.value}}
+    </div>
+    <div>
+      {{form.controls.roles.value}}
+    </div>
+  </div>
+</div>
+
+<div>
+  <button pButton (click)="ref.close()">{{"profile.save" | transloco}}</button>
+</div>

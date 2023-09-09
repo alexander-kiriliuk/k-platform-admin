@@ -1,0 +1,6 @@
+.wrap {
+  @apply grid grid-cols-2 gap-6;
+  & > div {
+    @apply flex flex-col gap-4 py-4;
+  }
+}

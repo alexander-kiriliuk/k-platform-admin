@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-import {InjectionToken} from "@angular/core";
+import {FormControl} from "@angular/forms";
+import {Media} from "../modules/media/media.types";
+import {LocalizedString} from "../modules/locale/locale.types";
+import {UserRole} from "../global/types";
 
-export const MEDIA_URL = new InjectionToken<string>("MEDIA_URL");
-export const WEBP_SUPPORT = new InjectionToken<boolean>("WEBP_SUPPORT");
-
-export const SVG_MEDIA_TYPE = "svg-media";
-
-export enum ReservedMediaSize {
-  THUMB = "thumb",
-  ORIGINAL = "original"
+export interface UserForm {
+  active: FormControl<boolean>,
+  avatar: FormControl<Media>,
+  email: FormControl<string>,
+  firstName: FormControl<LocalizedString[]>,
+  id: FormControl<string>,
+  lastName: FormControl<LocalizedString[]>,
+  login: FormControl<string>,
+  password: FormControl<string>,
+  phone: FormControl<string>,
+  roles: FormControl<UserRole[]>,
+  tsCreated: FormControl<Date>
 }

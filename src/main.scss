@@ -27,6 +27,10 @@ body {
 
 }
 
+p-avatar > div {
+  @apply relative;
+}
+
 .heading-xl {
   @apply text-xl font-medium;
   @screen max-xl {

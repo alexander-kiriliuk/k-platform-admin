@@ -43,8 +43,13 @@ button {
 
 .promo {
   background: var(--neutral-b);
-  background-image: url("/assets/icons/promo.svg");
+  @apply relative;
   @screen max-lg {
     @apply hidden #{!important};
+  }
+  &:after {
+    content: "";
+    background-image: url("/assets/icons/promo.svg");
+    @apply absolute left-0 right-0 top-0 bottom-0 opacity-40;
   }
 }

@@ -22,6 +22,7 @@ import {AuthEvent} from "../auth/auth.event";
 import {TranslationManager} from "../global/internationalization/translation-manager";
 import {Dashboard} from "./dashboard.constants";
 import {CurrentUser} from "../global/service/current-user";
+import {DialogService} from "primeng/dynamicdialog";
 
 
 @Component({
@@ -37,6 +38,7 @@ export class DashboardComponent implements MenuCommandHandler {
   readonly currentUser = inject(CurrentUser);
   private readonly store = inject(Store);
   private readonly tm = inject(TranslationManager);
+  private readonly dialogService = inject(DialogService);
 
   constructor() {
     this.tm.waitFor("dashboard").subscribe(() =>
@@ -50,6 +52,20 @@ export class DashboardComponent implements MenuCommandHandler {
 
   onMenuCommand(event: MenuItemCommandEvent, id: string): void {
     switch (id) {
+      case "profile":
+        import("../profile/profile.component").then(c => {
+          this.dialogService.open(c.ProfileComponent, {
+            header: this.currentUser.fullName,
+            resizable: true,
+            draggable: true,
+            modal: false,
+            position: "topright"
+          });
+        });
+        break;
+      case "settings":
+        // todo
+        break;
       case "exit":
         this.store.emit(AuthEvent.Logout);
         break;

@@ -27,6 +27,9 @@ import {ThemeSwitcherComponent} from "./theme-switcher/theme-switcher.component"
 import {LangSwitcherComponent} from "./lang-switcher/lang-switcher.component";
 import {DropdownModule} from "primeng/dropdown";
 import {ReactiveFormsModule} from "@angular/forms";
+import {DialogService} from "primeng/dynamicdialog";
+import {MediaUrlPipe} from "../modules/media/media-url.pipe";
+import {MediaComponent} from "../modules/media/media.component";
 
 
 @NgModule({
@@ -45,9 +48,12 @@ import {ReactiveFormsModule} from "@angular/forms";
     TranslocoPipe,
     DropdownModule,
     ReactiveFormsModule,
+    MediaUrlPipe,
+    MediaComponent,
   ],
   providers: [
-    provideTranslocoScope("dashboard")
+    provideTranslocoScope("dashboard"),
+    DialogService
   ]
 })
 export class DashboardModule {
