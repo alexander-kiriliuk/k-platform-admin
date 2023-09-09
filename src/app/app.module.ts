@@ -79,7 +79,6 @@ import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
     },
     provideTransloco({
       config: {
-        availableLangs: LangUtils.AvailableLangs,
         defaultLang: LangUtils.DefaultLang,
         reRenderOnLangChange: true,
         prodMode: !isDevMode()

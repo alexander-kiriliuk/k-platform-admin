@@ -14,10 +14,25 @@
  * limitations under the License.
  */
 
+
+import {Language} from "../../modules/locale/locale.types";
+
 export namespace LangUtils {
 
-  export const AvailableLangs = ["ru", "en"];
+  const AvailableLangs: Language[] = [];
   export const DefaultLang = "en";
+
+  export function setAvailableLangs(langs: Language[]) {
+    langs.forEach(v => AvailableLangs.push(v));
+  }
+
+  export function getAvailableLangCodes() {
+    const res: string[] = [];
+    AvailableLangs.forEach(v => res.push(v.id));
+    return res;
+  }
+
+  export const getAvailableLangs = () => AvailableLangs;
 
   const LANG_KEY = "lang_key";
 

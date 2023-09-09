@@ -32,6 +32,5 @@ export function CreateProfileForm() {
     firstName: new FormControl<LocalizedString[]>(null),
     lastName: new FormControl<LocalizedString[]>(null),
     roles: new FormControl<UserRole[]>(null),
-    tsCreated: new FormControl<Date>(null)
   });
 }

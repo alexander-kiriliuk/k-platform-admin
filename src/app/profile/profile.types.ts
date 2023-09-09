@@ -30,5 +30,4 @@ export interface UserForm {
   password: FormControl<string>,
   phone: FormControl<string>,
   roles: FormControl<UserRole[]>,
-  tsCreated: FormControl<Date>
 }

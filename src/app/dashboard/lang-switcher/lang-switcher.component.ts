@@ -16,7 +16,7 @@ import setLang = LangUtils.setLang;
 export class LangSwitcherComponent {
 
   readonly ctrl: FormControl<string> = new FormControl(getCurrentLang());
-  readonly langList = LangUtils.AvailableLangs;
+  readonly langList = LangUtils.getAvailableLangCodes();
   private readonly ts = inject(TranslocoService);
 
   constructor() {

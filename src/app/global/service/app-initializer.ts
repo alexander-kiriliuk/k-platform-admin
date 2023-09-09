@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
+import {inject} from "@angular/core";
+import {AppService} from "./app.service";
+import {map} from "rxjs/operators";
+import {LangUtils} from "../util/lang.utils";
+import {TranslocoService} from "@ngneat/transloco";
+
 export function AppInitializer() {
-  return () => {
-  };
+  const appService = inject(AppService);
+  const ts = inject(TranslocoService);
+  return () => appService.options().pipe(
+    map(v => {
+      LangUtils.setAvailableLangs(v.langs);
+      ts.setAvailableLangs(LangUtils.getAvailableLangCodes());
+    })
+  );
 }

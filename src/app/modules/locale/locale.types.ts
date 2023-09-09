@@ -18,6 +18,7 @@ import {Media} from "../media/media.types";
 
 export interface Language {
   id: string;
+  code: string;
   name: string;
   icon: Media;
 }
