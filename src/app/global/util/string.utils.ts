@@ -16,11 +16,11 @@
 
 export namespace StringUtils {
 
-  export function fillParams(url: string, ...params: string[]) {
+  export function fillParams(url: string, ...params: unknown[]) {
     let counter = -1;
     url.replace(/((:)(.*?))(\/|$)/g, (substring, args) => {
       counter++;
-      url = url.replace(args, params[counter]);
+      url = url.replace(args, params[counter] as string ?? "");
       return url;
     });
     return url;

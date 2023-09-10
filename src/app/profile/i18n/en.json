@@ -1,3 +1,15 @@
 {
-  "save": "Apply"
+  "save": "Apply",
+  "id": "ID",
+  "login": "Login",
+  "email": "Email",
+  "phone": "Phone",
+  "password": "Password",
+  "avatar": "Avatar",
+  "active": "Active",
+  "name": {
+    "first": "First name",
+    "last": "Last name"
+  },
+  "roles": "Roles"
 }

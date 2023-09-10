@@ -10,6 +10,8 @@ import {PasswordModule} from "primeng/password";
 import {MediaComponent} from "../modules/media/media.component";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {CheckboxModule} from "primeng/checkbox";
+import {ProfileService} from "./profile.service";
+import {User} from "../global/types";
 
 @Component({
   selector: "profile",
@@ -27,18 +29,26 @@ import {CheckboxModule} from "primeng/checkbox";
     InputSwitchModule,
     CheckboxModule,
   ],
-  providers:[
+  providers: [
     provideTranslocoScope("profile"),
   ]
 })
 export class ProfileComponent implements OnInit {
 
   readonly currentUser = inject(CurrentUser);
-  readonly ref = inject(DynamicDialogRef);
   readonly form = CreateProfileForm();
+  private readonly ref = inject(DynamicDialogRef);
+  private readonly profileService = inject(ProfileService);
 
   ngOnInit(): void {
     this.form.patchValue(this.currentUser.data);
+  }
+
+  save() {
+    // TODO add animation
+    this.profileService.updateUser(this.form.value as User).subscribe(v => {
+      this.ref.close();
+    });
   }
 
 }

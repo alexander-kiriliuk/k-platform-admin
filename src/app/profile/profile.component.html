@@ -2,47 +2,51 @@
   <div>
     <div class="p-float-label">
       <input pInputText id="id" formControlName="id"/>
-      <label for="id">ID</label>
+      <label for="id">{{"profile.id" | transloco}}</label>
     </div>
     <div class="p-float-label">
       <input pInputText id="login" formControlName="login"/>
-      <label for="login">Login</label>
+      <label for="login">{{"profile.login" | transloco}}</label>
     </div>
     <div class="p-float-label">
       <input pInputText id="email" formControlName="email"/>
-      <label for="email">Email</label>
+      <label for="email">{{"profile.email" | transloco}}</label>
     </div>
     <div class="p-float-label">
       <input pInputText id="phone" formControlName="phone"/>
-      <label for="phone">Email</label>
+      <label for="phone">{{"profile.phone" | transloco}}</label>
     </div>
     <div class="p-float-label">
       <p-password
         formControlName="password"
         [toggleMask]="false"
         [feedback]="false"/>
-      <label for="password">Password</label>
+      <label for="password">{{"profile.password" | transloco}}</label>
     </div>
   </div>
   <div>
     <div>
-      <p-checkbox inputId="active" formControlName="active" label="Active" [binary]="true"/>
+      <p-checkbox inputId="active" formControlName="active" [label]="'profile.active' | transloco" [binary]="true"/>
     </div>
     <div>
+      {{"profile.avatar" | transloco}}
       <media-res [zoom]="true" [src]="currentUser.data.avatar"/>
     </div>
     <div>
+      {{"profile.name.first" | transloco}}
       {{form.controls.firstName.value}}
     </div>
     <div>
+      {{"profile.name.last" | transloco}}
       {{form.controls.lastName.value}}
     </div>
     <div>
+      {{"profile.roles" | transloco}}
       {{form.controls.roles.value}}
     </div>
   </div>
 </div>
 
 <div>
-  <button pButton (click)="ref.close()">{{"profile.save" | transloco}}</button>
+  <button pButton (click)="save()">{{"profile.save" | transloco}}</button>
 </div>

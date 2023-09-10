@@ -16,7 +16,7 @@
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
-import {ProfileService} from "./modules/profile/profile.service";
+import {ProfileService} from "./profile/profile.service";
 import {finalize, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {catchError} from "rxjs/operators";
@@ -82,7 +82,7 @@ export class AppComponent implements OnInit {
   }
 
   private checkProfile() {
-    this.profileService.currentUser().pipe(
+    this.profileService.getUser().pipe(
       finalize(() => {
         this.doc.body.classList.remove("pending");
         this.ready = true;
