@@ -10,7 +10,7 @@
       <a (click)="openBranch(item)">
         <span>
           <i *ngIf="item.attrs" [ngClass]="item.attrs"></i>
-          {{ item.name }}
+          {{ item.name | localize }}
         </span>
         <i *ngIf="item.children?.length" stop-propagation class="ctrl pi pi-angle-down" (click)="closeBranch(item)"></i>
       </a>

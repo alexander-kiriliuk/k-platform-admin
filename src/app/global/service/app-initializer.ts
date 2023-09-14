@@ -23,7 +23,7 @@ import {TranslocoService} from "@ngneat/transloco";
 export function AppInitializer() {
   const appService = inject(AppService);
   const ts = inject(TranslocoService);
-  return () => appService.options().pipe(
+  return () => appService.getOptions().pipe(
     map(v => {
       LangUtils.setAvailableLangs(v.langs);
       ts.setAvailableLangs(LangUtils.getAvailableLangCodes());

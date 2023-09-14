@@ -18,12 +18,14 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {MenuTreeComponent} from "./menu-tree.component";
 import {StopPropagationModule} from "../../modules/events/stop-propagation/stop-propagation.module";
+import {LocalizePipe} from "../../modules/locale/localize.pipe";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    StopPropagationModule,
-  ],
+    imports: [
+        CommonModule,
+        StopPropagationModule,
+        LocalizePipe,
+    ],
   exports: [
     MenuTreeComponent
   ],

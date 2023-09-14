@@ -37,6 +37,17 @@ export interface ToastData {
   message?: string;
 }
 
+export interface Category {
+  id: number;
+  code: string;
+  url: string;
+  name: LocalizedString[];
+  attrs: string;
+  icon: Media;
+  parent: Category;
+  children: Category[];
+}
+
 export interface User {
   id: string;
   avatar: Media;

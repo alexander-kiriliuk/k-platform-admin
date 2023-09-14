@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component} from "@angular/core";
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
 import {Router} from "@angular/router";
 import {UntilDestroy} from "@ngneat/until-destroy";
-import {NavNodeData} from "./menu-tree.types";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MENU_STORE_KEY} from "./menu-tree.constants";
+import {Category} from "../../global/types";
+import {AppService} from "../../global/service/app.service";
+import {finalize} from "rxjs";
+
 
 @UntilDestroy()
 @Component({
@@ -36,90 +39,34 @@ import {MENU_STORE_KEY} from "./menu-tree.constants";
   ],
 })
 export class MenuTreeComponent implements AfterViewInit {
+
   openedNodes: { [k: number]: boolean } = {};
-  data: NavNodeData[] = [
-    {
-      id: 1,
-      name: "Apps",
-      attrs: "pi pi-th-large"
-    },
-    {
-      id: 2,
-      name: "Games",
-      attrs: "pi pi-th-large",
-      children: [
-        {
-          id: 3,
-          name: "XX",
-          attrs: "pi pi-fw pi-list",
-          url: "/apps/blog/list"
-        },
-        {
-          id: 4,
-          name: "X2",
-          attrs: "pi pi-fw pi-pencil",
-          url: "/apps/blog/list"
-        }
-      ]
-    },
-    {
-      id: 5,
-      name: "Other",
-      attrs: "pi pi-th-large"
-    },
-    {
-      id: 6,
-      name: "Apps",
-      attrs: "pi pi-th-large",
-      children: [
-        {
-          id: 7,
-          name: "Blog",
-          attrs: "pi pi-fw pi-comment",
-          children: [
-            {
-              id: 8,
-              name: "List",
-              attrs: "pi pi-fw pi-image",
-              url: "/apps/blog/list"
-            },
-            {
-              id: 9,
-              name: "Detail",
-              attrs: "pi pi-fw pi-list",
-              url: "/apps/blog/list"
-            },
-            {
-
-              id: 10, name: "Edit",
-              attrs: "pi pi-fw pi-pencil",
-              url: "/apps/blog/list"
-            }
-          ]
-        }
-      ]
-    }
-  ];
-
-  constructor(
-    private readonly cdr: ChangeDetectorRef,
-    private readonly router: Router) {
-  }
+  data: Category[] = [];
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
+  private readonly appService = inject(AppService);
 
   get currentUrl() {
     return decodeURIComponent(this.router.url);
   }
 
   ngAfterViewInit(): void {
-    const payload = localStorage.getItem(MENU_STORE_KEY);
-    if (!payload) {
-      return;
-    }
-    this.openedNodes = JSON.parse(payload);
-    this.cdr.detectChanges();
+    this.appService.getMenu().pipe(finalize(() => {
+      const payload = localStorage.getItem(MENU_STORE_KEY);
+      if (payload) {
+        this.openedNodes = JSON.parse(payload);
+      }
+      this.cdr.markForCheck();
+    })).subscribe(v => {
+      this.data = v.children;
+    });
   }
 
-  openBranch(item: NavNodeData) {
+  openBranch(item: Category) {
+    if (item.url) {
+      this.router.navigateByUrl(item.url);
+      return;
+    }
     if (!item.children?.length) {
       return;
     }
@@ -127,7 +74,7 @@ export class MenuTreeComponent implements AfterViewInit {
     this.syncNodes();
   }
 
-  closeBranch(item: NavNodeData) {
+  closeBranch(item: Category) {
     if (!this.openedNodes[item.id]) {
       this.openBranch(item);
       return;

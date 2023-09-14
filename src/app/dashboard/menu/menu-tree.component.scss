@@ -1,6 +1,9 @@
 :host {
   & > ul {
     @apply h-auto opacity-100 #{!important};
+    & > li {
+      @apply my-0.5;
+    }
   }
 }
 

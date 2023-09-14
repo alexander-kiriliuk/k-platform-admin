@@ -23,6 +23,7 @@ export class LangSwitcherComponent {
     this.ctrl.valueChanges.pipe(untilDestroyed(this)).subscribe(v => {
       setLang(v);
       this.ts.setActiveLang(v);
+      location.reload();
     });
   }
 
