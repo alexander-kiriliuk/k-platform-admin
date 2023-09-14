@@ -46,6 +46,10 @@ export class DashboardComponent implements MenuCommandHandler {
     );
   }
 
+  get preloaderChannel() {
+    return Dashboard.MenuPrCn;
+  }
+
   toggleSideBarMode() {
     this.sidebarOverMode = !this.sidebarOverMode;
   }

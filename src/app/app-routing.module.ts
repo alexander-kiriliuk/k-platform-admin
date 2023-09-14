@@ -24,7 +24,7 @@ const routes: Routes = [
       .then(m => m.AuthComponent)
   },
   {
-    path: "dashboard",
+    path: "",
     loadChildren: () => import("./dashboard/dashboard.module")
       .then(m => m.DashboardModule)
   },

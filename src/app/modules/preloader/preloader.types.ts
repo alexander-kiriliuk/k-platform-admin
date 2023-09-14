@@ -14,28 +14,7 @@
  * limitations under the License.
  */
 
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {DashboardComponent} from "./dashboard.component";
-
-const routes: Routes = [
-  {
-    path: "",
-    component: DashboardComponent,
-    children: [
-      {
-        path: "section/:code",
-        loadComponent: () => import("../section/section.component")
-          .then(m => m.SectionComponent)
-      }
-    ]
-  }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DashboardRoutingModule {
+export interface TogglePreloader {
+  state: boolean;
+  channel?: string;
 }
-

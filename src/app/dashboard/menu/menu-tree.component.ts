@@ -22,6 +22,9 @@ import {MENU_STORE_KEY} from "./menu-tree.constants";
 import {Category} from "../../global/types";
 import {AppService} from "../../global/service/app.service";
 import {finalize} from "rxjs";
+import {Store} from "../../modules/store/store";
+import {PreloaderEvent} from "../../modules/preloader/preloader.event";
+import {Dashboard} from "../dashboard.constants";
 
 
 @UntilDestroy()
@@ -45,6 +48,7 @@ export class MenuTreeComponent implements AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
   private readonly appService = inject(AppService);
+  private readonly store = inject(Store);
 
   get currentUrl() {
     return decodeURIComponent(this.router.url);
@@ -52,6 +56,7 @@ export class MenuTreeComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.appService.getMenu().pipe(finalize(() => {
+      this.store.emit<string>(PreloaderEvent.Hide, Dashboard.MenuPrCn);
       const payload = localStorage.getItem(MENU_STORE_KEY);
       if (payload) {
         this.openedNodes = JSON.parse(payload);

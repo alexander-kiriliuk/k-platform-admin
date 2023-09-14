@@ -30,6 +30,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {DialogService} from "primeng/dynamicdialog";
 import {MediaUrlPipe} from "../modules/media/media-url.pipe";
 import {MediaComponent} from "../modules/media/media.component";
+import {PreloaderComponent} from "../modules/preloader/preloader.component";
+import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import {MediaComponent} from "../modules/media/media.component";
     ReactiveFormsModule,
     MediaUrlPipe,
     MediaComponent,
+    PreloaderComponent,
+    PreloaderDirective,
   ],
   providers: [
     provideTranslocoScope("dashboard"),

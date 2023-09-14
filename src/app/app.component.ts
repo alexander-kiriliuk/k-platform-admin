@@ -94,7 +94,6 @@ export class AppComponent implements OnInit {
       })
     ).subscribe(data => {
       this.store.emit<User>(CurrentUserEvent.Set, data);
-      this.router.navigate(["/dashboard"]);
     });
   }
 
