@@ -14,28 +14,8 @@
  * limitations under the License.
  */
 
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {DashboardComponent} from "./dashboard.component";
+export namespace Explorer {
 
-const routes: Routes = [
-  {
-    path: "",
-    component: DashboardComponent,
-    children: [
-      {
-        path: "section/:target",
-        loadComponent: () => import("../explorer/section/section.component")
-          .then(m => m.SectionComponent)
-      }
-    ]
-  }
-];
+  export const SectionPrCn = "section-cn";
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DashboardRoutingModule {
 }
-

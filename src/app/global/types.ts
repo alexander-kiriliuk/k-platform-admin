@@ -67,3 +67,19 @@ export interface UserRole {
   name: LocalizedString[];
   tsCreated: Date;
 }
+
+export class PageableParams {
+  limit = 20;
+  page = 1;
+  sort?: string;
+  order?: SortOrder;
+}
+
+export interface PageableData<T = unknown> {
+  items: T[];
+  totalCount: number;
+  currentPage: number;
+  pageSize: number;
+}
+
+export type SortOrder = "ASC" | "DESC";

@@ -94,6 +94,9 @@ export class AppComponent implements OnInit {
       })
     ).subscribe(data => {
       this.store.emit<User>(CurrentUserEvent.Set, data);
+      if (location.pathname === "/auth") {
+        this.router.navigate(["/"]);
+      }
     });
   }
 
