@@ -17,8 +17,7 @@ import {ExplorerColumn, TargetData} from "../explorer.types";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {RippleModule} from "primeng/ripple";
 import {DialogService} from "primeng/dynamicdialog";
-import {provideTranslocoScope, TranslocoService} from "@ngneat/transloco";
-
+import {TranslocoService} from "@ngneat/transloco";
 
 @UntilDestroy()
 @Component({
@@ -34,10 +33,6 @@ import {provideTranslocoScope, TranslocoService} from "@ngneat/transloco";
     TableModule,
     LocalizePipe,
     RippleModule
-  ],
-  providers: [
-    ExplorerService,
-    provideTranslocoScope({scope: "section"}),
   ]
 })
 export class SectionComponent implements AfterViewInit {
@@ -85,7 +80,7 @@ export class SectionComponent implements AfterViewInit {
   showFilterDialog(item: ExplorerColumn) {
     import("./filter/section-filter-dialog.component").then(c => {
       this.dialogService.open(c.SectionFilterDialogComponent, {
-        header: this.ts.translate("section.filter.head", {v: item.property}),
+        header: this.ts.translate("explorer.filter.head", {v: item.property}),
         resizable: false,
         draggable: false,
         modal: true,

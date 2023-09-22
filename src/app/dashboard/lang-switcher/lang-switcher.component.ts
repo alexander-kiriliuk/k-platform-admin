@@ -1,17 +1,23 @@
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {FormControl} from "@angular/forms";
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {LangUtils} from "../../global/util/lang.utils";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {TranslocoService} from "@ngneat/transloco";
+import {DropdownModule} from "primeng/dropdown";
 import getCurrentLang = LangUtils.getCurrentLang;
 import setLang = LangUtils.setLang;
 
 @UntilDestroy()
 @Component({
   selector: "lang-switcher",
+  standalone: true,
   templateUrl: "./lang-switcher.component.html",
   styleUrls: ["./lang-switcher.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    DropdownModule,
+    ReactiveFormsModule
+  ]
 })
 export class LangSwitcherComponent {
 

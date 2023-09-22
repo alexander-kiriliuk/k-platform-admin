@@ -14,28 +14,18 @@
  * limitations under the License.
  */
 
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {DashboardComponent} from "./dashboard.component";
+import {Routes} from "@angular/router";
+import {provideTranslocoScope} from "@ngneat/transloco";
+import {ExplorerService} from "./explorer.service";
 
-const routes: Routes = [
+export const ExplorerRoutes: Routes = [
   {
-    path: "",
-    component: DashboardComponent,
-    children: [
-      {
-        path: "section/:target",
-        loadComponent: () => import("../explorer/section/section.component")
-          .then(m => m.SectionComponent)
-      }
+    path: "section/:target",
+    loadComponent: () => import("../explorer/section/section.component")
+      .then(m => m.SectionComponent),
+    providers: [
+      provideTranslocoScope("explorer"),
+      ExplorerService,
     ]
   }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class DashboardRoutingModule {
-}
-

@@ -1,7 +1,8 @@
 import {Directive, HostListener} from "@angular/core";
 
 @Directive({
-  selector: "[prevent-default]"
+  selector: "[prevent-default]",
+  standalone: true
 })
 export class PreventDefaultDirective {
 

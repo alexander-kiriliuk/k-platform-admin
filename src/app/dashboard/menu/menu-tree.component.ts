@@ -25,6 +25,9 @@ import {finalize} from "rxjs";
 import {Store} from "../../modules/store/store";
 import {PreloaderEvent} from "../../modules/preloader/preloader.event";
 import {Dashboard} from "../dashboard.constants";
+import {NgClass, NgForOf, NgIf, NgStyle, NgTemplateOutlet} from "@angular/common";
+import {LocalizePipe} from "../../modules/locale/localize.pipe";
+import {StopPropagationDirective} from "../../modules/events/stop-propagation.directive";
 
 
 @UntilDestroy()
@@ -32,6 +35,7 @@ import {Dashboard} from "../dashboard.constants";
   selector: "menu-tree",
   templateUrl: "./menu-tree.component.html",
   styleUrls: ["./menu-tree.component.scss"],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger("toggleNode", [
@@ -40,6 +44,15 @@ import {Dashboard} from "../dashboard.constants";
       transition("collapsed <=> expanded", animate("400ms ease-out")),
     ]),
   ],
+  imports: [
+    NgStyle,
+    NgForOf,
+    NgClass,
+    NgIf,
+    NgTemplateOutlet,
+    LocalizePipe,
+    StopPropagationDirective
+  ]
 })
 export class MenuTreeComponent implements AfterViewInit {
 

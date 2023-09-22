@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {MenuTreeComponent} from "./menu-tree.component";
-import {StopPropagationModule} from "../../modules/events/stop-propagation/stop-propagation.module";
-import {LocalizePipe} from "../../modules/locale/localize.pipe";
+import {DashboardComponent} from "./dashboard.component";
+import {Routes} from "@angular/router";
+import {provideTranslocoScope} from "@ngneat/transloco";
 
-@NgModule({
-    imports: [
-        CommonModule,
-        StopPropagationModule,
-        LocalizePipe,
+export const DashboardRoutes: Routes = [
+  {
+    path: "",
+    component: DashboardComponent,
+    providers: [
+      provideTranslocoScope("dashboard"),
     ],
-  exports: [
-    MenuTreeComponent
-  ],
-  declarations: [MenuTreeComponent]
-})
-export class MenuTreeModule {
-}
+    loadChildren: () => import("../explorer/explorer.routes")
+      .then(m => m.ExplorerRoutes),
+  }
+];

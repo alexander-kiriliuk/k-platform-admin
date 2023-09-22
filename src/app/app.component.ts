@@ -15,10 +15,10 @@
  */
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
-import {DOCUMENT} from "@angular/common";
+import {DOCUMENT, NgIf} from "@angular/common";
 import {ProfileService} from "./profile/profile.service";
 import {finalize, throwError} from "rxjs";
-import {Router} from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
 import {catchError} from "rxjs/operators";
 import {Store} from "./modules/store/store";
 import {JwtDto} from "./auth/auth.types";
@@ -32,14 +32,23 @@ import {CurrentUserEvent, ToastEvent} from "./global/events";
 import {MessageService} from "primeng/api";
 import {ToastData, User} from "./global/types";
 import {StoreMessage} from "./modules/store/store-message";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {ToastModule} from "primeng/toast";
 import getCurrentLang = LangUtils.getCurrentLang;
 
 @UntilDestroy()
 @Component({
   selector: "app-root",
+  standalone: true,
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ProgressSpinnerModule,
+    ToastModule,
+    RouterOutlet,
+    NgIf
+  ],
 })
 export class AppComponent implements OnInit {
 

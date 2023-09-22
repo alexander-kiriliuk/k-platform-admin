@@ -23,13 +23,40 @@ import {TranslationManager} from "../global/internationalization/translation-man
 import {Dashboard} from "./dashboard.constants";
 import {CurrentUser} from "../global/service/current-user";
 import {DialogService} from "primeng/dynamicdialog";
+import {AsyncPipe, NgClass, NgIf} from "@angular/common";
+import {ScrollPanelModule} from "primeng/scrollpanel";
+import {MenuTreeComponent} from "./menu/menu-tree.component";
+import {PreloaderComponent} from "../modules/preloader/preloader.component";
+import {LangSwitcherComponent} from "./lang-switcher/lang-switcher.component";
+import {ThemeSwitcherComponent} from "./theme-switcher/theme-switcher.component";
+import {MenuModule} from "primeng/menu";
+import {AvatarModule} from "primeng/avatar";
+import {MediaComponent} from "../modules/media/media.component";
+import {TranslocoPipe} from "@ngneat/transloco";
+import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 
 
 @Component({
   selector: "dashboard",
+  standalone: true,
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgClass,
+    ScrollPanelModule,
+    MenuTreeComponent,
+    PreloaderComponent,
+    LangSwitcherComponent,
+    ThemeSwitcherComponent,
+    MenuModule,
+    AvatarModule,
+    MediaComponent,
+    NgIf,
+    AsyncPipe,
+    TranslocoPipe,
+    PreloaderDirective
+  ],
 })
 export class DashboardComponent implements MenuCommandHandler {
 
