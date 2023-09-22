@@ -1,0 +1,19 @@
+:host {
+  --paginator-h: 8vh;
+
+  ::ng-deep {
+    p-paginator .p-element.p-dropdown-label.p-inputtext {
+      @apply px-4 py-3;
+    }
+
+    .p-datatable-thead {
+      th {
+        @apply whitespace-nowrap;
+        i {
+          @apply px-1 cursor-pointer rounded-full text-xs leading-3;
+        }
+      }
+    }
+  }
+
+}

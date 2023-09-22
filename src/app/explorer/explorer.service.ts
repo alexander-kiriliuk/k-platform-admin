@@ -15,7 +15,7 @@
  */
 
 import {inject, Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {TargetData} from "./explorer.types";
 import {StringUtils} from "../global/util/string.utils";
 import {PageableData, PageableParams} from "../global/types";
@@ -31,7 +31,9 @@ export class ExplorerService {
   }
 
   getSectionList<T = unknown>(target: string, params: PageableParams) {
-    return this.http.get<PageableData<T>>(fillParams("/explorer/pageable/:target", target, {params}));
+    return this.http.get<PageableData<T>>(fillParams("/explorer/pageable/:target", target), {
+      params: params as unknown as HttpParams
+    });
   }
 
   getEntity<T = unknown>(target: string, id: number) {

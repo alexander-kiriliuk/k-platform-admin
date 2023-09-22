@@ -16,9 +16,9 @@
 }
 
 .content-block {
-  @apply py-4 px-6;
+  @apply px-6;
   @screen max-lg {
-    @apply py-2 px-4;
+    @apply px-4;
   }
 }
 

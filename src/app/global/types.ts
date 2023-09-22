@@ -68,9 +68,9 @@ export interface UserRole {
   tsCreated: Date;
 }
 
-export class PageableParams {
-  limit = 20;
-  page = 1;
+export interface PageableParams {
+  limit: number;
+  page: number;
   sort?: string;
   order?: SortOrder;
 }

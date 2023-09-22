@@ -23,7 +23,7 @@ export namespace StringUtils {
       url = url.replace(args, params[counter] as string ?? "");
       return url;
     });
-    return url;
+    return url.replace(/\/+$/, "");
   }
 
   export function clearSpaces(str: string) {

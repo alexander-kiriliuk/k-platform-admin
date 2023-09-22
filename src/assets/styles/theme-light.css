@@ -3164,7 +3164,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   border-width: 0 0 1px 0;
   font-weight: 500;
   color: rgba(0, 0, 0, .87);
-  background: #fff;
+  background: #e8e8e8;
   transition: none
 }
 
@@ -4104,7 +4104,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-paginator {
-  background: #fff;
+  background: #e8e8e8;
   color: rgba(0, 0, 0, .87);
   border: solid #e4e4e4;
   border-width: 0;

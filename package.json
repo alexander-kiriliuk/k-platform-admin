@@ -20,7 +20,7 @@
     "@angular/platform-browser-dynamic": "16.2.0",
     "@angular/router": "16.2.0",
     "@ngneat/until-destroy": "10.0.0",
-    "@ngneat/transloco": "5.0.7",
+    "@ngneat/transloco": "6.0.0",
     "ngx-device-detector": "6.0.2",
     "primeicons": "6.0.1",
     "primeng": "16.3.1",

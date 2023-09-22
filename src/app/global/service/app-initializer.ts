@@ -19,10 +19,13 @@ import {AppService} from "./app.service";
 import {map} from "rxjs/operators";
 import {LangUtils} from "../util/lang.utils";
 import {TranslocoService} from "@ngneat/transloco";
+import {PrimeNGConfig} from "primeng/api";
+import {CurrentUser} from "./current-user";
 
-export function AppInitializer() {
+export function AppInitializer(config: PrimeNGConfig, currentUser: CurrentUser) {
   const appService = inject(AppService);
   const ts = inject(TranslocoService);
+  config.ripple = true;
   return () => appService.getOptions().pipe(
     map(v => {
       LangUtils.setAvailableLangs(v.langs);

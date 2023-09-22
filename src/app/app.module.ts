@@ -32,7 +32,7 @@ import {provideTransloco} from "@ngneat/transloco";
 import {TranslocoHttpLoader} from "./global/internationalization/transloco-http-loader";
 import {LangUtils} from "./global/util/lang.utils";
 import {ToastModule} from "primeng/toast";
-import {MessageService} from "primeng/api";
+import {MessageService, PrimeNGConfig} from "primeng/api";
 import {CurrentUser} from "./global/service/current-user";
 import {AppInitializer} from "./global/service/app-initializer";
 import {LocalizePipe} from "./modules/locale/localize.pipe";
@@ -58,7 +58,7 @@ import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
       provide: APP_INITIALIZER,
       useFactory: AppInitializer,
       multi: true,
-      deps: [CurrentUser]
+      deps: [PrimeNGConfig, CurrentUser]
     },
     {
       provide: HTTP_INTERCEPTORS,
