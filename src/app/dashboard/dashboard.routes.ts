@@ -24,6 +24,7 @@ export const DashboardRoutes: Routes = [
     component: DashboardComponent,
     providers: [
       provideTranslocoScope("dashboard"),
+      provideTranslocoScope("explorer"),
     ],
     loadChildren: () => import("../explorer/explorer.routes")
       .then(m => m.ExplorerRoutes),

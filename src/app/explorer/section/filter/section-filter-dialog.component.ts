@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {CommonModule} from "@angular/common";
+import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ExplorerColumn} from "../../explorer.types";
+import {TranslocoPipe} from "@ngneat/transloco";
+import {InputTextModule} from "primeng/inputtext";
+import {SortOrder} from "../../../global/types";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgClass, NgIf} from "@angular/common";
+import {ButtonModule} from "primeng/button";
+import {createFieldFilterForm} from "./section-filter-dialog.constants";
+import {ReactiveFormsModule} from "@angular/forms";
+import {CheckboxModule} from "primeng/checkbox";
 
 @Component({
   selector: "section-filter-dialog",
@@ -25,16 +33,60 @@ import {ExplorerColumn} from "../../explorer.types";
   templateUrl: "./section-filter-dialog.component.html",
   styleUrls: ["./section-filter-dialog.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule]
+  imports: [
+    TranslocoPipe,
+    InputTextModule,
+    NgClass,
+    NgIf,
+    ButtonModule,
+    ReactiveFormsModule,
+    CheckboxModule
+  ],
 })
-export class SectionFilterDialogComponent {
+export class SectionFilterDialogComponent implements OnInit {
 
   private readonly config = inject(DynamicDialogConfig);
+  private readonly router = inject(Router);
+  private readonly ar = inject(ActivatedRoute);
   private readonly ref = inject(DynamicDialogRef);
+  readonly form = createFieldFilterForm();
 
-
-  get data() {
+  get column() {
     return this.config.data as ExplorerColumn;
+  }
+
+  get isSortAscActive() {
+    return this.ar.snapshot.queryParams["sort"] === this.column.property
+      && (this.ar.snapshot.queryParams["order"] as SortOrder) === "ASC";
+  }
+
+  get isSortDescActive() {
+    return this.ar.snapshot.queryParams["sort"] === this.column.property
+      && (this.ar.snapshot.queryParams["order"] as SortOrder) === "DESC";
+  }
+
+  get isReference() {
+    return this.column.type === "reference";
+  }
+
+  ngOnInit(): void {
+    if (this.column.type !== "reference") {
+      this.form.controls.name.setValue(this.column.property);
+    }
+  }
+
+  setOrder(order: SortOrder) {
+    this.router.navigate([], {queryParams: {sort: this.column.property, order}});
+    this.ref.close();
+  }
+
+  applyFilter() {
+    const data = this.form.value;
+    const value = !data.exactMatch ? `%${data.value}%` : data.value;
+    const queryParams = {...this.ar.snapshot.queryParams};
+    queryParams["filter"] = `::${data.name}:${value}`;
+    this.router.navigate([], {queryParams});
+    this.ref.close();
   }
 
 }

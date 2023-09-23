@@ -24,18 +24,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
   private readonly http = inject(HttpClient);
 
   getTranslation(lang: string) {
-    const parts = lang.split("/");
-    let path = parts[0];
-    const res: string[] = [];
-    if (parts.length > 1) {
-      res.push(parts[0]);
-      res.push("i18n");
-      res.push(parts[parts.length - 1]);
-      path = res.join("/");
-    } else {
-      path = `i18n/${parts[0]}`;
-    }
-    return this.http.get<Translation>(`/assets/${path}.json`);
+    return this.http.get<Translation>(`/assets/i18n/${lang}.json`);
   }
 
 }

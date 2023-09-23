@@ -30,6 +30,12 @@
   box-shadow: var(--shadow-a);
   @apply rounded-r-2xl overflow-hidden;
 
+  ::ng-deep {
+    .p-scrollpanel-bar-x {
+      @apply hidden;
+    }
+  }
+
   @screen max-lg {
     left: -500px;
     animation: sidebarAnimation 300ms ease-in-out;
@@ -92,10 +98,6 @@
       @apply inline-flex gap-x-2 items-center cursor-pointer;
     }
   }
-}
-
-.menu-bar {
-  @apply py-2;
 }
 
 .menu-ctrl {

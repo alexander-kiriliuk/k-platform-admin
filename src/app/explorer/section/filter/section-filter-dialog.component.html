@@ -1,1 +1,53 @@
-dt = {{data.property}}
+<ul>
+  <li *ngIf="!isReference">
+    <span>
+      <i class="pi pi-sort-alt"></i>
+      {{"explorer.sort" | transloco}}
+    </span>
+    <ul>
+      <li>
+        <a (click)="setOrder('ASC')">
+          <i class="pi pi-sort-amount-up" [ngClass]="{active: isSortAscActive}"></i>
+          {{"explorer.asc" | transloco}}
+        </a>
+      </li>
+      <li>
+        <a (click)="setOrder('DESC')">
+          <i class="pi pi-sort-amount-down" [ngClass]="{active: isSortDescActive}"></i>
+          {{"explorer.desc" | transloco}}
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span>
+      <i class="pi pi-sliders-h"></i>
+      {{"explorer.filter.label" | transloco}}
+    </span>
+    <ul>
+      <li *ngIf="isReference">
+        <a>
+          <i class="pi pi-window-maximize"></i>
+          {{"explorer.filter.select" | transloco}}
+        </a>
+      </li>
+      <li [formGroup]="form">
+        <ng-container *ngIf="form.controls.name.value.length">
+          <div class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input formControlName="value" class="p-inputtext-xs" type="text" pInputText [placeholder]="'explorer.filter.value' | transloco"/>
+          </div>
+          <div class="ctrl-wrapper">
+            <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch" />
+            <label for="em">{{"explorer.exact" | transloco}}</label>
+          </div>
+          <div class="actions">
+            <button class="p-button-sm" pButton [disabled]="!form.valid" (click)="applyFilter()">
+              {{"explorer.apply" | transloco}}
+            </button>
+          </div>
+        </ng-container>
+      </li>
+    </ul>
+  </li>
+</ul>

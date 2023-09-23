@@ -10,10 +10,31 @@
       th {
         @apply whitespace-nowrap;
         i {
-          @apply px-1 cursor-pointer rounded-full text-xs leading-3;
+          @apply px-1 rounded-full text-xs leading-3;
         }
       }
     }
   }
 
+}
+
+th {
+  &:hover {
+    @apply relative;
+
+    i.ctrl {
+      @apply visible;
+    }
+  }
+
+  i.ctrl {
+    @apply invisible cursor-pointer;
+    &:hover {
+      color: var(--accent-color);
+    }
+  }
+}
+
+.indicator {
+  color: var(--primary-color);
 }

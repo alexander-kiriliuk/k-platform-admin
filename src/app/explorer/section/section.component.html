@@ -12,8 +12,15 @@
   <ng-template pTemplate="header">
     <tr>
       <th *ngFor="let item of targetData.entity.columns">
+        <ng-container *ngIf="queryParams['sort'] === item.property">
+          <i class="indicator pi"
+             [ngClass]="{
+              'pi-sort-amount-down': queryParams['order'] === 'DESC',
+              'pi-sort-amount-up': queryParams['order'] === 'ASC'
+             }"></i>
+        </ng-container>
         {{item.name | localize:item.property}}
-        <i class="pi pi-sort-down" pRipple (click)="showFilterDialog(item)"></i>
+        <i class="ctrl pi pi-window-maximize" pRipple (click)="showFilterDialog(item)"></i>
       </th>
     </tr>
   </ng-template>

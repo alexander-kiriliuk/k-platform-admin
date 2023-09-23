@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-import {Routes} from "@angular/router";
-import {ExplorerService} from "./explorer.service";
 
-export const ExplorerRoutes: Routes = [
-  {
-    path: "section/:target",
-    loadComponent: () => import("../explorer/section/section.component")
-      .then(m => m.SectionComponent),
-    providers: [
-      ExplorerService,
-    ]
-  }
-];
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FieldFilterForm} from "./section-filter-dialog.types";
+
+export function createFieldFilterForm(): FormGroup<FieldFilterForm> {
+  return new FormGroup<FieldFilterForm>({
+    name: new FormControl<string>("", [Validators.required]),
+    value: new FormControl<string>("", [Validators.required]),
+    exactMatch: new FormControl<boolean>(false)
+  });
+}

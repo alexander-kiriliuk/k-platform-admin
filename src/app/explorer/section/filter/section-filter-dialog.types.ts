@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-import {Routes} from "@angular/router";
-import {ExplorerService} from "./explorer.service";
+import {FormControl} from "@angular/forms";
 
-export const ExplorerRoutes: Routes = [
-  {
-    path: "section/:target",
-    loadComponent: () => import("../explorer/section/section.component")
-      .then(m => m.SectionComponent),
-    providers: [
-      ExplorerService,
-    ]
-  }
-];
+export interface FieldFilterForm {
+  name: FormControl<string>;
+  value: FormControl<string>;
+  exactMatch: FormControl<boolean>;
+}

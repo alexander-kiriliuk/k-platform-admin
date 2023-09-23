@@ -1,0 +1,13 @@
+{
+  "sort": "Sorting",
+  "asc": "Ascending order",
+  "desc": "Descending order",
+  "apply": "Apply",
+  "exact": "Exact match",
+  "filter": {
+    "label": "Search and filtering",
+    "head": "Field {{v}}",
+    "select": "Select field",
+    "value": "Enter value"
+  }
+}

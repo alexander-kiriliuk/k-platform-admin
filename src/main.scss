@@ -31,6 +31,13 @@ p-avatar > div {
   @apply relative;
 }
 
+.p-inputtext {
+  &.p-inputtext-xs {
+    @apply text-xs px-2 py-3;
+  }
+}
+
+
 .heading-xl {
   @apply text-xl font-medium;
   @screen max-xl {

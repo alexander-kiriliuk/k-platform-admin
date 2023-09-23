@@ -56,6 +56,10 @@ export class SectionComponent implements AfterViewInit {
     return ((this.pageableData?.currentPage ?? 1) - 1) * (this.pageableData?.pageSize ?? 0);
   }
 
+  get queryParams() {
+    return this.ar.snapshot.queryParams;
+  }
+
   ngAfterViewInit(): void {
     this.ar.params.pipe(untilDestroyed(this)).subscribe(v => {
       this.target = v["target"];
@@ -84,7 +88,8 @@ export class SectionComponent implements AfterViewInit {
         resizable: false,
         draggable: false,
         modal: true,
-        data: item
+        data: item,
+        position: "top"
       });
     });
   }
