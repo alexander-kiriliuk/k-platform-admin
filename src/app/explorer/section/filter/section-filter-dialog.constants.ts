@@ -18,10 +18,17 @@
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {FieldFilterForm} from "./section-filter-dialog.types";
 
-export function createFieldFilterForm(): FormGroup<FieldFilterForm> {
-  return new FormGroup<FieldFilterForm>({
-    name: new FormControl<string>("", [Validators.required]),
-    value: new FormControl<string>("", [Validators.required]),
-    exactMatch: new FormControl<boolean>(false)
-  });
+
+export namespace SectionFilter {
+
+  export const PreloaderCn = "section-filter-cn";
+
+  export function createFieldFilterForm(): FormGroup<FieldFilterForm> {
+    return new FormGroup<FieldFilterForm>({
+      name: new FormControl<string>("", [Validators.required]),
+      value: new FormControl<string>("", [Validators.required]),
+      exactMatch: new FormControl<boolean>(false)
+    });
+  }
+
 }

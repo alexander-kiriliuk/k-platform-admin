@@ -42,7 +42,7 @@ export class SectionComponent implements AfterViewInit {
 
   targetData: TargetData;
   pageableData: PageableData;
-  private readonly sectionService = inject(ExplorerService);
+  private readonly explorerService = inject(ExplorerService);
   private readonly store = inject(Store);
   private readonly ar = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -128,7 +128,7 @@ export class SectionComponent implements AfterViewInit {
 
   private getSection(params?: PageableParams) {
     this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
-    this.sectionService.getSectionList(this.target, params).pipe(
+    this.explorerService.getSectionList(this.target, params).pipe(
       finalize(() => {
         this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
       }),
@@ -145,7 +145,7 @@ export class SectionComponent implements AfterViewInit {
   }
 
   private getTarget() {
-    this.sectionService.getTarget(this.target).pipe(
+    this.explorerService.getTarget(this.target).pipe(
       finalize(() => {
         this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
       }),

@@ -1,4 +1,5 @@
 :host {
+  @apply relative;
   & > ul {
     & > li:not(:last-child) {
       @apply mb-4;

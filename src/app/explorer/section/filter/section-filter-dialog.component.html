@@ -26,14 +26,14 @@
     </span>
     <ul>
       <li *ngIf="isReference">
-        <a class="select-field">
+        <a class="select-field" (click)="showRefTargetDialog()">
           <i class="pi pi-window-maximize"></i>
           <span [ngClass]="{orange: referenceField?.ref}">
             {{referenceField?.ref ? referenceField.ref : ("explorer.filter.select" | transloco)}}
           </span>
         </a>
       </li>
-      <li [formGroup]="form">
+      <li *ngIf="!isReference || (isReference && referenceField?.ref)" [formGroup]="form">
         <ng-container *ngIf="form.controls.name.value.length">
           <div class="p-input-icon-left">
             <i class="pi pi-search"></i>
@@ -53,3 +53,5 @@
     </ul>
   </li>
 </ul>
+
+<preloader *preloading="{state: false, channel: preloaderChannel}" />
