@@ -26,6 +26,9 @@ import {ButtonModule} from "primeng/button";
 import {createFieldFilterForm} from "./section-filter-dialog.constants";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CheckboxModule} from "primeng/checkbox";
+import {StringUtils} from "../../../global/util/string.utils";
+import parseParamsString = StringUtils.parseParamsString;
+import stringifyParamsObject = StringUtils.stringifyParamsObject;
 
 @Component({
   selector: "section-filter-dialog",
@@ -69,14 +72,45 @@ export class SectionFilterDialogComponent implements OnInit {
     return this.column.type === "reference";
   }
 
+  get referenceField() {
+    const queryParams = {...this.ar.snapshot.queryParams};
+    if (!queryParams["filter"]?.length) {
+      return undefined;
+    }
+    const filter = parseParamsString(queryParams["filter"]);
+    const value = filter[this.column.property];
+    if (!value?.length) {
+      return undefined;
+    }
+    const clearValue = value.replace(/\{[^}]*}/g, "");
+    const match = value.match(/\{([^}]*)}/);
+    return {value: clearValue, ref: match[1]};
+  }
+
   ngOnInit(): void {
-    if (this.column.type !== "reference") {
-      this.form.controls.name.setValue(this.column.property);
+    this.form.controls.name.setValue(this.column.property);
+    const queryParams = {...this.ar.snapshot.queryParams};
+    if (queryParams["filter"]?.length) {
+      const filter = parseParamsString(queryParams["filter"]);
+      let value = this.isReference ? this.referenceField.value : filter[this.column.property];
+      if (value?.length) {
+        if (value.startsWith("%") && value.endsWith("%")) {
+          this.form.controls.exactMatch.setValue(false);
+          value = value.substring(1, value.length - 1);
+        } else {
+          this.form.controls.exactMatch.setValue(true);
+        }
+        this.form.controls.value.setValue(value);
+      }
     }
   }
 
   setOrder(order: SortOrder) {
-    this.router.navigate([], {queryParams: {sort: this.column.property, order}});
+    const queryParams = {...this.ar.snapshot.queryParams};
+    queryParams["sort"] = this.column.property;
+    queryParams["order"] = order;
+    queryParams["page"] = 1;
+    this.router.navigate([], {queryParams});
     this.ref.close();
   }
 
@@ -84,7 +118,17 @@ export class SectionFilterDialogComponent implements OnInit {
     const data = this.form.value;
     const value = !data.exactMatch ? `%${data.value}%` : data.value;
     const queryParams = {...this.ar.snapshot.queryParams};
-    queryParams["filter"] = `::${data.name}:${value}`;
+    if (!queryParams["filter"]?.length) {
+      queryParams["filter"] = `::${data.name}:${value}`;
+    } else {
+      const filter = parseParamsString(queryParams["filter"]);
+      if (this.isReference) {
+        filter[this.column.property] = `${value}{${this.referenceField.ref}}`;
+      } else {
+        filter[this.column.property] = value;
+      }
+      queryParams["filter"] = stringifyParamsObject(filter);
+    }
     this.router.navigate([], {queryParams});
     this.ref.close();
   }

@@ -18,6 +18,9 @@ import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {RippleModule} from "primeng/ripple";
 import {DialogService} from "primeng/dynamicdialog";
 import {TranslocoService} from "@ngneat/transloco";
+import {StringUtils} from "../../global/util/string.utils";
+import parseParamsString = StringUtils.parseParamsString;
+import stringifyParamsObject = StringUtils.stringifyParamsObject;
 
 @UntilDestroy()
 @Component({
@@ -81,6 +84,14 @@ export class SectionComponent implements AfterViewInit {
     });
   }
 
+  propertyFilter(propName: string) {
+    const filterObject = this.getParsedFilter();
+    if (!filterObject || !filterObject[propName]) {
+      return undefined;
+    }
+    return filterObject[propName];
+  }
+
   showFilterDialog(item: ExplorerColumn) {
     import("./filter/section-filter-dialog.component").then(c => {
       this.dialogService.open(c.SectionFilterDialogComponent, {
@@ -92,6 +103,27 @@ export class SectionComponent implements AfterViewInit {
         position: "top"
       });
     });
+  }
+
+  removeSorting() {
+    const queryParams = {...this.ar.snapshot.queryParams};
+    delete queryParams["sort"];
+    delete queryParams["order"];
+    queryParams["page"] = 1;
+    this.router.navigate([], {queryParams});
+  }
+
+  removeFilter(property: string) {
+    const queryParams = {...this.ar.snapshot.queryParams};
+    queryParams["page"] = 1;
+    const filter = parseParamsString(queryParams["filter"]);
+    delete filter[property];
+    if (Object.keys(filter).length) {
+      queryParams["filter"] = stringifyParamsObject(filter);
+    } else {
+      delete queryParams["filter"];
+    }
+    this.router.navigate([], {queryParams});
   }
 
   private getSection(params?: PageableParams) {
@@ -127,6 +159,14 @@ export class SectionComponent implements AfterViewInit {
       this.targetData = v;
       this.getSection(this.ar.snapshot.queryParams as PageableParams);
     });
+  }
+
+  private getParsedFilter() {
+    const filter = this.ar.snapshot.queryParams["filter"];
+    if (!filter) {
+      return undefined;
+    }
+    return parseParamsString(filter);
   }
 
 }

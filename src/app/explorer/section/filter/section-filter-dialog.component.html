@@ -26,9 +26,11 @@
     </span>
     <ul>
       <li *ngIf="isReference">
-        <a>
+        <a class="select-field">
           <i class="pi pi-window-maximize"></i>
-          {{"explorer.filter.select" | transloco}}
+          <span [ngClass]="{orange: referenceField?.ref}">
+            {{referenceField?.ref ? referenceField.ref : ("explorer.filter.select" | transloco)}}
+          </span>
         </a>
       </li>
       <li [formGroup]="form">

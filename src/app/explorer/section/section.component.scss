@@ -37,4 +37,13 @@ th {
 
 .indicator {
   color: var(--primary-color);
+  @apply cursor-pointer;
+
+  &:hover {
+    &:before {
+      content: "\e90b";
+      color: var(--red-500);
+    }
+  }
+
 }

@@ -7,7 +7,7 @@
   "filter": {
     "label": "Search and filtering",
     "head": "Field {{v}}",
-    "select": "Select field",
+    "select": "Select target field",
     "value": "Enter value"
   }
 }

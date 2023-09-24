@@ -25,6 +25,14 @@ ul {
       &:hover {
         color: var(--primary-color);
       }
+      &.select-field {
+        span {
+          @apply font-normal text-sm;
+        }
+        &:hover {
+          color: var(--accent-color);
+        }
+      }
     }
   }
 }
@@ -47,3 +55,9 @@ input {
 .ctrl-wrapper {
   @apply flex gap-x-2 items-center;
 }
+
+.orange {
+  color: var(--orange-500);
+}
+
+
