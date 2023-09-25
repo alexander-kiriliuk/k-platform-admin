@@ -4,10 +4,12 @@
   "desc": "Descending order",
   "apply": "Apply",
   "exact": "Exact match",
+  "sate": "State",
   "filter": {
     "label": "Search and filtering",
     "head": "Field {{v}}",
     "select": "Select target field",
-    "value": "Enter value"
+    "value": "Enter value",
+    "date": "Select date range"
   }
 }

@@ -21,7 +21,7 @@ import {TranslocoPipe} from "@ngneat/transloco";
 import {InputTextModule} from "primeng/inputtext";
 import {SortOrder} from "../../../global/types";
 import {ActivatedRoute, Router} from "@angular/router";
-import {NgClass, NgIf} from "@angular/common";
+import {NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {SectionFilter} from "./section-filter-dialog.constants";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -33,6 +33,8 @@ import {PreloaderDirective} from "../../../modules/preloader/preloader.directive
 import {PreloaderEvent} from "../../../modules/preloader/preloader.event";
 import {Store} from "../../../modules/store/store";
 import {finalize} from "rxjs";
+import {InputNumberModule} from "primeng/inputnumber";
+import {CalendarModule} from "primeng/calendar";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
 import createFieldFilterForm = SectionFilter.createFieldFilterForm;
@@ -52,7 +54,12 @@ import createFieldFilterForm = SectionFilter.createFieldFilterForm;
     ReactiveFormsModule,
     CheckboxModule,
     PreloaderComponent,
-    PreloaderDirective
+    PreloaderDirective,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    InputNumberModule,
+    CalendarModule
   ],
   providers: [ExplorerService]
 })
@@ -126,8 +133,11 @@ export class SectionFilterDialogComponent implements AfterViewInit {
         } else {
           this.form.controls.exactMatch.setValue(true);
         }
-        this.form.controls.value.setValue(value);
+        this.form.controls.value.setValue(this.column.type === "boolean" ? value === "true" : value);
       }
+    }
+    if (this.column.type === "boolean" || this.column.type === "date") {
+      this.form.controls.exactMatch.setValue(true);
     }
     this.cdr.detectChanges();
   }
@@ -152,7 +162,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
       if (this.isReference) {
         filter[this.column.property] = `${value}{${this.referenceField.ref}}`;
       } else {
-        filter[this.column.property] = value;
+        filter[this.column.property] = value as string;
       }
       queryParams["filter"] = stringifyParamsObject(filter);
     }

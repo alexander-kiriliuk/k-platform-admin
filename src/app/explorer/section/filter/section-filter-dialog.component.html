@@ -22,7 +22,7 @@
   <li>
     <span>
       <i class="pi pi-sliders-h"></i>
-      {{"explorer.filter.label" | transloco}}
+      {{this.column.type !== 'date' ? ("explorer.filter.label"| transloco) : ("explorer.filter.date" | transloco) }}
     </span>
     <ul>
       <li *ngIf="isReference">
@@ -35,12 +35,31 @@
       </li>
       <li *ngIf="!isReference || (isReference && referenceField?.ref)" [formGroup]="form">
         <ng-container *ngIf="form.controls.name.value.length">
-          <div class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input formControlName="value" class="p-inputtext-xs" type="text" pInputText [placeholder]="'explorer.filter.value' | transloco"/>
-          </div>
-          <div class="ctrl-wrapper">
-            <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch" />
+          <ng-container [ngSwitch]="this.column.type">
+            <div *ngSwitchDefault class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input formControlName="value" class="p-inputtext-xs" type="text" pInputText
+                     [placeholder]="'explorer.filter.value' | transloco"/>
+            </div>
+            <p-inputNumber *ngSwitchCase="'number'" styleClass="p-inputtext-xs" formControlName="value"/>
+            <div *ngSwitchCase="'boolean'" class="ctrl-wrapper">
+              <p-checkbox inputId="es" formControlName="value" [binary]="true"/>
+              <label for="es">{{"explorer.sate" | transloco}}</label>
+            </div>
+            <div *ngSwitchCase="'date'">  <!--TODO localize calendar, parse in/out values-->
+              <p-calendar
+                formControlName="value"
+                selectionMode="range"
+                [showTime]="true"
+                [readonlyInput]="true"
+                [inline]="true"/>
+            </div>
+            <div *ngSwitchCase="'reference'">
+              reference <!--TODO template for reference column-->
+            </div>
+          </ng-container>
+          <div *ngIf="this.column.type !== 'boolean' && this.column.type !== 'date'" class="ctrl-wrapper">
+            <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch"/>
             <label for="em">{{"explorer.exact" | transloco}}</label>
           </div>
           <div class="actions">
@@ -54,4 +73,4 @@
   </li>
 </ul>
 
-<preloader *preloading="{state: false, channel: preloaderChannel}" />
+<preloader *preloading="{state: false, channel: preloaderChannel}"/>

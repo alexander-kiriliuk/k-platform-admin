@@ -18,6 +18,6 @@ import {FormControl} from "@angular/forms";
 
 export interface FieldFilterForm {
   name: FormControl<string>;
-  value: FormControl<string>;
+  value: FormControl<string | number | boolean>;
   exactMatch: FormControl<boolean>;
 }

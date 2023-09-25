@@ -26,7 +26,7 @@ export namespace SectionFilter {
   export function createFieldFilterForm(): FormGroup<FieldFilterForm> {
     return new FormGroup<FieldFilterForm>({
       name: new FormControl<string>("", [Validators.required]),
-      value: new FormControl<string>("", [Validators.required]),
+      value: new FormControl<string | number | boolean>("", [Validators.required]),
       exactMatch: new FormControl<boolean>(false)
     });
   }

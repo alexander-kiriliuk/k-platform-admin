@@ -31,10 +31,8 @@ p-avatar > div {
   @apply relative;
 }
 
-.p-inputtext {
-  &.p-inputtext-xs {
-    @apply text-xs px-2 py-3;
-  }
+input.p-inputtext-xs, span.p-inputtext-xs input {
+  @apply text-xs px-2 py-3;
 }
 
 

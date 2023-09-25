@@ -26,10 +26,12 @@ ul {
       &:hover {
         color: var(--primary-color);
       }
+
       &.select-field {
         span {
           @apply font-normal text-sm;
         }
+
         &:hover {
           color: var(--accent-color);
         }
@@ -61,4 +63,6 @@ input {
   color: var(--orange-500);
 }
 
-
+p {
+  @apply my-2;
+}
