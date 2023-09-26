@@ -26,7 +26,6 @@ import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {AuthEvent} from "./auth/auth.event";
 import {AuthService} from "./auth/auth.service";
 import {TranslocoService} from "@ngneat/transloco";
-import {LangUtils} from "./global/util/lang.utils";
 import {ToastKey, ToastType} from "./global/constants";
 import {CurrentUserEvent, ToastEvent} from "./global/events";
 import {MessageService} from "primeng/api";
@@ -34,7 +33,6 @@ import {ToastData, User} from "./global/types";
 import {StoreMessage} from "./modules/store/store-message";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ToastModule} from "primeng/toast";
-import getCurrentLang = LangUtils.getCurrentLang;
 
 @UntilDestroy()
 @Component({
@@ -64,7 +62,6 @@ export class AppComponent implements OnInit {
   private readonly messageService = inject(MessageService);
 
   constructor() {
-    this.ts.setActiveLang(getCurrentLang());
     this.store.on<JwtDto>(AuthEvent.Success)
       .pipe(untilDestroyed(this))
       .subscribe(() => this.checkProfile());

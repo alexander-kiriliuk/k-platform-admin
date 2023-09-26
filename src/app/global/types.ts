@@ -17,6 +17,7 @@
 import {Media} from "../modules/media/media.types";
 import {LocalizedString} from "../modules/locale/locale.types";
 import {MenuItemCommandEvent} from "primeng/api";
+import {Translation} from "@ngneat/transloco";
 
 export type SystemTheme = "light" | "dark";
 
@@ -30,6 +31,11 @@ export type Env = {
   apiUrl: string;
   mediaUrl: string;
   fileUrl: string;
+}
+
+export type AppConfig = {
+  translation: Translation;
+  fullDateFormat: string;
 }
 
 export interface ToastData {

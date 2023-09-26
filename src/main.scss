@@ -35,6 +35,11 @@ input.p-inputtext-xs, span.p-inputtext-xs input {
   @apply text-xs px-2 py-3;
 }
 
+table.p-datepicker-calendar {
+  thead th {
+    @apply text-center;
+  }
+}
 
 .heading-xl {
   @apply text-xl font-medium;

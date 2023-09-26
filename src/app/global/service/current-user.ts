@@ -16,7 +16,7 @@
 
 import {inject, Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs";
-import {User} from "../types";
+import {AppConfig, User} from "../types";
 import {Store} from "../../modules/store/store";
 import {CurrentUserEvent} from "../events";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
@@ -28,6 +28,7 @@ export class CurrentUser {
   private readonly store = inject(Store);
   private readonly localizePipe = inject(LocalizePipe);
   readonly asObservable = this.sub.asObservable();
+  readonly config: AppConfig = {} as AppConfig;
 
   constructor() {
     this.store.on<User>(CurrentUserEvent.Set)

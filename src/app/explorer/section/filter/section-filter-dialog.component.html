@@ -46,11 +46,14 @@
               <p-checkbox inputId="es" formControlName="value" [binary]="true"/>
               <label for="es">{{"explorer.sate" | transloco}}</label>
             </div>
-            <div *ngSwitchCase="'date'">  <!--TODO localize calendar, parse in/out values-->
+            <div *ngSwitchCase="'date'">
+              <p class="orange">{{currentDataValue}}</p>
               <p-calendar
                 formControlName="value"
                 selectionMode="range"
+                [firstDayOfWeek]="1"
                 [showTime]="true"
+                [showSeconds]="true"
                 [readonlyInput]="true"
                 [inline]="true"/>
             </div>
@@ -63,7 +66,7 @@
             <label for="em">{{"explorer.exact" | transloco}}</label>
           </div>
           <div class="actions">
-            <button class="p-button-sm" pButton [disabled]="!form.valid" (click)="applyFilter()">
+            <button class="p-button-sm" pButton [disabled]="!applyButtonEnabled" (click)="applyFilter()">
               {{"explorer.apply" | transloco}}
             </button>
           </div>

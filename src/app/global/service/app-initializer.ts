@@ -21,11 +21,23 @@ import {LangUtils} from "../util/lang.utils";
 import {TranslocoService} from "@ngneat/transloco";
 import {PrimeNGConfig} from "primeng/api";
 import {CurrentUser} from "./current-user";
+import getCurrentLang = LangUtils.getCurrentLang;
 
 export function AppInitializer(config: PrimeNGConfig, currentUser: CurrentUser) {
   const appService = inject(AppService);
   const ts = inject(TranslocoService);
+  const lang = getCurrentLang();
+  ts.setActiveLang(lang);
   config.ripple = true;
+  ts.load(lang).subscribe(v => {
+    if (v?.primeng) {
+      currentUser.config.fullDateFormat = v.primeng?.format?.date?.full;
+      currentUser.config.translation = v.primeng?.translation;
+      if (currentUser.config.translation) {
+        config.setTranslation(v.primeng.translation);
+      }
+    }
+  });
   return () => appService.getOptions().pipe(
     map(v => {
       LangUtils.setAvailableLangs(v.langs);

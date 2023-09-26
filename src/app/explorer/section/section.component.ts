@@ -65,7 +65,7 @@ export class SectionComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.ar.params.pipe(untilDestroyed(this)).subscribe(v => {
-      this.target = v["target"];
+      this.target = v.target;
       this.getTarget();
     });
     this.ar.queryParams.pipe(skip(1), untilDestroyed(this)).subscribe(v => {
@@ -107,21 +107,21 @@ export class SectionComponent implements AfterViewInit {
 
   removeSorting() {
     const queryParams = {...this.ar.snapshot.queryParams};
-    delete queryParams["sort"];
-    delete queryParams["order"];
-    queryParams["page"] = 1;
+    delete queryParams.sort;
+    delete queryParams.order;
+    queryParams.page = 1;
     this.router.navigate([], {queryParams});
   }
 
   removeFilter(property: string) {
     const queryParams = {...this.ar.snapshot.queryParams};
-    queryParams["page"] = 1;
-    const filter = parseParamsString(queryParams["filter"]);
+    queryParams.page = 1;
+    const filter = parseParamsString(queryParams.filter);
     delete filter[property];
     if (Object.keys(filter).length) {
-      queryParams["filter"] = stringifyParamsObject(filter);
+      queryParams.filter = stringifyParamsObject(filter);
     } else {
-      delete queryParams["filter"];
+      delete queryParams.filter;
     }
     this.router.navigate([], {queryParams});
   }
@@ -162,7 +162,7 @@ export class SectionComponent implements AfterViewInit {
   }
 
   private getParsedFilter() {
-    const filter = this.ar.snapshot.queryParams["filter"];
+    const filter = this.ar.snapshot.queryParams.filter;
     if (!filter) {
       return undefined;
     }
