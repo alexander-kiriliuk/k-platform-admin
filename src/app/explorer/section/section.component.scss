@@ -1,7 +1,12 @@
 :host {
-  --paginator-h: 8vh;
+  --paginator-h: 10vh;
 
   ::ng-deep {
+
+    .p-paginator {
+      height: var(--paginator-h);
+    }
+
     p-paginator .p-element.p-dropdown-label.p-inputtext {
       @apply px-4 py-3;
     }

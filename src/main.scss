@@ -60,3 +60,33 @@ table.p-datepicker-calendar {
     @apply text-lg;
   }
 }
+
+p-paginator {
+  @screen max-lg {
+    .p-paginator.p-component {
+      border-radius: 0 !important;
+
+      button {
+        --pe-w: 2.0rem;
+        width: var(--pe-w) !important;
+        height: var(--pe-w) !important;
+        min-width: var(--pe-w) !important;
+        min-height: var(--pe-w) !important;
+      }
+
+      .p-dropdown {
+        height: 2.3rem !important;
+
+        .p-element.p-dropdown-label.p-inputtext {
+          padding-top: 0.35rem !important;;
+        }
+      }
+    }
+  }
+}
+
+.p-dialog-content{
+  @screen max-lg {
+    @apply px-2 py-2 #{!important};
+  }
+}

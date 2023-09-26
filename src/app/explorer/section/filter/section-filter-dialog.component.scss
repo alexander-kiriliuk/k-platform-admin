@@ -6,7 +6,8 @@
     }
 
     ul {
-      @apply ml-3 mt-1 mb-2;
+      @apply ml-0 mt-1 mb-2;
+      @apply lg:ml-3;
     }
   }
 }
