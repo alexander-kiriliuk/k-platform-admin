@@ -33,38 +33,14 @@
           </span>
         </a>
       </li>
-      <li *ngIf="!isReference || (isReference && referenceField?.ref)" [formGroup]="form">
+      <li *ngIf="!isReference || (isReference && referenceField?.ref)">
         <ng-container *ngIf="form.controls.name.value.length">
-          <ng-container [ngSwitch]="this.column.type">
-            <div *ngSwitchDefault class="p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input formControlName="value" class="p-inputtext-xs" type="text" pInputText
-                     [placeholder]="'explorer.filter.value' | transloco"/>
-            </div>
-            <p-inputNumber *ngSwitchCase="'number'" styleClass="p-inputtext-xs" formControlName="value"/>
-            <div *ngSwitchCase="'boolean'" class="ctrl-wrapper">
-              <p-checkbox inputId="es" formControlName="value" [binary]="true"/>
-              <label for="es">{{"explorer.sate" | transloco}}</label>
-            </div>
-            <div *ngSwitchCase="'date'">
-              <p class="orange">{{currentDataValue}}</p>
-              <p-calendar
-                formControlName="value"
-                selectionMode="range"
-                [firstDayOfWeek]="1"
-                [showTime]="true"
-                [showSeconds]="true"
-                [readonlyInput]="true"
-                [inline]="true"/>
-            </div>
-            <div *ngSwitchCase="'reference'">
-              reference <!--TODO template for reference column-->
-            </div>
+          <ng-container *ngIf="this.column.type !== 'reference'">
+            <ng-container *ngTemplateOutlet="editorCtrl; context: {type: this.column.type}" />
           </ng-container>
-          <div *ngIf="this.column.type !== 'boolean' && this.column.type !== 'date'" class="ctrl-wrapper">
-            <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch"/>
-            <label for="em">{{"explorer.exact" | transloco}}</label>
-          </div>
+          <ng-container *ngIf="this.column.type === 'reference' && referencedColumn">
+            <ng-container *ngTemplateOutlet="editorCtrl; context: {type: referencedColumn.type}" />
+          </ng-container>
           <div class="actions">
             <button class="p-button-sm" pButton [disabled]="!applyButtonEnabled" (click)="applyFilter()">
               {{"explorer.apply" | transloco}}
@@ -77,3 +53,33 @@
 </ul>
 
 <preloader *preloading="{state: false, channel: preloaderChannel}"/>
+
+<ng-template #editorCtrl let-type="type">
+  <ng-container [formGroup]="form" [ngSwitch]="type">
+    <div *ngSwitchDefault class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input formControlName="value" class="p-inputtext-xs" type="text" pInputText
+             [placeholder]="'explorer.filter.value' | transloco"/>
+    </div>
+    <p-inputNumber *ngSwitchCase="'number'" styleClass="p-inputtext-xs" formControlName="value"/>
+    <div *ngSwitchCase="'boolean'" class="ctrl-wrapper">
+      <p-checkbox inputId="es" formControlName="value" [binary]="true"/>
+      <label for="es">{{"explorer.sate" | transloco}}</label>
+    </div>
+    <div *ngSwitchCase="'date'">
+      <p class="orange">{{currentDataValue}}</p>
+      <p-calendar
+        formControlName="value"
+        selectionMode="range"
+        [firstDayOfWeek]="1"
+        [showTime]="true"
+        [showSeconds]="true"
+        [readonlyInput]="true"
+        [inline]="true"/>
+    </div>
+    <div *ngIf="type !== 'boolean' && type !== 'date'" class="ctrl-wrapper">
+      <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch"/>
+      <label for="em">{{"explorer.exact" | transloco}}</label>
+    </div>
+  </ng-container>
+</ng-template>

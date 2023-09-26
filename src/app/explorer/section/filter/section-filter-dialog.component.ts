@@ -21,7 +21,7 @@ import {TranslocoPipe} from "@ngneat/transloco";
 import {InputTextModule} from "primeng/inputtext";
 import {SortOrder} from "../../../global/types";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DatePipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
+import {DatePipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {SectionFilter} from "./section-filter-dialog.constants";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -60,7 +60,8 @@ import createFieldFilterForm = SectionFilter.createFieldFilterForm;
     NgSwitchCase,
     NgSwitchDefault,
     InputNumberModule,
-    CalendarModule
+    CalendarModule,
+    NgTemplateOutlet
   ],
   providers: [
     ExplorerService,
@@ -136,7 +137,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
 
   get currentDataValue() {
     const dates = this.form.controls.value.value as Date[];
-    if (!dates.length) {
+    if (!dates?.length) {
       return undefined;
     }
     let res = "";
@@ -164,7 +165,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
         } else {
           this.form.controls.exactMatch.setValue(true);
         }
-        if (this.column.type === "date") {
+        if (this.column.type === "date" || this.referencedColumn?.type === "date") {
           const match = value.match(/FROM(\d+)TO(\d+)/);
           const fromTimestamp = match[1];
           const toTimestamp = match[2];
@@ -193,14 +194,19 @@ export class SectionFilterDialogComponent implements AfterViewInit {
 
   applyFilter() {
     const data = this.form.value;
-    let value = !data.exactMatch ? `%${data.value}%` : data.value;
-    if (this.column.type === "date") {
+    let value = data.value;
+    if (this.column.type === "date" || this.referencedColumn?.type === "date") {
       const val = value as Date[];
       value = `FROM${val[0].getTime()}TO${val[1].getTime()}`;
+    } else if (!data.exactMatch) {
+      value = `%${data.value}%`;
     }
     const queryParams = {...this.ar.snapshot.queryParams};
     if (!queryParams.filter?.length) {
       queryParams.filter = `::${data.name}:${value}`;
+      if (this.isReference) {
+        queryParams.filter += `{${this.referenceField.ref}}`;
+      }
     } else {
       const filter = parseParamsString(queryParams.filter);
       if (this.isReference) {
@@ -227,7 +233,15 @@ export class SectionFilterDialogComponent implements AfterViewInit {
         modal: true,
         position: "top",
       }).onClose.subscribe((col: ExplorerColumn) => {
+        if (!col) {
+          return;
+        }
         this.referencedColumn = col;
+        const type = this.referencedColumn.type;
+        this.form.controls.value.reset();
+        if (type === "boolean" || type === "date") {
+          this.form.controls.exactMatch.setValue(true);
+        }
         this.cdr.markForCheck();
       });
     });
@@ -239,6 +253,10 @@ export class SectionFilterDialogComponent implements AfterViewInit {
       this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
     })).subscribe(v => {
       this.referencedTarget = v;
+      if (this.isReference && this.referenceField?.ref) {
+        const parts = this.referenceField.ref.split(".");
+        this.referencedColumn = this.referencedTarget.entity.columns.find(c => c.property === parts[1]);
+      }
       this.cdr.markForCheck();
     });
   }

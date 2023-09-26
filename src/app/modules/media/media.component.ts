@@ -1,11 +1,11 @@
 import {ChangeDetectionStrategy, Component, HostBinding, inject, Input} from "@angular/core";
-import {CommonModule} from "@angular/common";
 import {Media} from "./media.types";
 import {ReservedMediaSize} from "./media.constants";
 import {ImageModule} from "primeng/image";
 import {LocalizePipe} from "../locale/localize.pipe";
 import {MediaUrlPipe} from "./media-url.pipe";
 import {DomSanitizer} from "@angular/platform-browser";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: "media-res",
@@ -13,7 +13,7 @@ import {DomSanitizer} from "@angular/platform-browser";
   templateUrl: "./media.component.html",
   styleUrls: ["./media.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ImageModule, LocalizePipe],
+  imports: [ImageModule, LocalizePipe, NgIf],
   providers: [MediaUrlPipe]
 })
 export class MediaComponent {

@@ -15,7 +15,6 @@
  */
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {CommonModule} from "@angular/common";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
@@ -40,7 +39,6 @@ import {ToastData} from "../global/types";
   styleUrls: ["./auth.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     InputTextModule,
     PasswordModule,
     ButtonModule,

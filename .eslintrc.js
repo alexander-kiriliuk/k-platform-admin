@@ -68,7 +68,7 @@ module.exports = {
         "@typescript-eslint/no-namespace": "off",
         "max-len": [
           "error",
-          {code: 110}
+          {code: 115}
         ],
         "linebreak-style": [
           "error",

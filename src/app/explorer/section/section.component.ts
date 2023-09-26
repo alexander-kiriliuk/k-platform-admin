@@ -1,5 +1,4 @@
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
-import {CommonModule} from "@angular/common";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {ExplorerService} from "../explorer.service";
 import {finalize, skip, throwError} from "rxjs";
@@ -19,6 +18,7 @@ import {RippleModule} from "primeng/ripple";
 import {DialogService} from "primeng/dynamicdialog";
 import {TranslocoService} from "@ngneat/transloco";
 import {StringUtils} from "../../global/util/string.utils";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
 
@@ -30,12 +30,14 @@ import stringifyParamsObject = StringUtils.stringifyParamsObject;
   styleUrls: ["./section.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     PreloaderComponent,
     PreloaderDirective,
     TableModule,
     LocalizePipe,
-    RippleModule
+    RippleModule,
+    NgClass,
+    NgIf,
+    NgForOf
   ]
 })
 export class SectionComponent implements AfterViewInit {
