@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {ExplorerService} from "../explorer.service";
-import {finalize, skip, throwError} from "rxjs";
+import {finalize, skip, Subscription, throwError} from "rxjs";
 import {Explorer} from "../explorer.constants";
 import {Store} from "../../modules/store/store";
 import {PreloaderDirective} from "../../modules/preloader/preloader.directive";
@@ -52,6 +52,7 @@ export class SectionComponent implements AfterViewInit {
   private readonly dialogService = inject(DialogService);
   private readonly ts = inject(TranslocoService);
   private target: string;
+  private sectionSub: Subscription;
 
   get preloaderChannel() {
     return Explorer.SectionPrCn;
@@ -130,7 +131,8 @@ export class SectionComponent implements AfterViewInit {
 
   private getSection(params?: PageableParams) {
     this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
-    this.explorerService.getSectionList(this.target, params).pipe(
+    this.sectionSub?.unsubscribe();
+    this.sectionSub = this.explorerService.getSectionList(this.target, params).pipe(
       finalize(() => {
         this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
       }),
