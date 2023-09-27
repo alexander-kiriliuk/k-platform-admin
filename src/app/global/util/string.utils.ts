@@ -49,7 +49,6 @@ export namespace StringUtils {
     return "::" + filterParts.join("::");
   }
 
-
   export function clearSpaces(str: string) {
     return str?.replace(/[^\S\r\n]{2,}/g, " ");
   }

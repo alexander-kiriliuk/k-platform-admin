@@ -152,12 +152,17 @@ export class SectionFilterDialogComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     if (this.isReference) {
       this.getReferenceTarget();
+      return;
     }
+    this.initUi();
+  }
+
+  private initUi() {
     this.form.controls.name.setValue(this.column.property);
     const queryParams = {...this.ar.snapshot.queryParams};
     if (queryParams.filter?.length) {
       const filter = parseParamsString(queryParams.filter);
-      let value = this.isReference ? this.referenceField?.value : filter[this.column.property];
+      let value = filter[this.column.property];
       if (value?.length) {
         if (value.startsWith("%") && value.endsWith("%")) {
           this.form.controls.exactMatch.setValue(false);
@@ -257,7 +262,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
         const parts = this.referenceField.ref.split(".");
         this.referencedColumn = this.referencedTarget.entity.columns.find(c => c.property === parts[1]);
       }
-      this.cdr.markForCheck();
+      this.initUi();
     });
   }
 
