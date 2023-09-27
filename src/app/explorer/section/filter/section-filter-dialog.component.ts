@@ -157,37 +157,6 @@ export class SectionFilterDialogComponent implements AfterViewInit {
     this.initUi();
   }
 
-  private initUi() {
-    this.form.controls.name.setValue(this.column.property);
-    const queryParams = {...this.ar.snapshot.queryParams};
-    if (queryParams.filter?.length) {
-      const filter = parseParamsString(queryParams.filter);
-      let value = filter[this.column.property];
-      if (value?.length) {
-        if (value.startsWith("%") && value.endsWith("%")) {
-          this.form.controls.exactMatch.setValue(false);
-          value = value.substring(1, value.length - 1);
-        } else {
-          this.form.controls.exactMatch.setValue(true);
-        }
-        if (this.column.type === "date" || this.referencedColumn?.type === "date") {
-          const match = value.match(/FROM(\d+)TO(\d+)/);
-          const fromTimestamp = match[1];
-          const toTimestamp = match[2];
-          const fromDate = new Date(parseInt(fromTimestamp, 10));
-          const toDate = new Date(parseInt(toTimestamp, 10));
-          this.form.controls.value.setValue([fromDate, toDate]);
-        } else {
-          this.form.controls.value.setValue(this.column.type === "boolean" ? value === "true" : value);
-        }
-      }
-    }
-    if (this.column.type === "boolean" || this.column.type === "date") {
-      this.form.controls.exactMatch.setValue(true);
-    }
-    this.cdr.detectChanges();
-  }
-
   setOrder(order: SortOrder) {
     const queryParams = {...this.ar.snapshot.queryParams};
     queryParams.sort = this.column.property;
@@ -250,6 +219,37 @@ export class SectionFilterDialogComponent implements AfterViewInit {
         this.cdr.markForCheck();
       });
     });
+  }
+
+  private initUi() {
+    this.form.controls.name.setValue(this.column.property);
+    const queryParams = {...this.ar.snapshot.queryParams};
+    if (queryParams.filter?.length) {
+      const filter = parseParamsString(queryParams.filter);
+      let value = filter[this.column.property]?.replace(/\{[^}]*}/g, "");
+      if (value?.length) {
+        if (value.startsWith("%") && value.endsWith("%")) {
+          this.form.controls.exactMatch.setValue(false);
+          value = value.substring(1, value.length - 1);
+        } else {
+          this.form.controls.exactMatch.setValue(true);
+        }
+        if (this.column.type === "date" || this.referencedColumn?.type === "date") {
+          const match = value.match(/FROM(\d+)TO(\d+)/);
+          const fromTimestamp = match[1];
+          const toTimestamp = match[2];
+          const fromDate = new Date(parseInt(fromTimestamp, 10));
+          const toDate = new Date(parseInt(toTimestamp, 10));
+          this.form.controls.value.setValue([fromDate, toDate]);
+        } else {
+          this.form.controls.value.setValue(this.column.type === "boolean" ? value === "true" : value);
+        }
+      }
+    }
+    if (this.column.type === "boolean" || this.column.type === "date") {
+      this.form.controls.exactMatch.setValue(true);
+    }
+    this.cdr.detectChanges();
   }
 
   private getReferenceTarget() {
