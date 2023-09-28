@@ -32,7 +32,7 @@
             {{referenceField?.ref ? referenceField.ref : ("explorer.filter.select" | transloco)}}
           </span>
         </a>
-        <a *ngIf="referenceField?.ref && referencedColumn.type !== 'date'" class="red" (click)="openSectionDialog()">
+        <a *ngIf="referenceField?.ref && referencedColumn?.type !== 'date'" class="red" (click)="openSectionDialog()">
           <i class="pi pi-arrow-up-right"></i>
         </a>
       </li>
