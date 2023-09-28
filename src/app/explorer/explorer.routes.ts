@@ -15,15 +15,11 @@
  */
 
 import {Routes} from "@angular/router";
-import {ExplorerService} from "./explorer.service";
 
 export const ExplorerRoutes: Routes = [
   {
     path: "section/:target",
     loadComponent: () => import("../explorer/section/section.component")
-      .then(m => m.SectionComponent),
-    providers: [
-      ExplorerService,
-    ]
+      .then(m => m.SectionComponent)
   }
 ];

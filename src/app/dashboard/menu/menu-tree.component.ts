@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
+import {
+AfterViewInit,
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+inject
+} from "@angular/core";
 import {Router} from "@angular/router";
 import {UntilDestroy} from "@ngneat/until-destroy";
 import {animate, state, style, transition, trigger} from "@angular/animations";

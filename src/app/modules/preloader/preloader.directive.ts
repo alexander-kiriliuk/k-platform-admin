@@ -1,4 +1,11 @@
-import {AfterViewInit, Directive, inject, Input, TemplateRef, ViewContainerRef} from "@angular/core";
+import {
+AfterViewInit,
+Directive,
+inject,
+Input,
+TemplateRef,
+ViewContainerRef
+} from "@angular/core";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {Store} from "../store/store";
 import {PreloaderEvent} from "./preloader.event";

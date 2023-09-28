@@ -14,14 +14,28 @@
  * limitations under the License.
  */
 
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
+import {
+AfterViewInit,
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+inject
+} from "@angular/core";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ExplorerColumn, TargetData} from "../../explorer.types";
+import {ExplorerColumn, SectionFilterDialogConfig, TargetData} from "../../explorer.types";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {InputTextModule} from "primeng/inputtext";
 import {SortOrder} from "../../../global/types";
-import {ActivatedRoute, Router} from "@angular/router";
-import {DatePipe, NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet} from "@angular/common";
+import {Params, QueryParamsHandling} from "@angular/router";
+import {
+DatePipe,
+NgClass,
+NgIf,
+NgSwitch,
+NgSwitchCase,
+NgSwitchDefault,
+NgTemplateOutlet
+} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {SectionFilter} from "./section-filter-dialog.constants";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -36,6 +50,7 @@ import {finalize} from "rxjs";
 import {InputNumberModule} from "primeng/inputnumber";
 import {CalendarModule} from "primeng/calendar";
 import {CurrentUser} from "../../../global/service/current-user";
+import {LocalizePipe} from "../../../modules/locale/localize.pipe";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
 import createFieldFilterForm = SectionFilter.createFieldFilterForm;
@@ -61,7 +76,8 @@ import createFieldFilterForm = SectionFilter.createFieldFilterForm;
     NgSwitchDefault,
     InputNumberModule,
     CalendarModule,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    LocalizePipe
   ],
   providers: [
     ExplorerService,
@@ -71,46 +87,42 @@ import createFieldFilterForm = SectionFilter.createFieldFilterForm;
 export class SectionFilterDialogComponent implements AfterViewInit {
 
   private readonly config = inject(DynamicDialogConfig);
-  private readonly router = inject(Router);
   private readonly datePipe = inject(DatePipe);
-  private readonly ar = inject(ActivatedRoute);
   private readonly ref = inject(DynamicDialogRef);
   private readonly dialogService = inject(DialogService);
   private readonly explorerService = inject(ExplorerService);
   private readonly store = inject(Store);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly currentUser = inject(CurrentUser);
+  private readonly localizePipe = inject(LocalizePipe);
   readonly form = createFieldFilterForm();
   referencedTarget: TargetData;
   referencedColumn: ExplorerColumn;
-
-  get applyButtonEnabled() {
-    if (this.column.type === "date") {
-      for (const v of (this.form.value.value as Date[])) {
-        if (v === null) {
-          return false;
-        }
-      }
-    }
-    return this.form.valid;
-  }
 
   get preloaderChannel() {
     return SectionFilter.PreloaderCn;
   }
 
+  get dialogConfig() {
+    return this.config.data as SectionFilterDialogConfig;
+  }
+
   get column() {
-    return this.config.data as ExplorerColumn;
+    return this.dialogConfig.column;
+  }
+
+  get queryParamsSnapshot() {
+    return this.dialogConfig.paramsSnapshot();
   }
 
   get isSortAscActive() {
-    return this.ar.snapshot.queryParams.sort === this.column.property
-      && (this.ar.snapshot.queryParams.order as SortOrder) === "ASC";
+    return this.queryParamsSnapshot.sort === this.column.property
+      && (this.queryParamsSnapshot.order as SortOrder) === "ASC";
   }
 
   get isSortDescActive() {
-    return this.ar.snapshot.queryParams.sort === this.column.property
-      && (this.ar.snapshot.queryParams.order as SortOrder) === "DESC";
+    return this.queryParamsSnapshot.sort === this.column.property
+      && (this.queryParamsSnapshot.order as SortOrder) === "DESC";
   }
 
   get isReference() {
@@ -121,7 +133,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
     if (this.referencedColumn) {
       return {value: "", ref: `${this.referencedTarget.entity.target}.${this.referencedColumn.property}`};
     }
-    const queryParams = {...this.ar.snapshot.queryParams};
+    const queryParams = {...this.queryParamsSnapshot};
     if (!queryParams.filter?.length) {
       return undefined;
     }
@@ -133,6 +145,17 @@ export class SectionFilterDialogComponent implements AfterViewInit {
     const clearValue = value.replace(/\{[^}]*}/g, "");
     const match = value.match(/\{([^}]*)}/);
     return {value: clearValue, ref: match[1]};
+  }
+
+  get applyButtonEnabled() {
+    if (this.column.type === "date") {
+      for (const v of (this.form.value.value as Date[])) {
+        if (v === null) {
+          return false;
+        }
+      }
+    }
+    return this.form.valid;
   }
 
   get currentDataValue() {
@@ -158,11 +181,11 @@ export class SectionFilterDialogComponent implements AfterViewInit {
   }
 
   setOrder(order: SortOrder) {
-    const queryParams = {...this.ar.snapshot.queryParams};
+    const queryParams = {...this.queryParamsSnapshot};
     queryParams.sort = this.column.property;
     queryParams.order = order;
     queryParams.page = 1;
-    this.router.navigate([], {queryParams});
+    this.doNavigate(queryParams);
     this.ref.close();
   }
 
@@ -175,7 +198,8 @@ export class SectionFilterDialogComponent implements AfterViewInit {
     } else if (!data.exactMatch) {
       value = `%${data.value}%`;
     }
-    const queryParams = {...this.ar.snapshot.queryParams};
+    const queryParams = {...this.queryParamsSnapshot};
+    queryParams.page = 1;
     if (!queryParams.filter?.length) {
       queryParams.filter = `::${data.name}:${value}`;
       if (this.isReference) {
@@ -190,7 +214,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
       }
       queryParams.filter = stringifyParamsObject(filter);
     }
-    this.router.navigate([], {queryParams});
+    this.doNavigate(queryParams);
     this.ref.close();
   }
 
@@ -221,9 +245,27 @@ export class SectionFilterDialogComponent implements AfterViewInit {
     });
   }
 
+  openSectionDialog() {
+    import("../section.component").then(m => {
+      const entity = this.referencedTarget.entity;
+      this.dialogService.open(m.SectionComponent, {
+        header: this.localizePipe.transform(entity.name, entity.target) as string,
+        data: {target: this.referencedTarget},
+        modal: true,
+        position: "top",
+      }).onClose.subscribe(payload => {
+        if (!payload) {
+          return;
+        }
+        this.form.controls.value.setValue(payload[this.referencedColumn.property]);
+        this.cdr.markForCheck();
+      });
+    });
+  }
+
   private initUi() {
     this.form.controls.name.setValue(this.column.property);
-    const queryParams = {...this.ar.snapshot.queryParams};
+    const queryParams = {...this.queryParamsSnapshot};
     if (queryParams.filter?.length) {
       const filter = parseParamsString(queryParams.filter);
       let value = filter[this.column.property]?.replace(/\{[^}]*}/g, "");
@@ -264,6 +306,10 @@ export class SectionFilterDialogComponent implements AfterViewInit {
       }
       this.initUi();
     });
+  }
+
+  private doNavigate(queryParams: Params, queryParamsHandling?: QueryParamsHandling) {
+    return this.dialogConfig.navigate(queryParams, queryParamsHandling);
   }
 
 }

@@ -59,13 +59,15 @@ module.exports = {
       },
       plugins: [
         "@typescript-eslint",
+        "import-newlines",
         "html",
       ],
       rules: {
-        "@typescript-eslint/no-unused-vars":[
+        "@typescript-eslint/no-unused-vars": [
           "warn"
         ],
         "@typescript-eslint/no-namespace": "off",
+        "import-newlines/enforce": ["error", { items: 40, "max-len": 100 }],
         "max-len": [
           "error",
           {code: 115}

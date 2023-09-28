@@ -1,6 +1,10 @@
 :host {
   --paginator-h: 10vh;
 
+  &.dialogMode {
+    max-width: 90vw;
+  }
+
   ::ng-deep {
 
     .p-paginator {
@@ -51,4 +55,13 @@ th {
     }
   }
 
+}
+
+.set-btn {
+  @apply cursor-pointer;
+  color: var(--red-500);
+
+  &:hover {
+    color: var(--primary-color);
+  }
 }

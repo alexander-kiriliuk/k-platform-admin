@@ -1,21 +1,28 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
+import {
+AfterViewInit,
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+HostBinding,
+inject
+} from "@angular/core";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {ExplorerService} from "../explorer.service";
-import {finalize, skip, Subscription, throwError} from "rxjs";
+import {BehaviorSubject, finalize, skip, Subscription, throwError} from "rxjs";
 import {Explorer} from "../explorer.constants";
 import {Store} from "../../modules/store/store";
 import {PreloaderDirective} from "../../modules/preloader/preloader.directive";
 import {PreloaderEvent} from "../../modules/preloader/preloader.event";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Params, QueryParamsHandling, Router} from "@angular/router";
 import {catchError} from "rxjs/operators";
 import {PageableData, PageableParams, ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {TableModule, TablePageEvent} from "primeng/table";
-import {ExplorerColumn, TargetData} from "../explorer.types";
+import {ExplorerColumn, SectionDialogConfig, TargetData} from "../explorer.types";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {RippleModule} from "primeng/ripple";
-import {DialogService} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslocoService} from "@ngneat/transloco";
 import {StringUtils} from "../../global/util/string.utils";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
@@ -38,12 +45,17 @@ import stringifyParamsObject = StringUtils.stringifyParamsObject;
     NgClass,
     NgIf,
     NgForOf
+  ],
+  providers: [
+    ExplorerService,
   ]
 })
 export class SectionComponent implements AfterViewInit {
 
   targetData: TargetData;
   pageableData: PageableData;
+  private readonly dialogRef = inject(DynamicDialogRef, {optional: true});
+  private readonly config = inject(DynamicDialogConfig, {optional: true});
   private readonly explorerService = inject(ExplorerService);
   private readonly store = inject(Store);
   private readonly ar = inject(ActivatedRoute);
@@ -53,6 +65,12 @@ export class SectionComponent implements AfterViewInit {
   private readonly ts = inject(TranslocoService);
   private target: string;
   private sectionSub: Subscription;
+  private paramsSub = new BehaviorSubject<Params>({});
+
+  @HostBinding("class.dialogMode")
+  get cssClass() {
+    return this.dialogMode;
+  }
 
   get preloaderChannel() {
     return Explorer.SectionPrCn;
@@ -62,29 +80,53 @@ export class SectionComponent implements AfterViewInit {
     return ((this.pageableData?.currentPage ?? 1) - 1) * (this.pageableData?.pageSize ?? 0);
   }
 
-  get queryParams() {
-    return this.ar.snapshot.queryParams;
+  get data() {
+    return this.config?.data as SectionDialogConfig;
+  }
+
+  get dialogMode() {
+    return !!this.dialogRef;
+  }
+
+  get queryParams$() {
+    return this.dialogMode ? this.paramsSub.asObservable() : this.ar.queryParams;
+  }
+
+  get queryParamsSnapshot(): Params {
+    return this.dialogMode ? this.paramsSub.value : this.ar.snapshot.queryParams;
+  }
+
+  get scrollHeight() {
+    return this.dialogMode ? undefined : "calc(100vh - var(--header-bar-h) - var(--paginator-h))";
+  }
+
+  constructor() {
+    if (this.data?.target) {
+      this.targetData = this.data.target;
+      this.target = this.targetData.entity.target;
+    }
   }
 
   ngAfterViewInit(): void {
-    this.ar.params.pipe(untilDestroyed(this)).subscribe(v => {
-      this.target = v.target;
-      this.getTarget();
-    });
-    this.ar.queryParams.pipe(skip(1), untilDestroyed(this)).subscribe(v => {
+    if (!this.dialogMode) {
+      this.ar.params.pipe(untilDestroyed(this)).subscribe(v => {
+        this.target = v.target;
+        this.getTarget();
+      });
+    } else {
+      this.getSection();
+    }
+    this.queryParams$.pipe(skip(1), untilDestroyed(this)).subscribe(v => {
       this.getSection(v as PageableParams);
     });
   }
 
   getItems(e: TablePageEvent) {
     const params = {} as PageableParams;
-    Object.assign(params, this.ar.snapshot.queryParams);
+    Object.assign(params, this.queryParamsSnapshot);
     params.page = e.first / e.rows + 1;
     params.limit = e.rows;
-    this.router.navigate([], {
-      queryParams: params,
-      queryParamsHandling: Object.keys(params).length ? "merge" : undefined
-    });
+    this.doNavigate(params, Object.keys(params).length ? "merge" : undefined);
   }
 
   propertyFilter(propName: string) {
@@ -95,29 +137,35 @@ export class SectionComponent implements AfterViewInit {
     return filterObject[propName];
   }
 
-  showFilterDialog(item: ExplorerColumn) {
+  showFilterDialog(column: ExplorerColumn) {
     import("./filter/section-filter-dialog.component").then(c => {
       this.dialogService.open(c.SectionFilterDialogComponent, {
-        header: this.ts.translate("explorer.filter.head", {v: item.property}),
+        header: this.ts.translate("explorer.filter.head", {v: column.property}),
         resizable: false,
         draggable: false,
         modal: true,
-        data: item,
-        position: "top"
+        position: "top",
+        data: {
+          column,
+          paramsSnapshot: () => this.queryParamsSnapshot,
+          navigate: (queryParams: Params, queryParamsHandling?: QueryParamsHandling) => {
+            this.doNavigate(queryParams, queryParamsHandling);
+          }
+        }
       });
     });
   }
 
   removeSorting() {
-    const queryParams = {...this.ar.snapshot.queryParams};
+    const queryParams = {...this.queryParamsSnapshot};
     delete queryParams.sort;
     delete queryParams.order;
     queryParams.page = 1;
-    this.router.navigate([], {queryParams});
+    this.doNavigate(queryParams);
   }
 
   removeFilter(property: string) {
-    const queryParams = {...this.ar.snapshot.queryParams};
+    const queryParams = {...this.queryParamsSnapshot};
     queryParams.page = 1;
     const filter = parseParamsString(queryParams.filter);
     delete filter[property];
@@ -126,7 +174,11 @@ export class SectionComponent implements AfterViewInit {
     } else {
       delete queryParams.filter;
     }
-    this.router.navigate([], {queryParams});
+    this.doNavigate(queryParams);
+  }
+
+  selectEntityAndCloseDialog(item: unknown) {
+    this.dialogRef.close(item);
   }
 
   private getSection(params?: PageableParams) {
@@ -161,16 +213,24 @@ export class SectionComponent implements AfterViewInit {
       })
     ).subscribe(v => {
       this.targetData = v;
-      this.getSection(this.ar.snapshot.queryParams as PageableParams);
+      this.getSection(this.queryParamsSnapshot as PageableParams);
     });
   }
 
   private getParsedFilter() {
-    const filter = this.ar.snapshot.queryParams.filter;
+    const filter = this.queryParamsSnapshot.filter;
     if (!filter) {
       return undefined;
     }
     return parseParamsString(filter);
+  }
+
+  private doNavigate(queryParams: Params, queryParamsHandling?: QueryParamsHandling) {
+    if (this.dialogMode) {
+      this.paramsSub.next(queryParams);
+    } else {
+      this.router.navigate([], {queryParams, queryParamsHandling});
+    }
   }
 
 }

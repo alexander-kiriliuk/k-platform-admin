@@ -1,5 +1,5 @@
 <p-table *ngIf="targetData?.entity?.columns"
-         scrollHeight="calc(100vh - var(--header-bar-h) - var(--paginator-h))"
+         [scrollHeight]="scrollHeight"
          [value]="pageableData?.items"
          [scrollable]="true"
          [paginator]="true"
@@ -11,11 +11,12 @@
          (onPage)="getItems($event)">
   <ng-template pTemplate="header">
     <tr>
+      <th *ngIf="dialogMode"></th>
       <th *ngFor="let item of targetData.entity.columns">
-        <ng-container *ngIf="queryParams['sort'] === item.property">
+        <ng-container *ngIf="queryParamsSnapshot['sort'] === item.property">
           <i class="indicator pi" [ngClass]="{
-              'pi-sort-amount-down': queryParams['order'] === 'DESC',
-              'pi-sort-amount-up': queryParams['order'] === 'ASC'
+              'pi-sort-amount-down': queryParamsSnapshot['order'] === 'DESC',
+              'pi-sort-amount-up': queryParamsSnapshot['order'] === 'ASC'
              }"
              (click)="removeSorting()"></i>
         </ng-container>
@@ -29,6 +30,9 @@
   </ng-template>
   <ng-template let-item pTemplate="body">
     <tr>
+      <td *ngIf="dialogMode" class="set-btn" (click)="selectEntityAndCloseDialog(item)">
+        <i class="pi pi-arrow-down-left"></i>
+      </td>
       <td *ngFor="let col of targetData.entity.columns">
         {{ item[col.property] }}
       </td>
@@ -36,4 +40,4 @@
   </ng-template>
 </p-table>
 
-<preloader *preloading="{state: true, channel: preloaderChannel}" />
+<preloader *preloading="{state: true, channel: preloaderChannel}"/>

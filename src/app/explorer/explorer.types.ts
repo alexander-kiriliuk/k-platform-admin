@@ -17,6 +17,7 @@
 
 import {LocalizedString} from "../modules/locale/locale.types";
 import {Media} from "../modules/media/media.types";
+import {Params, QueryParamsHandling} from "@angular/router";
 
 export type ColumnDataType = "string" | "number" | "boolean" | "date" | "reference" | "unknown";
 
@@ -46,4 +47,14 @@ export interface ExplorerColumn {
 export interface TargetData {
   primaryColumn: ExplorerColumn;
   entity: ExplorerTarget;
+}
+
+export interface SectionFilterDialogConfig {
+  column: ExplorerColumn;
+  paramsSnapshot: () => Params;
+  navigate: (queryParams: Params, queryParamsHandling?: QueryParamsHandling) => void;
+}
+
+export interface SectionDialogConfig {
+  target: TargetData
 }

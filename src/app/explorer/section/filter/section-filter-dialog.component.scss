@@ -15,7 +15,7 @@
 ul {
   li {
     a, span {
-      @apply flex items-center gap-x-2;
+      @apply inline-flex items-center gap-x-2;
     }
 
     span {
@@ -62,6 +62,14 @@ input {
 
 .orange {
   color: var(--orange-500);
+}
+
+.red {
+  color: var(--red-500);
+}
+
+.reference {
+  @apply flex gap-x-2;
 }
 
 p {
