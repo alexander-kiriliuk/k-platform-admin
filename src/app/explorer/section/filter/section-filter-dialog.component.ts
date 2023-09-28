@@ -296,7 +296,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
 
   private getReferenceTarget() {
     this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
-    this.explorerService.getTarget(this.column.referencedEntityName).pipe(finalize(() => {
+    this.explorerService.getTarget(this.column.referencedEntityName, "section").pipe(finalize(() => {
       this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
     })).subscribe(v => {
       this.referencedTarget = v;

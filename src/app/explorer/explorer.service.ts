@@ -26,8 +26,8 @@ export class ExplorerService {
 
   private readonly http = inject(HttpClient);
 
-  getTarget(target: string) {
-    return this.http.get<TargetData>(fillParams("/explorer/target/:target", target));
+  getTarget(target: string, type: "section" | "object") {
+    return this.http.get<TargetData>(fillParams("/explorer/target/:target", target), {params: {type}});
   }
 
   getSectionList<T = unknown>(target: string, params: PageableParams) {

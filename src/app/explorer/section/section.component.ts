@@ -201,7 +201,7 @@ export class SectionComponent implements AfterViewInit {
   }
 
   private getTarget() {
-    this.explorerService.getTarget(this.target).pipe(
+    this.explorerService.getTarget(this.target, "section").pipe(
       finalize(() => {
         this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
       }),
