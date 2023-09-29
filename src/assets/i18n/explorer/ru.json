@@ -5,6 +5,7 @@
   "apply": "Применить",
   "exact": "Точное совпадение",
   "sate": "Состояние",
+  "title": "{{name}} <span class=\"c-primary\">{{count}}</span>",
   "filter": {
     "label": "Поиск и фильтрация",
     "head": "Поле {{v}}",

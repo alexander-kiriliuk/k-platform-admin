@@ -1,10 +1,10 @@
 import {
-AfterViewInit,
-ChangeDetectionStrategy,
-ChangeDetectorRef,
-Component,
-HostBinding,
-inject
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  inject
 } from "@angular/core";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {ExplorerService} from "../explorer.service";
@@ -28,6 +28,7 @@ import {StringUtils} from "../../global/util/string.utils";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
+import {DashboardEvent} from "../../dashboard/dashboard.event";
 
 @UntilDestroy()
 @Component({
@@ -62,6 +63,7 @@ export class SectionComponent implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dialogService = inject(DialogService);
+  private readonly localizePipe = inject(LocalizePipe);
   private readonly ts = inject(TranslocoService);
   private target: string;
   private sectionSub: Subscription;
@@ -140,7 +142,9 @@ export class SectionComponent implements AfterViewInit {
   showFilterDialog(column: ExplorerColumn) {
     import("./filter/section-filter-dialog.component").then(c => {
       this.dialogService.open(c.SectionFilterDialogComponent, {
-        header: this.ts.translate("explorer.filter.head", {v: column.property}),
+        header: this.ts.translate("explorer.filter.head", {
+          v: this.localizePipe.transform(column.name, column.property)
+        }),
         resizable: false,
         draggable: false,
         modal: true,
@@ -187,6 +191,10 @@ export class SectionComponent implements AfterViewInit {
     this.sectionSub = this.explorerService.getSectionList(this.target, params).pipe(
       finalize(() => {
         this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("explorer.title", {
+          count: this.pageableData.totalCount,
+          name: this.localizePipe.transform(this.targetData.entity.name, this.targetData.entity.target)
+        }));
       }),
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {

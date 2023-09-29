@@ -77,7 +77,7 @@
 
 .logo-bar {
   height: var(--logo-bar-h);
-  @apply relative;
+  @apply relative cursor-pointer;
   &:after {
     content: "";
     background: no-repeat var(--logo-s-url) center left;

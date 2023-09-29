@@ -15,11 +15,11 @@
  */
 
 import {
-AfterViewInit,
-ChangeDetectionStrategy,
-ChangeDetectorRef,
-Component,
-inject
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject
 } from "@angular/core";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ExplorerColumn, SectionFilterDialogConfig, TargetData} from "../../explorer.types";
@@ -28,13 +28,13 @@ import {InputTextModule} from "primeng/inputtext";
 import {SortOrder} from "../../../global/types";
 import {Params, QueryParamsHandling} from "@angular/router";
 import {
-DatePipe,
-NgClass,
-NgIf,
-NgSwitch,
-NgSwitchCase,
-NgSwitchDefault,
-NgTemplateOutlet
+  DatePipe,
+  NgClass,
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet
 } from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {SectionFilter} from "./section-filter-dialog.constants";
@@ -226,7 +226,9 @@ export class SectionFilterDialogComponent implements AfterViewInit {
     }
     import("./target/target-columns-dialog.component").then(m => {
       this.dialogService.open(m.TargetColumnsDialogComponent, {
-        header: this.referencedTarget.entity.target,
+        header: this.localizePipe.transform(
+          this.referencedTarget.entity.name, this.referencedTarget.entity.target
+        ) as string,
         data: {target: this.referencedTarget, selected: selectedCol},
         modal: true,
         position: "top",

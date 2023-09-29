@@ -85,8 +85,20 @@ p-paginator {
   }
 }
 
-.p-dialog-content{
+.p-dialog-content {
   @screen max-lg {
     @apply px-2 py-2 #{!important};
   }
+}
+
+.c-primary {
+  color: var(--primary-color)
+}
+
+.c-accent {
+  color: var(--accent-color)
+}
+
+.c-success {
+  color: var(--success-color)
 }

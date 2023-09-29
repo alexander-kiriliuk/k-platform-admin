@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 import {MenuCommandHandler} from "../global/types";
 import {Store} from "../modules/store/store";
@@ -34,6 +34,7 @@ import {AvatarModule} from "primeng/avatar";
 import {MediaComponent} from "../modules/media/media.component";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
+import {DashboardEvent} from "./dashboard.event";
 
 
 @Component({
@@ -62,15 +63,21 @@ export class DashboardComponent implements MenuCommandHandler {
 
   menuModel: MenuItem[] = [];
   sidebarOverMode: boolean;
+  title: string;
   readonly currentUser = inject(CurrentUser);
   private readonly store = inject(Store);
   private readonly tm = inject(TranslationManager);
   private readonly dialogService = inject(DialogService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   constructor() {
     this.tm.waitFor("dashboard").subscribe(() =>
       this.menuModel = Dashboard.createMenuModel(this, this.tm.translocoService)
     );
+    this.store.on<string>(DashboardEvent.PatchHeader).subscribe(v => {
+      this.title = v.payload;
+      this.cdr.markForCheck();
+    });
   }
 
   get preloaderChannel() {
