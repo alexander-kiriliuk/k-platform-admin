@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core"
 import {CurrentUser} from "../global/service/current-user";
 import {ButtonModule} from "primeng/button";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
-import {provideTranslocoScope, TranslocoPipe} from "@ngneat/transloco";
+import {TranslocoPipe} from "@ngneat/transloco";
 import {InputTextModule} from "primeng/inputtext";
 import {CreateProfileForm} from "./profile.constants";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -28,9 +28,6 @@ import {User} from "../global/types";
     MediaComponent,
     InputSwitchModule,
     CheckboxModule,
-  ],
-  providers: [
-    provideTranslocoScope("profile"),
   ]
 })
 export class ProfileComponent implements OnInit {

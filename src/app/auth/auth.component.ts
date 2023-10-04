@@ -26,7 +26,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Store} from "../modules/store/store";
 import {AuthEvent} from "./auth.event";
-import {provideTranslocoScope, TranslocoPipe} from "@ngneat/transloco";
+import {TranslocoPipe} from "@ngneat/transloco";
 import {catchError} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {ToastEvent} from "../global/events";
@@ -47,9 +47,6 @@ import {ToastData} from "../global/types";
     ImageModule,
     ReactiveFormsModule,
     TranslocoPipe
-  ],
-  providers: [
-    provideTranslocoScope("auth")
   ]
 })
 export class AuthComponent {

@@ -16,7 +16,7 @@
 
 import {inject, Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {TargetData} from "./explorer.types";
+import {ExplorerTarget, TargetData} from "./explorer.types";
 import {StringUtils} from "../global/util/string.utils";
 import {PageableData, PageableParams} from "../global/types";
 import fillParams = StringUtils.fillParams;
@@ -28,6 +28,10 @@ export class ExplorerService {
 
   getTarget(target: string, type: "section" | "object") {
     return this.http.get<TargetData>(fillParams("/explorer/target/:target", target), {params: {type}});
+  }
+
+  getTargetList() {
+    return this.http.get<ExplorerTarget[]>("/explorer/target-list");
   }
 
   getSectionList<T = unknown>(target: string, params: PageableParams) {

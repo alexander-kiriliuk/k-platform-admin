@@ -3,6 +3,61 @@
     "error": "Ошибка",
     "warn": "Внимание"
   },
+  "auth": {
+    "login": "Логин",
+    "password": "Пароль",
+    "sign": {
+      "in": "Войти"
+    }
+  },
+  "dashboard": {
+    "theme": {
+      "light": "Светлая тема",
+      "dark": "Темная тема"
+    },
+    "menu": {
+      "profile": "Профиль",
+      "settings": "Настройки",
+      "exit": "Выход"
+    },
+    "loading": {
+      "profile": "Загрузка профиля..."
+    }
+  },
+  "explorer": {
+    "sort": "Сортировка",
+    "asc": "По возрастанию",
+    "desc": "По убыванию",
+    "apply": "Применить",
+    "exact": "Точное совпадение",
+    "sate": "Состояние",
+    "title": "{{name}} <span class=\"c-primary\">{{count}}</span>",
+    "filter": {
+      "label": "Поиск и фильтрация",
+      "head": "Поле {{v}}",
+      "select": "Выберите целевое поле",
+      "value": "Укажите значение",
+      "date": "Выберите диапазон дат"
+    }
+  },
+  "object": {
+    "title": "Объекты"
+  },
+  "profile": {
+    "save": "Применить",
+    "id": "ID",
+    "login": "Логин",
+    "email": "E-mail",
+    "phone": "Телефон",
+    "password": "Пароль",
+    "avatar": "Аватар",
+    "active": "Активность",
+    "name": {
+      "first": "Имя",
+      "last": "Фамилия"
+    },
+    "roles": "Роли"
+  },
   "primeng": {
     "format": {
       "date": {

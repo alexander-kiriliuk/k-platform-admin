@@ -1,0 +1,17 @@
+:host {
+  @apply block py-4 px-4 columns-1;
+  @apply lg:py-0 lg:px-0 lg:pb-8;
+  @apply md:columns-2;
+  @apply xl:columns-3;
+  @apply 2xl:columns-4;
+
+  & > div {
+    @apply mb-4 break-inside-avoid;
+  }
+
+  ::ng-deep {
+    .p-card-header {
+      @apply text-center p-4;
+    }
+  }
+}

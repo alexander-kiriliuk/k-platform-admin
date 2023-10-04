@@ -19,8 +19,6 @@ import {InjectionToken} from "@angular/core";
 export const MEDIA_URL = new InjectionToken<string>("MEDIA_URL");
 export const WEBP_SUPPORT = new InjectionToken<boolean>("WEBP_SUPPORT");
 
-export const SVG_MEDIA_TYPE = "svg-media";
-
 export enum ReservedMediaSize {
   THUMB = "thumb",
   ORIGINAL = "original"

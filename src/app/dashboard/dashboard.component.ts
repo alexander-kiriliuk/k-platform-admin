@@ -19,7 +19,6 @@ import {MenuItem, MenuItemCommandEvent} from "primeng/api";
 import {MenuCommandHandler} from "../global/types";
 import {Store} from "../modules/store/store";
 import {AuthEvent} from "../auth/auth.event";
-import {TranslationManager} from "../global/internationalization/translation-manager";
 import {Dashboard} from "./dashboard.constants";
 import {CurrentUser} from "../global/service/current-user";
 import {DialogService} from "primeng/dynamicdialog";
@@ -32,7 +31,7 @@ import {ThemeSwitcherComponent} from "./theme-switcher/theme-switcher.component"
 import {MenuModule} from "primeng/menu";
 import {AvatarModule} from "primeng/avatar";
 import {MediaComponent} from "../modules/media/media.component";
-import {TranslocoPipe} from "@ngneat/transloco";
+import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 import {DashboardEvent} from "./dashboard.event";
 
@@ -66,14 +65,12 @@ export class DashboardComponent implements MenuCommandHandler {
   title: string;
   readonly currentUser = inject(CurrentUser);
   private readonly store = inject(Store);
-  private readonly tm = inject(TranslationManager);
+  private readonly ts = inject(TranslocoService);
   private readonly dialogService = inject(DialogService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   constructor() {
-    this.tm.waitFor("dashboard").subscribe(() =>
-      this.menuModel = Dashboard.createMenuModel(this, this.tm.translocoService)
-    );
+    this.menuModel = Dashboard.createMenuModel(this, this.ts);
     this.store.on<string>(DashboardEvent.PatchHeader).subscribe(v => {
       this.title = v.payload;
       this.cdr.markForCheck();

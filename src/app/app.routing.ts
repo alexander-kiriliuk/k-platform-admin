@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-import {inject, Injectable} from "@angular/core";
-import {TranslocoService} from "@ngneat/transloco";
-import {filter, take} from "rxjs/operators";
 
-@Injectable({providedIn: "root"})
-export class TranslationManager {
-
-  readonly translocoService = inject(TranslocoService);
-
-  waitFor(scope: string) {
-    return this.translocoService.events$.pipe(
-      filter(e => e.type === "translationLoadSuccess" && e.payload.scope === scope),
-      take(1),
-    );
-  }
-
-}
+export const APP_ROUTES = [
+  {
+    path: "auth",
+    loadComponent: () => import("./auth/auth.component")
+      .then(m => m.AuthComponent)
+  },
+  {
+    path: "",
+    loadChildren: () => import("./dashboard/dashboard.routes")
+      .then(m => m.DashboardRoutes)
+  },
+];

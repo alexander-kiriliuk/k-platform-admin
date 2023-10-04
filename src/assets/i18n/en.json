@@ -3,6 +3,61 @@
     "error": "Error",
     "warn": "Warning"
   },
+  "auth": {
+    "login": "Login",
+    "password": "Password",
+    "sign": {
+      "in": "Sign in"
+    }
+  },
+  "dashboard": {
+    "theme": {
+      "light": "Light theme",
+      "dark": "Dark theme"
+    },
+    "menu": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "exit": "Exit"
+    },
+    "loading": {
+      "profile": "Loading profile..."
+    }
+  },
+  "explorer": {
+    "sort": "Sorting",
+    "asc": "Ascending order",
+    "desc": "Descending order",
+    "apply": "Apply",
+    "exact": "Exact match",
+    "sate": "State",
+    "title": "{{name}} <span class=\"c-primary\">{{count}}</span>",
+    "filter": {
+      "label": "Search and filtering",
+      "head": "Field {{v}}",
+      "select": "Select target field",
+      "value": "Enter value",
+      "date": "Select date range"
+    }
+  },
+  "object": {
+    "title": "Objects"
+  },
+  "profile": {
+    "save": "Apply",
+    "id": "ID",
+    "login": "Login",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "avatar": "Avatar",
+    "active": "Active",
+    "name": {
+      "first": "First name",
+      "last": "Last name"
+    },
+    "roles": "Roles"
+  },
   "primeng": {
     "format": {
       "date": {

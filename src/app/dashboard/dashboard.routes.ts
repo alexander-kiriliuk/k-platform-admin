@@ -16,17 +16,22 @@
 
 import {DashboardComponent} from "./dashboard.component";
 import {Routes} from "@angular/router";
-import {provideTranslocoScope} from "@ngneat/transloco";
 
 export const DashboardRoutes: Routes = [
   {
     path: "",
     component: DashboardComponent,
-    providers: [
-      provideTranslocoScope("dashboard"),
-      provideTranslocoScope("explorer"),
-    ],
-    loadChildren: () => import("../explorer/explorer.routes")
-      .then(m => m.ExplorerRoutes),
+    children: [
+      {
+        path: "section/:target",
+        loadComponent: () => import("../explorer/section/section.component")
+          .then(m => m.SectionComponent)
+      },
+      {
+        path: "system/objects",
+        loadComponent: () => import("../objects/objects.component")
+          .then(m => m.ObjectsComponent)
+      }
+    ]
   }
 ];

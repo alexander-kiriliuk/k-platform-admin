@@ -48,15 +48,15 @@ export class MediaComponent {
   }
 
   get file() {
-    return this.src.files.find(v => v.format.code === this.format);
+    return this.src?.files?.find(v => v.format.code === this.format);
   }
 
   get width() {
-    return this.file.width ? this.file.width.toString() : undefined;
+    return this.file?.width ? this.file.width.toString() : undefined;
   }
 
   get height() {
-    return this.file.height ? this.file.height.toString() : undefined;
+    return this.file?.height ? this.file.height.toString() : undefined;
   }
 
   get originalUrl() {
@@ -64,7 +64,7 @@ export class MediaComponent {
   }
 
   get alt(): string {
-    return this.localizePipe.transform(this.src.name) as string;
+    return this.localizePipe.transform(this.src?.name) as string;
   }
 
 }

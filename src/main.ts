@@ -22,7 +22,7 @@ import {AppComponent} from "./app/app.component";
 import {provideRouter} from "@angular/router";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {provideAnimations} from "@angular/platform-browser/animations";
-import {provideTransloco} from "@ngneat/transloco";
+import {provideTransloco, provideTranslocoLoader} from "@ngneat/transloco";
 import {LangUtils} from "./app/global/util/lang.utils";
 import {TranslocoHttpLoader} from "./app/global/internationalization/transloco-http-loader";
 import {Store} from "./app/modules/store/store";
@@ -38,6 +38,7 @@ import {MediaUtils} from "./app/modules/media/media.utils";
 import {LocalizePipe} from "./app/modules/locale/localize.pipe";
 import {DialogService} from "primeng/dynamicdialog";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
+import {APP_ROUTES} from "./app/app.routing";
 
 ThemeUtils.setDefaultTheme();
 
@@ -51,29 +52,15 @@ bootstrapApplication(AppComponent, {
     LocalizePipe,
     MessageService,
     DialogService,
-    provideHttpClient(
-      withInterceptorsFromDi()
-    ),
+    provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
-    provideRouter([
-      {
-        path: "auth",
-        loadComponent: () => import("./app/auth/auth.component")
-          .then(m => m.AuthComponent)
-      },
-      {
-        path: "",
-        loadChildren: () => import("./app/dashboard/dashboard.routes")
-          .then(m => m.DashboardRoutes)
-      },
-    ]),
+    provideRouter(APP_ROUTES),
+    provideTranslocoLoader(TranslocoHttpLoader),
     provideTransloco({
       config: {
         defaultLang: LangUtils.DefaultLang,
-        reRenderOnLangChange: true,
         prodMode: !isDevMode()
       },
-      loader: TranslocoHttpLoader
     }),
     {
       provide: APP_INITIALIZER,

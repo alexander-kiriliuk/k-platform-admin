@@ -1,0 +1,10 @@
+<div *ngFor="let item of targetList$ | async; let i = index">
+  <p-card [subheader]="item.tableName" [header]="(item.name | localize: item.target).toString()">
+    <ng-template pTemplate="header">
+      <media-res format="original" [src]="item.icon"/>
+    </ng-template>
+    <p>
+      xxxx desc:: {{item.description | localize:item.tableName}}
+    </p>
+  </p-card>
+</div>
