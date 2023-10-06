@@ -29,8 +29,8 @@ export const DashboardRoutes: Routes = [
       },
       {
         path: "system/objects",
-        loadComponent: () => import("../objects/objects.component")
-          .then(m => m.ObjectsComponent)
+        loadComponent: () => import("../object/object.component")
+          .then(m => m.ObjectComponent)
       }
     ]
   }

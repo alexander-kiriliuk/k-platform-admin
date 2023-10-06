@@ -38,7 +38,7 @@ import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
-import {Objects} from "./objects.constants";
+import {Object} from "./object.constants";
 import {PreloaderEvent} from "../modules/preloader/preloader.event";
 import {map} from "rxjs/operators";
 import {ExplorerTarget} from "../explorer/explorer.types";
@@ -46,10 +46,10 @@ import {DialogService} from "primeng/dynamicdialog";
 
 @UntilDestroy()
 @Component({
-  selector: "objects",
+  selector: "object",
   standalone: true,
-  templateUrl: "./objects.component.html",
-  styleUrls: ["./objects.component.scss"],
+  templateUrl: "./object.component.html",
+  styleUrls: ["./object.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgForOf,
@@ -69,7 +69,7 @@ import {DialogService} from "primeng/dynamicdialog";
     ExplorerService
   ]
 })
-export class ObjectsComponent {
+export class ObjectComponent {
 
   private readonly store = inject(Store);
   private readonly ts = inject(TranslocoService);
@@ -96,7 +96,7 @@ export class ObjectsComponent {
   );
 
   get preloaderChannel() {
-    return Objects.ObjectsPrCn;
+    return Object.ObjectsPrCn;
   }
 
   constructor() {

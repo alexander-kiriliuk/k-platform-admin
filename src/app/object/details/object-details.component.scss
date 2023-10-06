@@ -14,15 +14,26 @@
 .data-grid {
   & > div {
     @apply grid grid-cols-2 gap-4 py-1;
-    &:nth-child(1) > div:last-child {
+    & > div {
+      @apply flex items-center gap-x-2;
+      &:first-child {
+        color:  var(--surface-600);
+        @apply italic;
+      }
+      &:last-child {
+        @apply font-semibold;
+      }
+    }
+
+    &:nth-child(1) i {
       color: var(--primary-color);
     }
 
-    &:nth-child(2) > div:last-child {
+    &:nth-child(2) i {
       color: var(--accent-color);
     }
 
-    &:nth-child(3) > div:last-child {
+    &:nth-child(3) i {
       color: var(--orange-500);
     }
   }

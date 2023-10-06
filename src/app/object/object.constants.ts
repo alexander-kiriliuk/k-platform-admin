@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export namespace Objects {
+export namespace Object {
   export const ObjectsPrCn = "objects-cn";
 }
