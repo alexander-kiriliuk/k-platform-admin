@@ -14,17 +14,37 @@
  * limitations under the License.
  */
 
-import {AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {DashboardEvent} from "../dashboard/dashboard.event";
-import {TranslocoService} from "@ngneat/transloco";
+import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {Store} from "../modules/store/store";
 import {ExplorerService} from "../explorer/explorer.service";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {finalize, tap} from "rxjs";
+import {
+combineLatest,
+debounceTime,
+distinctUntilChanged,
+finalize,
+startWith,
+switchMap,
+tap
+} from "rxjs";
 import {CardModule} from "primeng/card";
 import {LocalizePipe} from "../modules/locale/localize.pipe";
 import {MediaComponent} from "../modules/media/media.component";
+import {BadgeModule} from "primeng/badge";
+import {InputTextModule} from "primeng/inputtext";
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {PreloaderComponent} from "../modules/preloader/preloader.component";
+import {PreloaderDirective} from "../modules/preloader/preloader.directive";
+import {Objects} from "./objects.constants";
+import {PreloaderEvent} from "../modules/preloader/preloader.event";
+import {map} from "rxjs/operators";
+import {ExplorerTarget} from "../explorer/explorer.types";
+import {DialogService} from "primeng/dynamicdialog";
 
+@UntilDestroy()
 @Component({
   selector: "objects",
   standalone: true,
@@ -37,31 +57,80 @@ import {MediaComponent} from "../modules/media/media.component";
     CardModule,
     NgIf,
     LocalizePipe,
-    MediaComponent
+    MediaComponent,
+    BadgeModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    TranslocoPipe,
+    PreloaderComponent,
+    PreloaderDirective
   ],
   providers: [
     ExplorerService
   ]
 })
-export class ObjectsComponent implements AfterViewInit {
+export class ObjectsComponent {
 
   private readonly store = inject(Store);
   private readonly ts = inject(TranslocoService);
   private readonly explorerService = inject(ExplorerService);
-  readonly targetList$ = this.explorerService.getTargetList().pipe(
-    tap(() => {
-      console.log("start-of-load");
-    }),
-    finalize(() => {
-      console.log("fin-of-load");
+  private readonly dialogService = inject(DialogService);
+  private readonly localizePipe = inject(LocalizePipe);
+  readonly ctrl: FormControl<string> = new FormControl();
+  readonly targetList$ = combineLatest([
+    this.ctrl.valueChanges.pipe(
+      startWith(""),
+      debounceTime(300),
+      distinctUntilChanged(),
+      untilDestroyed(this)
+    )
+  ]).pipe(
+    switchMap(([filterValue]) => {
+      const val = filterValue.trim().toLowerCase();
+      return this.explorerService.getTargetList().pipe(
+        tap(() => this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel)),
+        finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),
+        map(targetList => this.findTarget(targetList, val))
+      );
     })
   );
+
+  get preloaderChannel() {
+    return Objects.ObjectsPrCn;
+  }
 
   constructor() {
     this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("object.title"));
   }
 
-  ngAfterViewInit(): void {
+  showObjectDetails(item: ExplorerTarget) {
+    import("./details/object-details.component").then(c => {
+      this.dialogService.open(c.ObjectDetailsComponent, {
+        header: this.localizePipe.transform(item.name, item.target).toString(),
+        data: item.target,
+        resizable: true,
+        draggable: true,
+        modal: true,
+        position: "center"
+      });
+    });
+  }
+
+  private findTarget(targetList: ExplorerTarget[], val: string) {
+    if (!val) {
+      return targetList;
+    }
+    return targetList.filter(et => {
+      if (et.tableName.toLowerCase().indexOf(val) !== -1 || et.target.toLowerCase().indexOf(val) !== -1) {
+        return true;
+      }
+      for (const ls of et.name) {
+        if (ls.value.toLowerCase().indexOf(val) !== -1) {
+          return true;
+        }
+      }
+      return false;
+    });
   }
 
 }

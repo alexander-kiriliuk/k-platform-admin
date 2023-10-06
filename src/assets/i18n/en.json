@@ -41,7 +41,21 @@
     }
   },
   "object": {
-    "title": "Objects"
+    "title": "Объекты",
+    "search": "Search",
+    "details": {
+      "target": {
+        "name": "Object name",
+        "table": "Table name",
+        "pk": "Primary key (name)"
+      },
+      "object": {
+        "name": "Name",
+        "description": "Description",
+        "icon": "Icon"
+      },
+      "save": "Save"
+    }
   },
   "profile": {
     "save": "Apply",

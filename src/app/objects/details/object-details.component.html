@@ -1,0 +1,38 @@
+<div *ngIf="target$ | async as target" class="content-wrapper">
+  <div class="cols">
+    <p-accordion *ngFor="let col of target.entity.columns" [multiple]="true">
+      <p-accordionTab [header]="(col.name | localize:col.property).toString()">
+        {{col.type}}
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <div class="right">
+    <div class="data-grid">
+      <div>
+        <div>{{"object.details.target.name" | transloco}}</div>
+        <div>{{target.entity.target}}</div>
+      </div>
+      <div>
+        <div>{{"object.details.target.table" | transloco}}</div>
+        <div>{{target.entity.tableName}}</div>
+      </div>
+      <div>
+        <div>{{"object.details.target.pk" | transloco}}</div>
+        <div>{{target.primaryColumn.property}}</div>
+      </div>
+    </div>
+    <div>
+      <input type="text" pInputText [placeholder]="'object.details.object.name' | transloco"/>
+    </div>
+    <div>
+      <input type="text" pInputText [placeholder]="'object.details.object.description' | transloco"/>
+    </div>
+    <div>
+      {{"object.details.object.icon" | transloco}}
+    </div>
+    <div class="actions">
+      <button pButton>{{"object.details.save" | transloco}}</button>
+    </div>
+  </div>
+</div>
+<preloader *preloading="{state: true, channel: preloaderChannel}"/>

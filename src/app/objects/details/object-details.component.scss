@@ -1,0 +1,39 @@
+:host {
+  max-width: 75vw;
+  @apply block;
+}
+
+.cols {
+  @apply flex flex-col gap-4;
+}
+
+.content-wrapper {
+  @apply grid grid-cols-2 gap-x-8 w-full;
+}
+
+.data-grid {
+  & > div {
+    @apply grid grid-cols-2 gap-4 py-1;
+    &:nth-child(1) > div:last-child {
+      color: var(--primary-color);
+    }
+
+    &:nth-child(2) > div:last-child {
+      color: var(--accent-color);
+    }
+
+    &:nth-child(3) > div:last-child {
+      color: var(--orange-500);
+    }
+  }
+}
+
+.right {
+  & > div:not(.actions) {
+    @apply py-2;
+  }
+}
+
+.actions {
+  @apply py-8 text-center;
+}

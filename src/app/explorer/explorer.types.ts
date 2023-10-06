@@ -28,6 +28,7 @@ export interface ExplorerTarget {
   description: LocalizedString[];
   icon: Media;
   columns: ExplorerColumn[];
+  size?: number;
 }
 
 export interface ExplorerColumn {
