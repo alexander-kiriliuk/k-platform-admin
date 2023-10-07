@@ -28,7 +28,11 @@
         <p-menu #menu [model]="menuModel" [popup]="true"/>
         <a *ngIf="(currentUser.asObservable | async) as user" (click)="menu.toggle($event)">
           <p-avatar shape="circle" [label]="currentUser.data.avatar ? '' : currentUser.initials">
-            <media-res *ngIf="currentUser.data.avatar" [background]="true" [src]="currentUser.data.avatar"/>
+            <media-res
+              *ngIf="currentUser.data.avatar"
+              format="thumb"
+              [src]="currentUser.data.avatar"
+              [background]="true"/>
           </p-avatar>
           <span class="user-login">{{currentUser.fullName}}</span>
         </a>

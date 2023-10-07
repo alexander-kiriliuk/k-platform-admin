@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ExplorerService} from "../../explorer/explorer.service";
-import {async, finalize, Observable, tap} from "rxjs";
+import {finalize, Observable, tap} from "rxjs";
 import {PreloaderEvent} from "../../modules/preloader/preloader.event";
 import {Store} from "../../modules/store/store";
 import {ObjectDetails} from "./object-details.constants";
@@ -15,6 +15,11 @@ import {InputTextModule} from "primeng/inputtext";
 import {ReactiveFormsModule} from "@angular/forms";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {ButtonModule} from "primeng/button";
+import {
+  LocalizeStringInputComponent
+} from "../../modules/locale/input/localize-string-input.component";
+import {map} from "rxjs/operators";
+import createForm = ObjectDetails.createForm;
 
 @Component({
   selector: "object-details",
@@ -33,7 +38,8 @@ import {ButtonModule} from "primeng/button";
     InputTextModule,
     ReactiveFormsModule,
     TranslocoPipe,
-    ButtonModule
+    ButtonModule,
+    LocalizeStringInputComponent
   ],
   providers: [ExplorerService]
 })
@@ -44,10 +50,15 @@ export class ObjectDetailsComponent {
   private readonly explorerService = inject(ExplorerService);
   private readonly store = inject(Store);
   readonly target$: Observable<TargetData>;
+  readonly form = createForm();
 
   constructor() {
     this.target$ = this.explorerService.getTarget(this.target, "object").pipe(
       tap(() => this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel)),
+      map(target => {
+        this.form.patchValue(target.entity);
+        return target;
+      }),
       finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),
     );
   }
@@ -58,6 +69,10 @@ export class ObjectDetailsComponent {
 
   get preloaderChannel() {
     return ObjectDetails.ObjectsDetailsPrCn;
+  }
+
+  saveObject() {
+    console.log(this.form.value);
   }
 
 }

@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
+import {FormControl, FormGroup} from "@angular/forms";
+import {ObjectForm} from "../object.types";
+import {LocalizedString} from "../../modules/locale/locale.types";
+import {Media} from "../../modules/media/media.types";
+
 export namespace ObjectDetails {
+
   export const ObjectsDetailsPrCn = "objects-det-cn";
+
+  export function createForm(): FormGroup<ObjectForm> {
+    return new FormGroup<ObjectForm>({
+      description: new FormControl<LocalizedString[]>(null),
+      icon: new FormControl<Media>(null),
+      name: new FormControl<LocalizedString[]>(null),
+      tableName: new FormControl<string>(null),
+      target: new FormControl<string>(null)
+    });
+  }
+
 }

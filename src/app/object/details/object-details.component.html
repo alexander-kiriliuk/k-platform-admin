@@ -1,4 +1,4 @@
-<div *ngIf="target$ | async as target" class="content-wrapper">
+<div *ngIf="target$ | async as target" class="content-wrapper" [formGroup]="form">
   <div class="cols">
     <p-accordion *ngFor="let col of target.entity.columns" [multiple]="true">
       <p-accordionTab [header]="(col.name | localize:col.property).toString()">
@@ -22,16 +22,17 @@
       </div>
     </div>
     <div>
-      <input type="text" pInputText [placeholder]="'object.details.object.name' | transloco"/>
+      <!--<input type="text" pInputText [placeholder]="'object.details.object.name' | transloco"/>-->
+      <localize-string-input formControlName="name" [placeholder]="'object.details.object.name' | transloco" />
     </div>
     <div>
-      <input type="text" pInputText [placeholder]="'object.details.object.description' | transloco"/>
+      <localize-string-input formControlName="description" [placeholder]="'object.details.object.description' | transloco" />
     </div>
     <div>
       {{"object.details.object.icon" | transloco}}
     </div>
     <div class="actions">
-      <button pButton>{{"object.details.save" | transloco}}</button>
+      <button pButton (click)="saveObject()">{{"object.details.save" | transloco}}</button>
     </div>
   </div>
 </div>

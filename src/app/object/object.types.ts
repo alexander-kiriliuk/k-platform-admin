@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-import {InjectionToken} from "@angular/core";
+import {LocalizedString} from "../modules/locale/locale.types";
+import {Media} from "../modules/media/media.types";
+import {FormControl} from "@angular/forms";
 
-export const MEDIA_URL = new InjectionToken<string>("Url to media storage");
-export const WEBP_SUPPORT = new InjectionToken<boolean>("WEBP media format support flag");
-
-export enum ReservedMediaSize {
-  THUMB = "thumb",
-  ORIGINAL = "original"
+export interface ObjectForm {
+  target: FormControl<string>;
+  tableName: FormControl<string>;
+  name: FormControl<LocalizedString[]>;
+  description: FormControl<LocalizedString[]>;
+  icon: FormControl<Media>;
 }

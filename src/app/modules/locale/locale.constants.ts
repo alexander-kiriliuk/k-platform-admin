@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
+
 import {InjectionToken} from "@angular/core";
+import {Language} from "./locale.types";
 
-export const MEDIA_URL = new InjectionToken<string>("Url to media storage");
-export const WEBP_SUPPORT = new InjectionToken<boolean>("WEBP media format support flag");
-
-export enum ReservedMediaSize {
-  THUMB = "thumb",
-  ORIGINAL = "original"
-}
+export const AVAIL_LANGS = new InjectionToken<Language[]>("Available lang-codes");

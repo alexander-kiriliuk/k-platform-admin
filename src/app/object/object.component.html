@@ -8,7 +8,7 @@
             [header]="(item.name | localize: item.target).toString()"
             (click)="showObjectDetails(item)">
       <ng-template pTemplate="header">
-        <media-res format="original" [src]="item.icon"/>
+        <media-res [src]="item.icon"/>
         <p-badge severity="info" [value]="item.size.toString()"></p-badge>
       </ng-template>
       <p>

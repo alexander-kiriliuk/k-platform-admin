@@ -30,7 +30,10 @@
     </div>
     <div>
       {{"profile.avatar" | transloco}}
-      <media-res [zoom]="true" [src]="currentUser.data.avatar"/>
+      <media-res
+        format="thumb"
+        [zoom]="true"
+        [src]="currentUser.data.avatar"/>
     </div>
     <div>
       {{"profile.name.first" | transloco}}

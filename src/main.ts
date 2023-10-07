@@ -23,7 +23,6 @@ import {provideRouter} from "@angular/router";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideTransloco, provideTranslocoLoader} from "@ngneat/transloco";
-import {LangUtils} from "./app/global/util/lang.utils";
 import {TranslocoHttpLoader} from "./app/global/internationalization/transloco-http-loader";
 import {Store} from "./app/modules/store/store";
 import {AppInitializer} from "./app/global/service/app-initializer";
@@ -37,8 +36,10 @@ import {DeviceInfoImpl} from "./app/modules/device/device-info.impl";
 import {MediaUtils} from "./app/modules/media/media.utils";
 import {LocalizePipe} from "./app/modules/locale/localize.pipe";
 import {DialogService} from "primeng/dynamicdialog";
-import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import {APP_ROUTES} from "./app/app.routing";
+import {AVAIL_LANGS} from "./app/modules/locale/locale.constants";
+import {LangUtils} from "./app/global/util/lang.utils";
+import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 
 ThemeUtils.setDefaultTheme();
 
@@ -79,6 +80,10 @@ bootstrapApplication(AppComponent, {
       deps: [
         DeviceDetectorService
       ]
+    },
+    {
+      provide: AVAIL_LANGS,
+      useFactory: LangUtils.getAvailableLangs
     },
     {
       provide: DEVICE,

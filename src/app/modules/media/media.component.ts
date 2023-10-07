@@ -19,7 +19,7 @@ import {NgIf} from "@angular/common";
 export class MediaComponent {
 
   @Input() src: Media;
-  @Input() format: string = ReservedMediaSize.THUMB;
+  @Input() format: string = ReservedMediaSize.ORIGINAL;
   @Input() background: boolean;
   @Input() zoom: boolean;
   private readonly localizePipe = inject(LocalizePipe);
