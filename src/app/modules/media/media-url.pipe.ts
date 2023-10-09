@@ -16,6 +16,9 @@ export class MediaUrlPipe implements PipeTransform {
       return undefined;
     }
     const ext = this.webpSupport && media.type.vp6 ? "webp" : media.type.ext.code;
+    if (ext === "svg") {
+      format = ReservedMediaSize.ORIGINAL;
+    }
     const file = media.files.find(v => v.format.code === format);
     const fileName = `${file.name}.${ext}`;
     return `${environment.mediaUrl}/${media.id}/${fileName}`;

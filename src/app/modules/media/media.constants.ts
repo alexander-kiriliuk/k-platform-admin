@@ -23,3 +23,5 @@ export enum ReservedMediaSize {
   THUMB = "thumb",
   ORIGINAL = "original"
 }
+
+export type MediaSize = "thumb" | "original" | string ;

@@ -20,6 +20,7 @@ import {
 } from "../../modules/locale/input/localize-string-input.component";
 import {map} from "rxjs/operators";
 import createForm = ObjectDetails.createForm;
+import {MediaInputComponent} from "../../modules/media/input/media-input.component";
 
 @Component({
   selector: "object-details",
@@ -39,7 +40,8 @@ import createForm = ObjectDetails.createForm;
     ReactiveFormsModule,
     TranslocoPipe,
     ButtonModule,
-    LocalizeStringInputComponent
+    LocalizeStringInputComponent,
+    MediaInputComponent
   ],
   providers: [ExplorerService]
 })

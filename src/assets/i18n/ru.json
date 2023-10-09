@@ -3,6 +3,19 @@
     "error": "Ошибка",
     "warn": "Внимание"
   },
+  "media": {
+    "input": {
+      "chose": "Выбрать",
+      "upload": "Загрузить",
+      "cancel": "Отменить",
+      "label": {
+        "files": {
+          "success": "Файлы успешно загружены"
+        }
+      },
+      "section.open": "Из галереи"
+    }
+  },
   "auth": {
     "login": "Логин",
     "password": "Пароль",

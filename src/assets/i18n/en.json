@@ -3,6 +3,19 @@
     "error": "Error",
     "warn": "Warning"
   },
+  "media": {
+    "input": {
+      "chose": "Chose",
+      "upload": "Upload",
+      "cancel": "Cancel",
+      "label": {
+        "files": {
+          "success": "Files uploaded successfully"
+        }
+      },
+      "section.open": "From gallery"
+    }
+  },
   "auth": {
     "login": "Login",
     "password": "Password",

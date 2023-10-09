@@ -1,6 +1,14 @@
-import {ChangeDetectionStrategy, Component, HostBinding, inject, Input} from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  inject,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from "@angular/core";
 import {Media} from "./media.types";
-import {ReservedMediaSize} from "./media.constants";
+import {MediaSize, ReservedMediaSize} from "./media.constants";
 import {ImageModule} from "primeng/image";
 import {LocalizePipe} from "../locale/localize.pipe";
 import {MediaUrlPipe} from "./media-url.pipe";
@@ -16,10 +24,10 @@ import {NgIf} from "@angular/common";
   imports: [ImageModule, LocalizePipe, NgIf],
   providers: [MediaUrlPipe]
 })
-export class MediaComponent {
+export class MediaComponent implements OnChanges {
 
-  @Input() src: Media;
-  @Input() format: string = ReservedMediaSize.ORIGINAL;
+  @Input({required: true}) src: Media;
+  @Input() format: MediaSize = ReservedMediaSize.ORIGINAL;
   @Input() background: boolean;
   @Input() zoom: boolean;
   private readonly localizePipe = inject(LocalizePipe);
@@ -65,6 +73,13 @@ export class MediaComponent {
 
   get alt(): string {
     return this.localizePipe.transform(this.src?.name) as string;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const ext = changes.src?.currentValue?.type?.ext?.code;
+    if (ext === "svg") {
+      this.format = ReservedMediaSize.ORIGINAL;
+    }
   }
 
 }
