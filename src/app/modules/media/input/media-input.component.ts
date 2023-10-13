@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output
+} from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Media} from "../media.types";
 import {FileUploadModule, UploadEvent} from "primeng/fileupload";
@@ -44,6 +52,7 @@ interface FileUploadEvent extends UploadEvent {
 })
 export class MediaInputComponent implements ControlValueAccessor {
 
+  @Output() changeMedia = new EventEmitter<Media | Media[]>();
   @Input({required: true}) mediaSize: MediaSize;
   @Input() url: string = "/media/upload";
   @Input() placeholder: string;
@@ -142,6 +151,7 @@ export class MediaInputComponent implements ControlValueAccessor {
 
   synchronize() {
     this.onChange(this.data);
+    this.changeMedia.emit(this.data);
   }
 
   registerOnChange(onChange: () => void) {

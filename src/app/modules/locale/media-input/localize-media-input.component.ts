@@ -1,39 +1,51 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from "@angular/core";
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {Language, LocalizedString} from "../locale.types";
-import {AVAIL_LANGS} from "../locale.constants";
-import {TabViewModule} from "primeng/tabview";
-import {NgForOf} from "@angular/common";
-import {MediaComponent} from "../../media/media.component";
-import {TranslocoService} from "@ngneat/transloco";
-import {InputTextareaModule} from "primeng/inputtextarea";
+import {Language, LocalizedMedia} from "../locale.types";
 import {NumberUtils} from "../../../global/util/number.utils";
+import {AVAIL_LANGS} from "../locale.constants";
+import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
+import {
+ControlValueAccessor,
+FormsModule,
+NG_VALUE_ACCESSOR,
+ReactiveFormsModule
+} from "@angular/forms";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {MediaComponent} from "../../media/media.component";
+import {NgForOf} from "@angular/common";
+import {SharedModule} from "primeng/api";
+import {TabViewModule} from "primeng/tabview";
+import {MediaInputComponent} from "../../media/input/media-input.component";
+import {MediaSize} from "../../media/media.constants";
 
 @Component({
-  selector: "localize-string-input",
+  selector: "localize-media-input",
   standalone: true,
-  templateUrl: "./localize-string-input.component.html",
-  styleUrls: ["./localize-string-input.component.scss"],
+  templateUrl: "./localize-media-input.component.html",
+  styleUrls: ["./localize-media-input.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    TabViewModule,
-    NgForOf,
-    MediaComponent,
     InputTextareaModule,
+    MediaComponent,
+    NgForOf,
+    ReactiveFormsModule,
+    SharedModule,
+    TabViewModule,
     FormsModule,
+    MediaInputComponent,
+    TranslocoPipe
   ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: LocalizeStringInputComponent
+      useExisting: LocalizeMediaInputComponent
     },
   ]
 })
-export class LocalizeStringInputComponent implements ControlValueAccessor {
-
+export class LocalizeMediaInputComponent  implements ControlValueAccessor {
   @Input() placeholder: string;
-  resData: { [k: string]: LocalizedString };
+  @Input({required: true}) mediaSize: MediaSize;
+  resData: { [k: string]: LocalizedMedia };
   disabled = false;
   activeTab = 0;
   readonly id = `lsi-${NumberUtils.getRandomInt()}`;
@@ -51,7 +63,7 @@ export class LocalizeStringInputComponent implements ControlValueAccessor {
     }
   }
 
-  writeValue(res: LocalizedString[]) {
+  writeValue(res: LocalizedMedia[]) {
     if (!res) {
       this.initEmptyValues();
       return;
@@ -65,7 +77,7 @@ export class LocalizeStringInputComponent implements ControlValueAccessor {
   }
 
   synchronize() {
-    const res: LocalizedString[] = [];
+    const res: LocalizedMedia[] = [];
     for (const k in this.resData) {
       res.push(this.resData[k]);
     }
@@ -85,7 +97,7 @@ export class LocalizeStringInputComponent implements ControlValueAccessor {
     this.cdr.markForCheck();
   }
 
-  onChange = (res: LocalizedString[]) => {
+  onChange = (res: LocalizedMedia[]) => {
   };
 
   onTouched = () => {
@@ -94,7 +106,7 @@ export class LocalizeStringInputComponent implements ControlValueAccessor {
   private initEmptyValues() {
     this.resData = {};
     for (const lang of this.availableLangs) {
-      this.resData[lang.id] = {value: null, lang} as LocalizedString;
+      this.resData[lang.id] = {value: null, lang} as LocalizedMedia;
     }
     this.synchronize();
   }

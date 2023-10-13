@@ -19,8 +19,8 @@ import {
   LocalizeStringInputComponent
 } from "../../modules/locale/string-input/localize-string-input.component";
 import {map} from "rxjs/operators";
-import createForm = ObjectDetails.createForm;
 import {MediaInputComponent} from "../../modules/media/input/media-input.component";
+import createForm = ObjectDetails.createForm;
 
 @Component({
   selector: "object-details",
