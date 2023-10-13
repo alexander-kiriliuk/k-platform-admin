@@ -17,9 +17,8 @@
 import {FormControl} from "@angular/forms";
 import {User} from "../global/types";
 
-export interface LoginForm {
-  login: FormControl<string>;
-  password: FormControl<string>;
+export type LoginForm = {
+  [K in keyof LoginPayload]: FormControl<LoginPayload[K]>;
 }
 
 export interface LoginPayload {

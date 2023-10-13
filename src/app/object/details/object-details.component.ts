@@ -20,7 +20,10 @@ import {
 } from "../../modules/locale/string-input/localize-string-input.component";
 import {map} from "rxjs/operators";
 import {MediaInputComponent} from "../../modules/media/input/media-input.component";
-import createForm = ObjectDetails.createForm;
+import createForm = ObjectDetails.createTargetForm;
+import createColumnForm = ObjectDetails.createColumnForm;
+import {InputNumberModule} from "primeng/inputnumber";
+import {CheckboxModule} from "primeng/checkbox";
 
 @Component({
   selector: "object-details",
@@ -41,7 +44,9 @@ import createForm = ObjectDetails.createForm;
     TranslocoPipe,
     ButtonModule,
     LocalizeStringInputComponent,
-    MediaInputComponent
+    MediaInputComponent,
+    InputNumberModule,
+    CheckboxModule
   ],
   providers: [ExplorerService]
 })
@@ -59,6 +64,7 @@ export class ObjectDetailsComponent {
       tap(() => this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel)),
       map(target => {
         this.form.patchValue(target.entity);
+        target.entity.columns.forEach(col => this.form.controls.columns.push(createColumnForm(col)));
         return target;
       }),
       finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),

@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-import {LocalizedString} from "../modules/locale/locale.types";
-import {Media} from "../modules/media/media.types";
-import {FormControl} from "@angular/forms";
+import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {ExplorerColumn, ExplorerTarget} from "../explorer/explorer.types";
 
-export interface ObjectForm {
-  target: FormControl<string>;
-  tableName: FormControl<string>;
-  name: FormControl<LocalizedString[]>;
-  description: FormControl<LocalizedString[]>;
-  icon: FormControl<Media>;
+type ObjectForm = {
+  [K in keyof ExplorerTarget]: FormControl<ExplorerTarget[K]>;
+}
+
+export type ColumnForm = {
+  [K in keyof ExplorerColumn]: FormControl<ExplorerColumn[K]>;
+}
+
+export interface TargetForm extends Omit<ObjectForm, "columns"> {
+  columns: FormArray<FormGroup<ColumnForm>>;
 }

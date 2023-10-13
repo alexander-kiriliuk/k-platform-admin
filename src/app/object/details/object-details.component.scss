@@ -5,6 +5,18 @@
 
 .cols {
   @apply flex flex-col gap-4;
+  .tab {
+    @apply flex flex-col gap-6;
+    ::ng-deep {
+      input, p-inputnumber, .p-inputnumber {
+        @apply w-full;
+      }
+    }
+  }
+}
+
+.cbx-container {
+  @apply flex gap-x-2 items-center w-full;
 }
 
 .content-wrapper {
@@ -17,9 +29,10 @@
     & > div {
       @apply flex items-center gap-x-2;
       &:first-child {
-        color:  var(--surface-600);
+        color: var(--surface-600);
         @apply italic;
       }
+
       &:last-child {
         @apply font-semibold;
       }

@@ -65,7 +65,7 @@ export interface User {
   lastName: LocalizedString[];
   active: boolean;
   roles: UserRole[];
-  tsCreated: Date;
+  tsCreated?: Date;
 }
 
 export interface UserRole {

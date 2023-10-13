@@ -15,19 +15,8 @@
  */
 
 import {FormControl} from "@angular/forms";
-import {Media} from "../modules/media/media.types";
-import {LocalizedString} from "../modules/locale/locale.types";
-import {UserRole} from "../global/types";
+import {User} from "../global/types";
 
-export interface UserForm {
-  active: FormControl<boolean>,
-  avatar: FormControl<Media>,
-  email: FormControl<string>,
-  firstName: FormControl<LocalizedString[]>,
-  id: FormControl<string>,
-  lastName: FormControl<LocalizedString[]>,
-  login: FormControl<string>,
-  password: FormControl<string>,
-  phone: FormControl<string>,
-  roles: FormControl<UserRole[]>,
+export type UserForm = {
+  [K in keyof User]: FormControl<User[K]>;
 }

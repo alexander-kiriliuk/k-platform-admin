@@ -37,12 +37,16 @@ export interface ExplorerColumn {
   name: LocalizedString[];
   description: LocalizedString[];
   target: ExplorerTarget;
+  type: ColumnDataType | string;
   primary: boolean;
   unique: boolean;
-  type: ColumnDataType | string;
   multiple: boolean;
   referencedTableName: string;
   referencedEntityName: string;
+  sectionPriority: number;
+  objectPriority: number;
+  sectionEnabled: boolean;
+  objectEnabled: boolean;
 }
 
 export interface TargetData {
