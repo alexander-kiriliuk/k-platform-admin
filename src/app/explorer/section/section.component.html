@@ -11,7 +11,11 @@
          (onPage)="getItems($event)">
   <ng-template pTemplate="header">
     <tr>
-      <th *ngIf="dialogMode"></th>
+      <th *ngIf="dialogMode">
+        <p-button *ngIf="multiselect" [disabled]="!selectedRowsCount" (click)="applySelectedRows()">
+          {{"explorer.select" | transloco: {v: selectedRowsCount} }}
+        </p-button>
+      </th>
       <th *ngFor="let item of targetData.entity.columns">
         <ng-container *ngIf="queryParamsSnapshot['sort'] === item.property">
           <i class="indicator pi" [ngClass]="{
@@ -29,7 +33,7 @@
     </tr>
   </ng-template>
   <ng-template let-item pTemplate="body">
-    <tr>
+    <tr [ngClass]="{selected: isSelected(item)}">
       <td *ngIf="dialogMode" class="set-btn" (click)="selectEntityAndCloseDialog(item)">
         <i class="pi pi-arrow-down-left"></i>
       </td>

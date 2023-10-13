@@ -12,6 +12,7 @@
   <ng-template pTemplate="toolbar">
     <button pButton class="p-button-success"
             [disabled]="disabled"
+            [loading]="targetLoadingState"
             (click)="openMediaSection()">
       {{"media.input.section.open" | transloco}}
     </button>

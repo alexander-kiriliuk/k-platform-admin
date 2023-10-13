@@ -57,5 +57,6 @@ export interface SectionFilterDialogConfig {
 }
 
 export interface SectionDialogConfig {
-  target: TargetData
+  target: TargetData;
+  multi?: boolean;
 }

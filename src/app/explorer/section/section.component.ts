@@ -1,10 +1,10 @@
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  HostBinding,
-  inject
+AfterViewInit,
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+HostBinding,
+inject
 } from "@angular/core";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {ExplorerService} from "../explorer.service";
@@ -23,12 +23,13 @@ import {ExplorerColumn, SectionDialogConfig, TargetData} from "../explorer.types
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {RippleModule} from "primeng/ripple";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {TranslocoService} from "@ngneat/transloco";
+import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {StringUtils} from "../../global/util/string.utils";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {DashboardEvent} from "../../dashboard/dashboard.event";
+import {ButtonModule} from "primeng/button";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
-import {DashboardEvent} from "../../dashboard/dashboard.event";
 
 @UntilDestroy()
 @Component({
@@ -45,7 +46,9 @@ import {DashboardEvent} from "../../dashboard/dashboard.event";
     RippleModule,
     NgClass,
     NgIf,
-    NgForOf
+    NgForOf,
+    TranslocoPipe,
+    ButtonModule
   ],
   providers: [
     ExplorerService,
@@ -55,6 +58,7 @@ export class SectionComponent implements AfterViewInit {
 
   targetData: TargetData;
   pageableData: PageableData;
+  readonly selectedRows: { [pk: string | number]: unknown } = {};
   private readonly dialogRef = inject(DynamicDialogRef, {optional: true});
   private readonly config = inject(DynamicDialogConfig, {optional: true});
   private readonly explorerService = inject(ExplorerService);
@@ -74,6 +78,10 @@ export class SectionComponent implements AfterViewInit {
     return this.dialogMode;
   }
 
+  get selectedRowsCount() {
+    return Object.keys(this.selectedRows).length;
+  }
+
   get preloaderChannel() {
     return Explorer.SectionPrCn;
   }
@@ -84,6 +92,10 @@ export class SectionComponent implements AfterViewInit {
 
   get data() {
     return this.config?.data as SectionDialogConfig;
+  }
+
+  get multiselect() {
+    return this.data?.multi;
   }
 
   get dialogMode() {
@@ -181,8 +193,34 @@ export class SectionComponent implements AfterViewInit {
     this.doNavigate(queryParams);
   }
 
-  selectEntityAndCloseDialog(item: unknown) {
-    this.dialogRef.close(item);
+  selectEntityAndCloseDialog(item: { [k: string]: unknown }) {
+    if (!this.multiselect) {
+      this.dialogRef.close(item);
+      return;
+    }
+    const pk = item[this.targetData.primaryColumn.property] as string;
+    if (this.selectedRows[pk]) {
+      delete this.selectedRows[pk];
+    } else {
+      this.selectedRows[pk] = item;
+    }
+    this.cdr.markForCheck();
+  }
+
+  applySelectedRows() {
+    const res: unknown[] = [];
+    for (const key in this.selectedRows) {
+      res.push(this.selectedRows[key]);
+    }
+    this.dialogRef.close(res);
+  }
+
+  isSelected(item: { [k: string]: unknown }) {
+    if (!this.multiselect) {
+      return false;
+    }
+    const pk = item[this.targetData.primaryColumn.property] as string;
+    return this.selectedRows[pk] !== undefined;
   }
 
   private getSection(params?: PageableParams) {

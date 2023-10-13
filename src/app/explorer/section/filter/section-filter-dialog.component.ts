@@ -22,7 +22,12 @@ import {
   inject
 } from "@angular/core";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {ExplorerColumn, SectionFilterDialogConfig, TargetData} from "../../explorer.types";
+import {
+ExplorerColumn,
+SectionDialogConfig,
+SectionFilterDialogConfig,
+TargetData
+} from "../../explorer.types";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {InputTextModule} from "primeng/inputtext";
 import {SortOrder} from "../../../global/types";
@@ -252,7 +257,7 @@ export class SectionFilterDialogComponent implements AfterViewInit {
       const entity = this.referencedTarget.entity;
       this.dialogService.open(m.SectionComponent, {
         header: this.localizePipe.transform(entity.name, entity.target) as string,
-        data: {target: this.referencedTarget},
+        data: {target: this.referencedTarget} as SectionDialogConfig,
         modal: true,
         position: "top",
       }).onClose.subscribe(payload => {

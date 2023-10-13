@@ -9,6 +9,10 @@ import {MediaComponent} from "../media.component";
 import {LocalizePipe} from "../../locale/localize.pipe";
 import {MediaSize} from "../media.constants";
 import {TranslocoPipe} from "@ngneat/transloco";
+import {DialogService} from "primeng/dynamicdialog";
+import {SectionDialogConfig} from "../../../explorer/explorer.types";
+import {ExplorerService} from "../../../explorer/explorer.service";
+import {finalize} from "rxjs";
 
 interface FileUploadEvent extends UploadEvent {
   files: File[];
@@ -47,6 +51,10 @@ export class MediaInputComponent implements ControlValueAccessor {
   disabled = false;
   uploadedFiles: File[];
   data: Media | Media[];
+  targetLoadingState: boolean;
+  private readonly dialogService = inject(DialogService);
+  private readonly localizePipe = inject(LocalizePipe);
+  private readonly explorerService = inject(ExplorerService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   get uploadUrl() {
@@ -92,8 +100,34 @@ export class MediaInputComponent implements ControlValueAccessor {
   }
 
   openMediaSection() {
-    console.log("openMediaSection");
-    // todo
+    this.targetLoadingState = true;
+    this.explorerService.getTarget("MediaEntity", "section").pipe(finalize(() => {
+      this.targetLoadingState = false;
+      this.cdr.markForCheck();
+    })).subscribe(payload => {
+      import("../../../explorer/section/section.component").then(m => {
+        this.dialogService.open(m.SectionComponent, {
+          header: this.localizePipe.transform(payload.entity.name, payload.entity.target) as string,
+          data: {target: payload, multi: this.multi} as SectionDialogConfig,
+          modal: true,
+          position: "top",
+        }).onClose.subscribe((res: Media | Media[]) => {
+          if (!res) {
+            return;
+          }
+          if (this.multi) {
+            if (!this.data) {
+              this.data = [];
+            }
+            this.data = (this.data as Media[]).concat(res);
+          } else {
+            this.data = res;
+          }
+          this.synchronize();
+          this.cdr.markForCheck();
+        });
+      });
+    });
   }
 
   removeUploadedMedia(idx: number) {

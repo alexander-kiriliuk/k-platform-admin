@@ -1,7 +1,11 @@
-:host{
-  ::ng-deep{
-    .p-fileupload-content{
+:host {
+  ::ng-deep {
+    .p-fileupload-content {
       @apply px-0 pt-2 pb-4;
+    }
+
+    .p-button-success {
+      @apply inline-flex items-center gap-x-1;
     }
   }
 }

@@ -38,6 +38,7 @@
     }
   },
   "explorer": {
+    "select": "Set {{v}}",
     "sort": "Sorting",
     "asc": "Ascending order",
     "desc": "Descending order",
