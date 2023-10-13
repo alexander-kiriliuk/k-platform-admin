@@ -17,7 +17,7 @@ import {TranslocoPipe} from "@ngneat/transloco";
 import {ButtonModule} from "primeng/button";
 import {
   LocalizeStringInputComponent
-} from "../../modules/locale/input/localize-string-input.component";
+} from "../../modules/locale/string-input/localize-string-input.component";
 import {map} from "rxjs/operators";
 import createForm = ObjectDetails.createForm;
 import {MediaInputComponent} from "../../modules/media/input/media-input.component";
