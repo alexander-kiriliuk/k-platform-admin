@@ -8,7 +8,7 @@
   .tab {
     @apply flex flex-col gap-6;
     ::ng-deep {
-      input, p-inputnumber, .p-inputnumber {
+      input, p-inputnumber, .p-inputnumber, p-autoComplete, .p-autocomplete, .p-autocomplete-input {
         @apply w-full;
       }
     }

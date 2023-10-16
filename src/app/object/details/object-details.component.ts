@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ExplorerService} from "../../explorer/explorer.service";
 import {finalize, Observable, tap} from "rxjs";
@@ -16,14 +16,16 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {ButtonModule} from "primeng/button";
 import {
-  LocalizeStringInputComponent
+LocalizeStringInputComponent
 } from "../../modules/locale/string-input/localize-string-input.component";
 import {map} from "rxjs/operators";
 import {MediaInputComponent} from "../../modules/media/input/media-input.component";
-import createForm = ObjectDetails.createTargetForm;
-import createColumnForm = ObjectDetails.createColumnForm;
 import {InputNumberModule} from "primeng/inputnumber";
 import {CheckboxModule} from "primeng/checkbox";
+import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplete";
+import {Explorer} from "../../explorer/explorer.constants";
+import createForm = ObjectDetails.createTargetForm;
+import createColumnForm = ObjectDetails.createColumnForm;
 
 @Component({
   selector: "object-details",
@@ -46,7 +48,8 @@ import {CheckboxModule} from "primeng/checkbox";
     LocalizeStringInputComponent,
     MediaInputComponent,
     InputNumberModule,
-    CheckboxModule
+    CheckboxModule,
+    AutoCompleteModule
   ],
   providers: [ExplorerService]
 })
@@ -55,9 +58,11 @@ export class ObjectDetailsComponent {
   private readonly config = inject(DynamicDialogConfig);
   private readonly ref = inject(DynamicDialogRef);
   private readonly explorerService = inject(ExplorerService);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   readonly target$: Observable<TargetData>;
   readonly form = createForm();
+  suggestions: string[] = [];
 
   constructor() {
     this.target$ = this.explorerService.getTarget(this.target, "object").pipe(
@@ -79,8 +84,19 @@ export class ObjectDetailsComponent {
     return ObjectDetails.ObjectsDetailsPrCn;
   }
 
+  searchType(e: AutoCompleteCompleteEvent) {
+    this.suggestions = Explorer.Types.filter(s => s.startsWith(e.query.trim()));
+    this.cdr.markForCheck();
+  }
+
   saveObject() {
-    console.log(this.form.value);
+    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.explorerService.saveTarget(this.form.getRawValue()).pipe(
+      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel))
+    ).subscribe(v => {
+      this.form.patchValue(v);
+      v.columns.forEach(col => this.form.controls.columns.push(createColumnForm(col)));
+    });
   }
 
 }

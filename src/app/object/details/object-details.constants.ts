@@ -18,7 +18,7 @@ import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {ColumnForm, TargetForm} from "../object.types";
 import {LocalizedString} from "../../modules/locale/locale.types";
 import {Media} from "../../modules/media/media.types";
-import {ExplorerColumn, ExplorerTarget} from "../../explorer/explorer.types";
+import {ExplorerColumn} from "../../explorer/explorer.types";
 
 export namespace ObjectDetails {
 
@@ -37,17 +37,16 @@ export namespace ObjectDetails {
 
   export function createColumnForm(payload: ExplorerColumn): FormGroup<ColumnForm> {
     return new FormGroup<ColumnForm>({
+      id: new FormControl<string>({value: payload.id, disabled: true}),
+      property: new FormControl<string>({value: payload.property, disabled: true}),
+      multiple: new FormControl<boolean>({value: payload.multiple, disabled: true}),
+      primary: new FormControl<boolean>({value: payload.primary, disabled: true}),
+      unique: new FormControl<boolean>({value: payload.unique, disabled: true}),
+      referencedEntityName: new FormControl<string>({value: payload.referencedEntityName, disabled: true}),
+      referencedTableName: new FormControl<string>({value: payload.referencedTableName, disabled: true}),
       description: new FormControl<LocalizedString[]>(payload.description),
-      id: new FormControl<string>(payload.id),
-      multiple: new FormControl<boolean>(payload.multiple),
       name: new FormControl<LocalizedString[]>(payload.name),
-      primary: new FormControl<boolean>(payload.primary),
-      property: new FormControl<string>(payload.property),
-      referencedEntityName: new FormControl<string>(payload.referencedEntityName),
-      referencedTableName: new FormControl<string>(payload.referencedTableName),
-      target: new FormControl<ExplorerTarget>(payload.target),
       type: new FormControl<string>(payload.type),
-      unique: new FormControl<boolean>(payload.unique),
       objectEnabled: new FormControl<boolean>(payload.objectEnabled),
       objectPriority: new FormControl<number>(payload.objectPriority),
       sectionEnabled: new FormControl<boolean>(payload.sectionEnabled),

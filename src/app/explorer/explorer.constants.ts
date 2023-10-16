@@ -18,4 +18,6 @@ export namespace Explorer {
 
   export const SectionPrCn = "section-cn";
 
+  export const Types = ["string", "number", "boolean", "date", "reference", "unknown"];
+
 }

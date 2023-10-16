@@ -68,7 +68,23 @@
         "description": "Description",
         "icon": "Icon"
       },
-      "save": "Save"
+      "save": "Save",
+      "col": {
+        "id": "ID",
+        "property": "Object property",
+        "name": "Name",
+        "description": "Description",
+        "type": "Data type",
+        "primary": "Primary",
+        "unique": "Unique",
+        "multiple": "Array of values",
+        "ref.tbl.name": "Name of the related table",
+        "ref.ent.name": "Name of the associated entity",
+        "sec.priority": "Section priority",
+        "obj.priority": "Priority in object",
+        "sec.enabled": "Available in section",
+        "obj.enabled": "Enabled in object"
+      }
     }
   },
   "profile": {

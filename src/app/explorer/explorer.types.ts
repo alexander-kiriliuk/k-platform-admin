@@ -36,7 +36,6 @@ export interface ExplorerColumn {
   property: string;
   name: LocalizedString[];
   description: LocalizedString[];
-  target: ExplorerTarget;
   type: ColumnDataType | string;
   primary: boolean;
   unique: boolean;

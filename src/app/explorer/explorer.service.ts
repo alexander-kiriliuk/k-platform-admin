@@ -60,4 +60,8 @@ export class ExplorerService {
     });
   }
 
+  saveTarget(data: ExplorerTarget) {
+    return this.http.post<ExplorerTarget>("/explorer/target", data);
+  }
+
 }

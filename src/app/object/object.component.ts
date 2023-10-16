@@ -20,15 +20,7 @@ import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {Store} from "../modules/store/store";
 import {ExplorerService} from "../explorer/explorer.service";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {
-combineLatest,
-debounceTime,
-distinctUntilChanged,
-finalize,
-startWith,
-switchMap,
-tap
-} from "rxjs";
+import {debounceTime, distinctUntilChanged, finalize, of, startWith, switchMap, tap} from "rxjs";
 import {CardModule} from "primeng/card";
 import {LocalizePipe} from "../modules/locale/localize.pipe";
 import {MediaComponent} from "../modules/media/media.component";
@@ -77,21 +69,27 @@ export class ObjectComponent {
   private readonly dialogService = inject(DialogService);
   private readonly localizePipe = inject(LocalizePipe);
   readonly ctrl: FormControl<string> = new FormControl();
-  readonly targetList$ = combineLatest([
-    this.ctrl.valueChanges.pipe(
-      startWith(""),
-      debounceTime(300),
-      distinctUntilChanged(),
-      untilDestroyed(this)
-    )
-  ]).pipe(
-    switchMap(([filterValue]) => {
-      const val = filterValue.trim().toLowerCase();
-      return this.explorerService.getTargetList().pipe(
-        tap(() => this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel)),
-        finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),
-        map(targetList => this.findTarget(targetList, val))
-      );
+  private targetsCache: ExplorerTarget[] = [];
+
+  readonly targetList$ = this.ctrl.valueChanges.pipe(
+    startWith(""),
+    map(value => value.trim().toLowerCase()),
+    debounceTime(300),
+    distinctUntilChanged(),
+    untilDestroyed(this),
+    switchMap(filterValue => {
+      if (this.targetsCache.length === 0) {
+        return this.explorerService.getTargetList().pipe(
+          tap(targets => {
+            this.targetsCache = targets;
+            this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+          }),
+          finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),
+          map(targetList => this.findTarget(targetList, filterValue))
+        );
+      } else {
+        return of(this.findTarget(this.targetsCache, filterValue));
+      }
     })
   );
 
