@@ -26,6 +26,7 @@ import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplet
 import {Explorer} from "../../explorer/explorer.constants";
 import createForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
+import {RefInputComponent} from "../../modules/ref-input/ref-input.component";
 
 @Component({
   selector: "object-details",
@@ -49,7 +50,8 @@ import createColumnForm = ObjectDetails.createColumnForm;
     MediaInputComponent,
     InputNumberModule,
     CheckboxModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    RefInputComponent
   ],
   providers: [ExplorerService]
 })

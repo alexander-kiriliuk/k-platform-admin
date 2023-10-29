@@ -14,6 +14,18 @@
               [formControl]="colForm.controls.description"
               [placeholder]="'object.details.col.description' | transloco"/>
           </div>
+          <div>
+            <ref-input target="ExplorerColumnRendererEntity"
+                       [params]="{filter: '::type:section'}"
+                       [placeholder]="'object.details.col.renderer.section' | transloco"
+                       [formControl]="colForm.controls.sectionRenderer"/>
+          </div>
+          <div>
+            <ref-input target="ExplorerColumnRendererEntity"
+                       [params]="{filter: '::type:object'}"
+                       [placeholder]="'object.details.col.renderer.object' | transloco"
+                       [formControl]="colForm.controls.objectRenderer"/>
+          </div>
           <div class="p-float-label">
             <p-autoComplete inputId="colType"
                             [formControl]="colForm.controls.type"

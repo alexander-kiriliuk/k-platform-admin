@@ -15,7 +15,7 @@ import {PreloaderDirective} from "../../modules/preloader/preloader.directive";
 import {PreloaderEvent} from "../../modules/preloader/preloader.event";
 import {ActivatedRoute, Params, QueryParamsHandling, Router} from "@angular/router";
 import {catchError} from "rxjs/operators";
-import {PageableData, PageableParams, ToastData} from "../../global/types";
+import {PageableData, PageableParams, PlainObject, ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {TableModule, TablePageEvent} from "primeng/table";
@@ -128,7 +128,7 @@ export class SectionComponent implements AfterViewInit {
         this.getTarget();
       });
     } else {
-      this.getSection();
+      this.getSection(this.data?.initialPageableParams);
     }
     this.queryParams$.pipe(skip(1), untilDestroyed(this)).subscribe(v => {
       this.getSection(v as PageableParams);
@@ -193,7 +193,7 @@ export class SectionComponent implements AfterViewInit {
     this.doNavigate(queryParams);
   }
 
-  selectEntityAndCloseDialog(item: { [k: string]: unknown }) {
+  selectEntityAndCloseDialog(item: PlainObject) {
     if (!this.multiselect) {
       this.dialogRef.close(item);
       return;
@@ -215,7 +215,7 @@ export class SectionComponent implements AfterViewInit {
     this.dialogRef.close(res);
   }
 
-  isSelected(item: { [k: string]: unknown }) {
+  isSelected(item: PlainObject) {
     if (!this.multiselect) {
       return false;
     }

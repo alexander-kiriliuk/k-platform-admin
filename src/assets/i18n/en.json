@@ -83,7 +83,11 @@
         "sec.priority": "Section priority",
         "obj.priority": "Priority in object",
         "sec.enabled": "Available in section",
-        "obj.enabled": "Enabled in object"
+        "obj.enabled": "Enabled in object",
+        "renderer": {
+          "section": "Section renderer",
+          "object": "Object renderer"
+        }
       }
     }
   },

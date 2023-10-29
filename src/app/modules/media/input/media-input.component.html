@@ -1,6 +1,7 @@
 <p-fileUpload
   name="file"
   accept="image/*"
+  chooseIcon="pi pi-folder-open"
   [disabled]="disabled"
   [cancelLabel]="'media.input.cancel' | transloco"
   [chooseLabel]="'media.input.chose' | transloco"
@@ -40,9 +41,11 @@
   </ng-template>
 </p-fileUpload>
 <ng-template #mediaItem let-media="media" let-idx="idx">
-  <p-button styleClass="p-button-rounded p-button-danger p-button-text"
-            icon="pi pi-times"
-            (click)="removeUploadedMedia(idx)" />
+  <p-button
+    icon="pi pi-times" severity="danger"
+    [rounded]="true"
+    [text]="true"
+    (click)="removeUploadedMedia(idx)"/>
   <media-res format="thumb" [src]="media"/>
   {{media.name | localize: (media.code ?? 'id_' + media.id)}}
 </ng-template>

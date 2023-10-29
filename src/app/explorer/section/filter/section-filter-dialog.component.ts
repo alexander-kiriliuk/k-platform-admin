@@ -86,7 +86,8 @@ import createFieldFilterForm = SectionFilter.createFieldFilterForm;
   ],
   providers: [
     ExplorerService,
-    DatePipe
+    DatePipe,
+    DialogService
   ]
 })
 export class SectionFilterDialogComponent implements AfterViewInit {

@@ -18,6 +18,7 @@
 import {LocalizedString} from "../modules/locale/locale.types";
 import {Media} from "../modules/media/media.types";
 import {Params, QueryParamsHandling} from "@angular/router";
+import {PageableParams} from "../global/types";
 
 export type ColumnDataType = "string" | "number" | "boolean" | "date" | "reference" | "unknown";
 
@@ -46,10 +47,23 @@ export interface ExplorerColumn {
   objectPriority: number;
   sectionEnabled: boolean;
   objectEnabled: boolean;
+  sectionRenderer: ExplorerColumnRenderer;
+  objectRenderer: ExplorerColumnRenderer;
+}
+
+export type ExplorerRendererType = "section" | "object";
+
+export class ExplorerColumnRenderer {
+  code: string;
+  name: LocalizedString[];
+  description: LocalizedString[];
+  type: ExplorerRendererType;
+  params: object;
 }
 
 export interface TargetData {
   primaryColumn: ExplorerColumn;
+  namedColumn: ExplorerColumn;
   entity: ExplorerTarget;
 }
 
@@ -62,4 +76,5 @@ export interface SectionFilterDialogConfig {
 export interface SectionDialogConfig {
   target: TargetData;
   multi?: boolean;
+  initialPageableParams?: PageableParams;
 }

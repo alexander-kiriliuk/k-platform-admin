@@ -18,7 +18,7 @@ import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {ColumnForm, TargetForm} from "../object.types";
 import {LocalizedString} from "../../modules/locale/locale.types";
 import {Media} from "../../modules/media/media.types";
-import {ExplorerColumn} from "../../explorer/explorer.types";
+import {ExplorerColumn, ExplorerColumnRenderer} from "../../explorer/explorer.types";
 
 export namespace ObjectDetails {
 
@@ -49,8 +49,10 @@ export namespace ObjectDetails {
       type: new FormControl<string>(payload.type),
       objectEnabled: new FormControl<boolean>(payload.objectEnabled),
       objectPriority: new FormControl<number>(payload.objectPriority),
+      objectRenderer: new FormControl<ExplorerColumnRenderer>(payload.objectRenderer),
       sectionEnabled: new FormControl<boolean>(payload.sectionEnabled),
       sectionPriority: new FormControl<number>(payload.sectionPriority),
+      sectionRenderer: new FormControl<ExplorerColumnRenderer>(payload.sectionRenderer),
     });
   }
 

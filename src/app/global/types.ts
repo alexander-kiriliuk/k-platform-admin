@@ -25,6 +25,8 @@ export interface MenuCommandHandler {
   onMenuCommand: (event: MenuItemCommandEvent, id?: string) => void;
 }
 
+export type PlainObject = { [k: string]: unknown };
+
 export type Env = {
   production: boolean;
   frontEndUrl: string;
@@ -75,10 +77,11 @@ export interface UserRole {
 }
 
 export interface PageableParams {
-  limit: number;
-  page: number;
+  limit?: number;
+  page?: number;
   sort?: string;
   order?: SortOrder;
+  filter?: string;
 }
 
 export interface PageableData<T = unknown> {

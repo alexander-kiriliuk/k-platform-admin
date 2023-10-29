@@ -39,6 +39,11 @@ export class MediaComponent implements OnChanges {
     return this.background;
   }
 
+  @HostBinding("class.has-preview")
+  private get previewClass() {
+    return this.zoom;
+  }
+
   @HostBinding("style")
   private get styleAttr() {
     if (!this.background) {
