@@ -20,7 +20,7 @@ import {TranslocoService} from "@ngneat/transloco";
 
 export namespace Dashboard {
 
-  export const MenuPrCn = "main-menu-cn";
+  export const MenuPreloaderCn = "main-menu-cn";
 
   export function createMenuModel(commandHandler: MenuCommandHandler, ts: TranslocoService): MenuItem[] {
     return [

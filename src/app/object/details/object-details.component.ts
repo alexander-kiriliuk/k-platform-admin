@@ -83,7 +83,7 @@ export class ObjectDetailsComponent {
   }
 
   get preloaderChannel() {
-    return ObjectDetails.ObjectsDetailsPrCn;
+    return ObjectDetails.PreloaderCn;
   }
 
   searchType(e: AutoCompleteCompleteEvent) {

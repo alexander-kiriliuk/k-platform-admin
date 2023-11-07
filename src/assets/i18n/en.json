@@ -3,6 +3,13 @@
     "error": "Error",
     "warn": "Warning"
   },
+  "xdb": {
+    "title": "Data Import",
+    "import": "Import",
+    "success": {
+      "import": "Successful import"
+    }
+  },
   "media": {
     "input": {
       "chose": "Chose",

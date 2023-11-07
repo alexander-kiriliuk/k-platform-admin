@@ -1,0 +1,13 @@
+:host {
+  @apply relative;
+}
+
+.actions {
+  @apply sticky top-0 pb-4;
+  background: var(--neutral-a);
+}
+
+textarea {
+  min-height: 500px;
+  @apply w-full mb-4;
+}

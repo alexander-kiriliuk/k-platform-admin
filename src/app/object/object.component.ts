@@ -94,7 +94,7 @@ export class ObjectComponent {
   );
 
   get preloaderChannel() {
-    return Object.ObjectsPrCn;
+    return Object.PreloaderCn;
   }
 
   constructor() {

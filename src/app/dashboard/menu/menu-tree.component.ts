@@ -75,7 +75,7 @@ export class MenuTreeComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.appService.getMenu().pipe(finalize(() => {
-      this.store.emit<string>(PreloaderEvent.Hide, Dashboard.MenuPrCn);
+      this.store.emit<string>(PreloaderEvent.Hide, Dashboard.MenuPreloaderCn);
       const payload = localStorage.getItem(MENU_STORE_KEY);
       if (payload) {
         this.openedNodes = JSON.parse(payload);

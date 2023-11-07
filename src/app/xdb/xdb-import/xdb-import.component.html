@@ -1,0 +1,13 @@
+<div class="actions">
+  <button pButton pRipple icon="pi pi-arrow-down-right"
+          iconPos="right"
+          [label]="'xdb.import' | transloco"
+          [disabled]="!ctrl.valid"
+          (click)="doImport()"></button>
+</div>
+<textarea pInputTextarea
+          [formControl]="ctrl"
+          [autoResize]="true">
+</textarea>
+
+<preloader *preloading="{state: false, channel: preloaderChannel}"/>

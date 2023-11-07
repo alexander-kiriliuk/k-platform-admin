@@ -22,7 +22,7 @@ import {ExplorerColumn, ExplorerColumnRenderer} from "../../explorer/explorer.ty
 
 export namespace ObjectDetails {
 
-  export const ObjectsDetailsPrCn = "objects-det-cn";
+  export const PreloaderCn = "objects-det-cn";
 
   export function createTargetForm(): FormGroup<TargetForm> {
     return new FormGroup<TargetForm>({

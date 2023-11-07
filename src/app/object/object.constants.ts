@@ -15,5 +15,5 @@
  */
 
 export namespace Object {
-  export const ObjectsPrCn = "objects-cn";
+  export const PreloaderCn = "objects-cn";
 }

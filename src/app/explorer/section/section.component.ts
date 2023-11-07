@@ -83,7 +83,7 @@ export class SectionComponent implements AfterViewInit {
   }
 
   get preloaderChannel() {
-    return Explorer.SectionPrCn;
+    return Explorer.PreloaderCn;
   }
 
   get currentPos() {

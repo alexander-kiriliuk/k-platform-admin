@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-export namespace Explorer {
+export namespace XdbConstants {
 
-  export const PreloaderCn = "section-cn";
-
-  export const Types = ["string", "number", "boolean", "date", "reference", "unknown"];
+  export const PreloaderCn = "xdb-cn";
 
 }
