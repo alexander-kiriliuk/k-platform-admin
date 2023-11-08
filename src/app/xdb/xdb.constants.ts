@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export namespace XdbConstants {
+export namespace Xdb {
 
   export const PreloaderCn = "xdb-cn";
 

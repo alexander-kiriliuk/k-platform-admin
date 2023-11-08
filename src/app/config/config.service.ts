@@ -15,33 +15,27 @@
  */
 
 import {inject, Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {ConfigItem} from "./config.types";
+import {PageableData, PageableParams} from "../global/types";
 import {StringUtils} from "../global/util/string.utils";
 import fillParams = StringUtils.fillParams;
 
 @Injectable()
-export class XdbService {
+export class ConfigService {
 
   private readonly http = inject(HttpClient);
 
-  importData(data: string) {
-    const validXml = this.ensureValidXml(data);
-    return this.http.post<void>("/xdb/import", validXml, {
-      headers: new HttpHeaders().append("Content-Type", "application/xml")
-    });
+  pageableData(params?: PageableParams) {
+    return this.http.get<PageableData<ConfigItem>>("/config", {params: params as unknown as HttpParams});
   }
 
-  exportData(target: string, id: string) {
-    return this.http.get<string>(fillParams("/xdb/export/:target/:id", target, id));
+  setProperty(body: ConfigItem) {
+    return this.http.post<boolean>("/config", body);
   }
 
-  private ensureValidXml(data: string): string {
-    const startTag = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><schema>";
-    const endTag = "</schema>";
-    if (!data.trim().startsWith("<?xml")) {
-      data = startTag + data + endTag;
-    }
-    return data;
+  removeProperty(key: string) {
+    return this.http.delete<boolean>(fillParams("/config/:key", key));
   }
 
 }

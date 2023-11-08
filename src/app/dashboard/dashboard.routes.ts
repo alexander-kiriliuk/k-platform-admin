@@ -36,6 +36,11 @@ export const DashboardRoutes: Routes = [
         path: "system/import-data",
         loadComponent: () => import("../xdb/xdb-import/xdb-import.component")
           .then(m => m.XdbImportComponent)
+      },
+      {
+        path: "system/config",
+        loadComponent: () => import("../config/config.component")
+          .then(m => m.ConfigComponent)
       }
     ]
   }
