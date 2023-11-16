@@ -18,8 +18,6 @@ import {inject, Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {ConfigItem} from "./config.types";
 import {PageableData, PageableParams} from "../global/types";
-import {StringUtils} from "../global/util/string.utils";
-import fillParams = StringUtils.fillParams;
 
 @Injectable()
 export class ConfigService {
@@ -35,7 +33,7 @@ export class ConfigService {
   }
 
   removeProperty(key: string) {
-    return this.http.delete<boolean>(fillParams("/config/:key", key));
+    return this.http.delete<boolean>("/config", {params: {key}});
   }
 
 }

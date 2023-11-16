@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ConfigEditorForm} from "../config.types";
+import {notOnlySpacesValidator} from "../../global/validator/not-only-spaces.validator";
 
-import {FormControl} from "@angular/forms";
+export namespace ConfigPropertyEditor {
 
-export interface ConfigItem {
-  key: string;
-  value: string;
+  export function createForm(): FormGroup<ConfigEditorForm> {
+    return new FormGroup<ConfigEditorForm>({
+      key: new FormControl<string>("", [Validators.required, notOnlySpacesValidator()]),
+      value: new FormControl<string>("", [Validators.required, notOnlySpacesValidator()])
+    });
+  }
+
 }
-
-export type ConfigEditorForm = {
-  [K in keyof ConfigItem]: FormControl<ConfigItem[K]>;
-}
-
-export type ConfigPropertyEditorResult = {
-  cmd: "delete" | "save",
-  data: ConfigItem
-};

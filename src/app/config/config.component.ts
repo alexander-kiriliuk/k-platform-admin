@@ -14,12 +14,27 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {DashboardEvent} from "../dashboard/dashboard.event";
 import {Config} from "./config.constants";
-import {TranslocoService} from "@ngneat/transloco";
+import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {Store} from "../modules/store/store";
 import {ConfigService} from "./config.service";
+import {ButtonModule} from "primeng/button";
+import {LocalizePipe} from "../modules/locale/localize.pipe";
+import {NgForOf, NgIf} from "@angular/common";
+import {PreloaderComponent} from "../modules/preloader/preloader.component";
+import {PreloaderDirective} from "../modules/preloader/preloader.directive";
+import {RippleModule} from "primeng/ripple";
+import {SharedModule} from "primeng/api";
+import {TableModule, TablePageEvent} from "primeng/table";
+import {ConfigItem, ConfigPropertyEditorResult} from "./config.types";
+import {PageableData, PageableParams, ToastData} from "../global/types";
+import {finalize, throwError} from "rxjs";
+import {PreloaderEvent} from "../modules/preloader/preloader.event";
+import {DialogService} from "primeng/dynamicdialog";
+import {catchError} from "rxjs/operators";
+import {ToastEvent} from "../global/events";
 
 @Component({
   selector: "config",
@@ -28,16 +43,38 @@ import {ConfigService} from "./config.service";
   styleUrls: ["./config.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ConfigService],
-  imports: []
+  imports: [
+    ButtonModule,
+    LocalizePipe,
+    NgForOf,
+    NgIf,
+    PreloaderComponent,
+    PreloaderDirective,
+    RippleModule,
+    SharedModule,
+    TableModule,
+    TranslocoPipe
+  ]
 })
 export class ConfigComponent implements OnInit {
 
   private readonly ts = inject(TranslocoService);
   private readonly store = inject(Store);
   private readonly configService = inject(ConfigService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly dialogService = inject(DialogService);
+  data: PageableData<ConfigItem>;
+
+  get scrollHeight() {
+    return "calc(100vh - var(--header-bar-h) - var(--paginator-h))";
+  }
 
   get preloaderChannel() {
     return Config.PreloaderCn;
+  }
+
+  get currentPos() {
+    return ((this.data?.currentPage ?? 1) - 1) * (this.data?.pageSize ?? 0);
   }
 
   ngOnInit(): void {
@@ -45,10 +82,80 @@ export class ConfigComponent implements OnInit {
     this.getData();
   }
 
-  getData(){
-    this.configService.pageableData().subscribe(payload => {
-      console.log(payload);
+  getData(e?: TablePageEvent) {
+    const params = {} as PageableParams;
+    if (e) {
+      params.page = e.first / e.rows + 1;
+      params.limit = e.rows;
+    }
+    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.configService.pageableData(params).pipe(
+      finalize(() => {
+        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+      })).subscribe(payload => {
+      this.data = payload;
+      this.cdr.markForCheck();
     });
+  }
+
+  openPropertyEditor(item?: ConfigItem) {
+    import("./editor/config-property-editor.component").then(c => {
+      this.dialogService.open(c.ConfigPropertyEditorComponent, {
+        header: this.ts.translate("config.header"),
+        resizable: false,
+        draggable: false,
+        modal: true,
+        position: "center",
+        data: item
+      }).onClose.subscribe((res: ConfigPropertyEditorResult) => {
+        if (!res) {
+          return;
+        }
+        switch (res.cmd) {
+          case "delete":
+            this.deleteProperty(res.data);
+            break;
+          case "save":
+            this.saveProperty(res.data);
+            break;
+        }
+      });
+    });
+  }
+
+  private deleteProperty(data: ConfigItem) {
+    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.configService.removeProperty(data.key).pipe(
+      catchError((res) => {
+        this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
+        return throwError(res);
+      }),
+      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)))
+      .subscribe(() => {
+        const idx = this.data.items.findIndex(v => v.key === data.key);
+        this.data.items.splice(idx, 1);
+        this.cdr.markForCheck();
+        this.store.emit<ToastData>(ToastEvent.Success, {message: this.ts.translate("config.property.deleted")});
+      });
+  }
+
+  private saveProperty(data: ConfigItem) {
+    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.configService.setProperty(data).pipe(
+      catchError((res) => {
+        this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
+        return throwError(res);
+      }),
+      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)))
+      .subscribe(() => {
+        const idx = this.data.items.findIndex(v => v.key === data.key);
+        if (idx !== -1) {
+          this.data.items.splice(idx, 1);
+        }
+        this.data.items.unshift(data);
+        this.cdr.markForCheck();
+        this.store.emit<ToastData>(ToastEvent.Success, {message: this.ts.translate("config.property.saved")});
+      });
   }
 
 }

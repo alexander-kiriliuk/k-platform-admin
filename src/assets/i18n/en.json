@@ -3,6 +3,18 @@
     "error": "Error",
     "warn": "Warning"
   },
+  "config": {
+    "key": "Key",
+    "value": "Value",
+    "title": "Configuration",
+    "header": "Property Editor",
+    "delete": "Delete",
+    "save": "Save",
+    "property": {
+      "saved": "Configuration saved",
+      "deleted": "Configuration deleted"
+    }
+  },
   "xdb": {
     "title": "Data Import",
     "import": "Import",

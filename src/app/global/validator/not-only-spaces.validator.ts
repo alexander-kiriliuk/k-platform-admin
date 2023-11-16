@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
+import {AbstractControl, ValidatorFn} from "@angular/forms";
 
-import {FormControl} from "@angular/forms";
-
-export interface ConfigItem {
-  key: string;
-  value: string;
+export function notOnlySpacesValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: unknown } | null => {
+    const forbidden = !/^(\s+\S+\s*)*(?!\s).*$/.test(control.value);
+    return forbidden ? {onlySpacesError: {value: control.value}} : null;
+  };
 }
-
-export type ConfigEditorForm = {
-  [K in keyof ConfigItem]: FormControl<ConfigItem[K]>;
-}
-
-export type ConfigPropertyEditorResult = {
-  cmd: "delete" | "save",
-  data: ConfigItem
-};
