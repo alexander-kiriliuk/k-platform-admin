@@ -38,7 +38,7 @@
         <i class="pi pi-arrow-down-left"></i>
       </td>
       <td *ngFor="let col of targetData.entity.columns">
-        {{ item[col.property] }}
+        <explorer-section-renderer [target]="targetData" [column]="col" [data]="item" />
       </td>
     </tr>
   </ng-template>

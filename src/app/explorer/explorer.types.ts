@@ -19,8 +19,12 @@ import {LocalizedString} from "../modules/locale/locale.types";
 import {Media} from "../modules/media/media.types";
 import {Params, QueryParamsHandling} from "@angular/router";
 import {PageableParams} from "../global/types";
+import {Type, ValueProvider} from "@angular/core";
 
 export type ColumnDataType = "string" | "number" | "boolean" | "date" | "reference" | "unknown";
+
+export type RendererId = "string-section-renderer" | "boolean-section-renderer" | "date-section-renderer" |
+  "media-section-renderer" | "reference-section-renderer" | string;
 
 export interface ExplorerTarget {
   target: string;
@@ -77,4 +81,19 @@ export interface SectionDialogConfig {
   target: TargetData;
   multi?: boolean;
   initialPageableParams?: PageableParams;
+}
+
+export interface ExplorerRenderer<T = unknown> {
+  target: TargetData;
+  column: ExplorerColumn;
+  data: { [k: string]: T };
+}
+
+export type ExplorerRendererLoader = {
+  code: RendererId;
+  load: Promise<Type<ExplorerRenderer>>;
+}
+
+export interface RendererProvider extends ValueProvider{
+  useValue: ExplorerRendererLoader;
 }

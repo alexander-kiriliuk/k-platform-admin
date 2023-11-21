@@ -15,7 +15,7 @@
  */
 
 import {environment} from "./app/global/env/env";
-import {APP_INITIALIZER, enableProdMode, isDevMode} from "@angular/core";
+import {APP_INITIALIZER, enableProdMode, isDevMode, LOCALE_ID} from "@angular/core";
 import {ThemeUtils} from "./app/global/util/theme.utils";
 import {bootstrapApplication} from "@angular/platform-browser";
 import {AppComponent} from "./app/app.component";
@@ -40,6 +40,7 @@ import {APP_ROUTES} from "./app/app.routing";
 import {AVAIL_LANGS} from "./app/modules/locale/locale.constants";
 import {LangUtils} from "./app/global/util/lang.utils";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
+import setNgTranslation = LangUtils.setNgTranslation;
 
 ThemeUtils.setDefaultTheme();
 
@@ -68,6 +69,21 @@ bootstrapApplication(AppComponent, {
       useFactory: AppInitializer,
       multi: true,
       deps: [PrimeNGConfig, CurrentUser]
+    },
+    {
+      provide: LOCALE_ID,
+      useFactory: () => {
+        const lang = LangUtils.getCurrentLang();
+        switch (lang) {
+          case "ru":
+            import("@angular/common/locales/ru").then(setNgTranslation);
+            break;
+          case "en":
+            import("@angular/common/locales/en").then(setNgTranslation);
+            break;
+        }
+        return navigator.language;
+      },
     },
     {
       provide: HTTP_INTERCEPTORS,

@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-import {InjectionToken} from "@angular/core";
+import {ChangeDetectionStrategy, Component} from "@angular/core";
+import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
 
-export const WEBP_SUPPORT = new InjectionToken<boolean>("WEBP media format support flag");
+@Component({
+  selector: "string-section-renderer",
+  standalone: true,
+  templateUrl: "./string-section-renderer.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class StringSectionRendererComponent implements ExplorerRenderer {
 
-export enum ReservedMediaSize {
-  THUMB = "thumb",
-  ORIGINAL = "original"
+  column: ExplorerColumn;
+  data: { [p: string]: unknown };
+  target: TargetData;
+
 }
-
-export type MediaSize = "thumb" | "original" | string ;

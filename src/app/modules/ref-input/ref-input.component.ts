@@ -33,7 +33,7 @@ import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {PageableParams, PlainObject} from "../../global/types";
-import {RefInputService} from "./ref-input.service";
+import {CachedExplorerService} from "../../explorer/cached-explorer.service";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {RefNamePipe} from "./ref-name.pipe";
 
@@ -53,7 +53,7 @@ import {RefNamePipe} from "./ref-name.pipe";
     NgForOf
   ],
   providers: [
-    RefInputService,
+    CachedExplorerService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
@@ -71,7 +71,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
   targetData: TargetData;
   disabled = false;
   targetLoadingState = true;
-  private readonly refInputService = inject(RefInputService);
+  private readonly cachedExplorerService = inject(CachedExplorerService);
   private readonly localizePipe = inject(LocalizePipe);
   private readonly dialogService = inject(DialogService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -86,7 +86,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit(): void {
-    this.refInputService.getTarget(this.target, "section").pipe(finalize(() => {
+    this.cachedExplorerService.getTarget(this.target, "section").pipe(finalize(() => {
       this.targetLoadingState = false;
       this.cdr.markForCheck();
     })).subscribe(payload => {

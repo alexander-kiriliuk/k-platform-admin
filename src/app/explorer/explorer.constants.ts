@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import {InjectionToken} from "@angular/core";
+import {ExplorerRendererLoader} from "./explorer.types";
+
 export namespace Explorer {
 
   export const PreloaderCn = "section-cn";
@@ -21,3 +24,10 @@ export namespace Explorer {
   export const Types = ["string", "number", "boolean", "date", "reference", "unknown"];
 
 }
+
+export const EXPLORER_SECTION_RENDERER = new InjectionToken<ExplorerRendererLoader[]>(
+  "Explorer section renderer collection"
+);
+export const EXPLORER_OBJECT_RENDERER = new InjectionToken<ExplorerRendererLoader[]>(
+  "Explorer object renderer collection"
+);

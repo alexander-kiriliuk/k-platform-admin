@@ -51,7 +51,7 @@ th {
   &:hover {
     &:before {
       content: "\e90b";
-      color: var(--red-500);
+      color: var(--danger-color);
     }
   }
 
@@ -59,7 +59,7 @@ th {
 
 .set-btn {
   @apply cursor-pointer;
-  color: var(--red-500);
+  color: var(--danger-color);
 
   &:hover {
     color: var(--primary-color);

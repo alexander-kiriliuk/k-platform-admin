@@ -16,6 +16,7 @@
 
 
 import {Language} from "../../modules/locale/locale.types";
+import {registerLocaleData} from "@angular/common";
 
 export namespace LangUtils {
 
@@ -46,6 +47,10 @@ export namespace LangUtils {
 
   export function setLang(lang: string) {
     localStorage.setItem(LANG_KEY, lang);
+  }
+
+  export function setNgTranslation(res: { default: unknown }) {
+    registerLocaleData(res.default, navigator.language);
   }
 
 }
