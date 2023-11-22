@@ -77,10 +77,6 @@ export class ExplorerSectionRendererComponent implements OnInit, ExplorerRendere
   private getRendererByDataType(type: ColumnDataType): ExplorerRendererLoader {
     let code = "string-section-renderer";
     switch (type) {
-      case "string":
-      case "number":
-        code = "string-section-renderer";
-        break;
       case "boolean":
         code = "boolean-section-renderer";
         break;

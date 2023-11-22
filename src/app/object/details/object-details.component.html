@@ -95,7 +95,12 @@
     <div class="data-grid">
       <div>
         <div><i class="pi pi-box"></i>{{"object.details.target.name" | transloco}}</div>
-        <div>{{target.entity.target}}</div>
+        <div>
+          {{target.entity.target}}
+          <a target="_blank" [attr.href]="'/section/' + target.entity.target">
+            <i class="pi pi-arrow-right"></i>
+          </a>
+        </div>
       </div>
       <div>
         <div><i class="pi pi-database"></i>{{"object.details.target.table" | transloco}}</div>

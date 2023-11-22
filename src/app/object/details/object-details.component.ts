@@ -40,9 +40,9 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {CheckboxModule} from "primeng/checkbox";
 import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplete";
 import {Explorer} from "../../explorer/explorer.constants";
+import {RefInputComponent} from "../../modules/ref-input/ref-input.component";
 import createForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
-import {RefInputComponent} from "../../modules/ref-input/ref-input.component";
 
 @Component({
   selector: "object-details",

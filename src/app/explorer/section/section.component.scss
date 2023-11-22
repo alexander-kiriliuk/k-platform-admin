@@ -7,6 +7,11 @@
 
   ::ng-deep {
 
+    media-res img {
+      max-height: 50px;
+      width: max-content;
+    }
+
     .p-paginator {
       height: var(--paginator-h);
     }
