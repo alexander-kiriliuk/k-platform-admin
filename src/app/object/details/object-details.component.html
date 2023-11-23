@@ -1,8 +1,35 @@
+<p-confirmDialog #cd>
+  <ng-template pTemplate="header">
+    {{"object.details.col.new.label" | transloco}}
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div>
+      <input type="text" pInputText [placeholder]="'object.details.col.new.name' | transloco" [formControl]="newColName"/>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton (click)="cd.reject()">
+      {{"object.details.col.new.cancel" | transloco}}
+    </button>
+    <button type="button" class="p-button-success" pButton [disabled]="!newColName.valid" (click)="cd.accept()">
+      {{"object.details.col.new.ok" | transloco}}
+    </button>
+  </ng-template>
+</p-confirmDialog>
+
 <div *ngIf="target$ | async as target" class="content-wrapper" [formGroup]="form">
   <div class="cols">
+    <div class="cols-actions">
+      {{"object.details.cols" | transloco}}
+      <p-button
+        icon="pi pi-plus" severity="success"
+        [rounded]="true"
+        [text]="true"
+        (click)="addVirtualColumn()"/>
+    </div>
     <p-accordion *ngFor="let colForm of form.controls.columns.controls; let i = index"
                  formArrayName="columns">
-      <p-accordionTab [header]="(colForm.controls.name.value | localize:colForm.controls.property.value)?.toString()">
+      <p-accordionTab [ngClass]="{virtual: colForm.controls.virtual.value}" [header]="(colForm.controls.name.value | localize:colForm.controls.property.value)?.toString()">
         <div class="tab">
           <div>
             <localize-string-input
@@ -52,6 +79,12 @@
                         [formControl]="colForm.controls.objectEnabled"
                         [binary]="true"
                         [label]="'object.details.col.obj.enabled' | transloco"/>
+          </div>
+          <div class="cbx-container">
+            <p-checkbox inputId="colVirtual"
+                        [formControl]="colForm.controls.virtual"
+                        [binary]="true"
+                        [label]="'object.details.col.virtual' | transloco"/>
           </div>
           <div class="cbx-container">
             <p-checkbox inputId="colPrimary"

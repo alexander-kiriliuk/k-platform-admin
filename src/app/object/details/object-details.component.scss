@@ -3,6 +3,26 @@
   @apply block;
 }
 
+p-confirmDialog {
+  @apply w-full;
+  max-width: 400px;
+
+  div, input {
+    @apply w-full;
+  }
+
+}
+
+p-accordionTab {
+  &.virtual {
+    ::ng-deep {
+      .p-accordion-header-text {
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
 .cols {
   @apply flex flex-col gap-4;
   .tab {
@@ -13,6 +33,10 @@
       }
     }
   }
+}
+
+.cols-actions {
+  @apply flex items-center;
 }
 
 .cbx-container {

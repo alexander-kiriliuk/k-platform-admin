@@ -44,10 +44,10 @@ import {StringUtils} from "../../global/util/string.utils";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {ButtonModule} from "primeng/button";
+import {ExplorerSectionRendererComponent} from "../renderer/explorer-section-renderer.component";
+import {provideExplorerSectionRenderers} from "../explorer-secrion-renderer-providers";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
-import { ExplorerSectionRendererComponent } from "../renderer/explorer-section-renderer.component";
-import {provideExplorerSectionRenderers} from "../explorer-secrion-renderer-providers";
 
 @UntilDestroy()
 @Component({
@@ -249,6 +249,9 @@ export class SectionComponent implements AfterViewInit {
     this.sectionSub = this.explorerService.getSectionList(this.target, params).pipe(
       finalize(() => {
         this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        if (this.dialogMode) {
+          return;
+        }
         this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("explorer.title", {
           count: this.pageableData.totalCount,
           name: this.localizePipe.transform(this.targetData.entity.name, this.targetData.entity.target)

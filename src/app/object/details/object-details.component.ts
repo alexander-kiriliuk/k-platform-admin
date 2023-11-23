@@ -23,13 +23,13 @@ import {Store} from "../../modules/store/store";
 import {ObjectDetails} from "./object-details.constants";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../../modules/preloader/preloader.directive";
-import {TargetData} from "../../explorer/explorer.types";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {ExplorerColumn, TargetData} from "../../explorer/explorer.types";
+import {AsyncPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {AccordionModule} from "primeng/accordion";
 import {InputTextModule} from "primeng/inputtext";
-import {ReactiveFormsModule} from "@angular/forms";
-import {TranslocoPipe} from "@ngneat/transloco";
+import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {ButtonModule} from "primeng/button";
 import {
 LocalizeStringInputComponent
@@ -41,6 +41,13 @@ import {CheckboxModule} from "primeng/checkbox";
 import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplete";
 import {Explorer} from "../../explorer/explorer.constants";
 import {RefInputComponent} from "../../modules/ref-input/ref-input.component";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {ConfirmationService} from "primeng/api";
+import {
+onlyLatinLettersAndNumbersValidator
+} from "../../global/validator/only-latin-letters-and-numbers.validator";
+import {ToastData} from "../../global/types";
+import {ToastEvent} from "../../global/events";
 import createForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
 
@@ -67,23 +74,34 @@ import createColumnForm = ObjectDetails.createColumnForm;
     InputNumberModule,
     CheckboxModule,
     AutoCompleteModule,
-    RefInputComponent
+    RefInputComponent,
+    ConfirmDialogModule,
+    NgClass
   ],
-  providers: [ExplorerService]
+  providers: [
+    ExplorerService,
+    ConfirmationService
+  ]
 })
 export class ObjectDetailsComponent {
 
   private readonly config = inject(DynamicDialogConfig);
   private readonly ref = inject(DynamicDialogRef);
   private readonly explorerService = inject(ExplorerService);
+  private readonly confirmationService = inject(ConfirmationService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
+  private readonly ts = inject(TranslocoService);
   readonly target$: Observable<TargetData>;
   readonly form = createForm();
   suggestions: string[] = [];
+  newColName: FormControl<string> = new FormControl(null, [
+    Validators.required,
+    onlyLatinLettersAndNumbersValidator()
+  ]);
 
   constructor() {
-    this.target$ = this.explorerService.getTarget(this.target, "object").pipe(
+    this.target$ = this.explorerService.getTarget(this.target).pipe(
       tap(() => this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel)),
       map(target => {
         this.form.patchValue(target.entity);
@@ -114,6 +132,37 @@ export class ObjectDetailsComponent {
     ).subscribe(v => {
       this.form.patchValue(v);
       v.columns.forEach(col => this.form.controls.columns.push(createColumnForm(col)));
+    });
+  }
+
+  addVirtualColumn() {
+    this.newColName.reset();
+    this.confirmationService.confirm({
+      accept: () => {
+        const propName = this.newColName.value;
+        const exists = this.form.controls.columns.getRawValue()
+          .find(v => v.property === propName);
+        if (exists) {
+          this.store.emit<ToastData>(ToastEvent.Warn, {
+            title: this.ts.translate("object.details.col.new.warn")
+          });
+          return;
+        }
+        const newCol = createColumnForm({
+          id: `${this.form.value.tableName}.${propName}`,
+          property: propName,
+          virtual: true
+        } as ExplorerColumn);
+        newCol.controls.type.setValue("unknown");
+        newCol.controls.sectionPriority.setValue(0);
+        newCol.controls.sectionEnabled.setValue(false);
+        newCol.controls.objectPriority.setValue(0);
+        newCol.controls.objectEnabled.setValue(false);
+        this.form.controls.columns.push(newCol);
+        this.store.emit<ToastData>(ToastEvent.Success, {
+          title: this.ts.translate("object.details.col.new.success")
+        });
+      }
     });
   }
 

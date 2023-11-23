@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ColumnForm, TargetForm} from "../object.types";
 import {LocalizedString} from "../../modules/locale/locale.types";
 import {Media} from "../../modules/media/media.types";
@@ -44,6 +44,7 @@ export namespace ObjectDetails {
       unique: new FormControl<boolean>({value: payload.unique, disabled: true}),
       referencedEntityName: new FormControl<string>({value: payload.referencedEntityName, disabled: true}),
       referencedTableName: new FormControl<string>({value: payload.referencedTableName, disabled: true}),
+      virtual: new FormControl<boolean>({value: payload.virtual, disabled: true}),
       description: new FormControl<LocalizedString[]>(payload.description),
       name: new FormControl<LocalizedString[]>(payload.name),
       type: new FormControl<string>(payload.type),

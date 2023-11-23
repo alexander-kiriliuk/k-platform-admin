@@ -87,13 +87,23 @@
         "description": "Description",
         "icon": "Icon"
       },
+      "cols": "Columns",
       "save": "Save",
       "col": {
+        "new": {
+          "label": "Adding a new virtual column",
+          "name": "Column name",
+          "cancel": "Cancel",
+          "ok": "Add",
+          "warn": "A column with the same name already exists",
+          "success": "New column added successfully"
+        },
         "id": "ID",
         "property": "Object property",
         "name": "Name",
         "description": "Description",
         "type": "Data type",
+        "virtual": "Virtual",
         "primary": "Primary",
         "unique": "Unique",
         "multiple": "Array of values",

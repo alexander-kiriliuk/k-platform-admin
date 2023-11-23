@@ -28,7 +28,7 @@
           <i class="indicator pi pi-filter" (click)="removeFilter(item.property)"></i>
         </ng-container>
         {{item.name | localize:item.property}}
-        <i class="ctrl pi pi-window-maximize" pRipple (click)="showFilterDialog(item)"></i>
+        <i *ngIf="!item.virtual" class="ctrl pi pi-window-maximize" pRipple (click)="showFilterDialog(item)"></i>
       </th>
     </tr>
   </ng-template>

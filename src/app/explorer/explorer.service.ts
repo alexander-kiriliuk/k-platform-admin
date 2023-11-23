@@ -26,7 +26,11 @@ export class ExplorerService {
 
   private readonly http = inject(HttpClient);
 
-  getTarget(target: string, type: "section" | "object") {
+  getTarget(target: string, type?: "section" | "object") {
+    const params = {type};
+    if (!params.type) {
+      delete params.type;
+    }
     return this.http.get<TargetData>(fillParams("/explorer/target/:target", target), {params: {type}});
   }
 

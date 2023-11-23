@@ -51,6 +51,7 @@ export interface ExplorerColumn {
   objectPriority: number;
   sectionEnabled: boolean;
   objectEnabled: boolean;
+  virtual: boolean;
   sectionRenderer: ExplorerColumnRenderer;
   objectRenderer: ExplorerColumnRenderer;
 }
