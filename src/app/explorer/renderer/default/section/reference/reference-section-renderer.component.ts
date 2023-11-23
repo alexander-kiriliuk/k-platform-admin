@@ -73,10 +73,16 @@ export class ReferenceSectionRendererComponent implements ExplorerRenderer, OnIn
         }
       }
       return out.join(", ");
-    }else {
+    } else {
       const property = this.data[this.column.property] as { [p: string]: unknown };
-      if(!property){
+      if (!property) {
         return "<null>";
+      }
+      if (Array.isArray(property[this.refTarget.namedColumn.property])) {
+        return this.localizePipe.transform(
+          property[this.refTarget.namedColumn.property] as unknown as LocalizedString[],
+          property[this.refTarget.primaryColumn.property] as string
+        ) as string;
       }
       return property[this.refTarget.namedColumn.property] || property[this.refTarget.primaryColumn.property];
     }

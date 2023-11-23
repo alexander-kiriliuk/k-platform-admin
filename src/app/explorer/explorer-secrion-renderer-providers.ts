@@ -63,6 +63,15 @@ export function provideExplorerSectionRenderers(): RendererProvider[] {
         load: import("./renderer/default/section/media/media-section-renderer.component")
           .then(m => m.MediaSectionRendererComponent)
       }
-    }
+    },
+    {
+      provide: EXPLORER_SECTION_RENDERER,
+      multi: true,
+      useValue: {
+        code: "virtual-media-column-section-renderer",
+        load: import("./renderer/custom/section/virtual-media/virtual-media-section-renderer.component")
+          .then(m => m.VirtualMediaSectionRendererComponent)
+      }
+    },
   ];
 }

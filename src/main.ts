@@ -39,6 +39,7 @@ import {DialogService} from "primeng/dynamicdialog";
 import {APP_ROUTES} from "./app/app.routing";
 import {AVAIL_LANGS} from "./app/modules/locale/locale.constants";
 import {LangUtils} from "./app/global/util/lang.utils";
+import {provideExplorerSectionRenderers} from "./app/explorer/explorer-secrion-renderer-providers";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import setNgTranslation = LangUtils.setNgTranslation;
 
@@ -58,6 +59,7 @@ bootstrapApplication(AppComponent, {
     provideAnimations(),
     provideRouter(APP_ROUTES),
     provideTranslocoLoader(TranslocoHttpLoader),
+    provideExplorerSectionRenderers(),
     provideTransloco({
       config: {
         defaultLang: LangUtils.DefaultLang,

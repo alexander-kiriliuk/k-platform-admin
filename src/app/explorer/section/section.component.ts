@@ -45,7 +45,6 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {ButtonModule} from "primeng/button";
 import {ExplorerSectionRendererComponent} from "../renderer/explorer-section-renderer.component";
-import {provideExplorerSectionRenderers} from "../explorer-secrion-renderer-providers";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
 
@@ -70,8 +69,7 @@ import stringifyParamsObject = StringUtils.stringifyParamsObject;
     ExplorerSectionRendererComponent
   ],
   providers: [
-    ExplorerService,
-    provideExplorerSectionRenderers()
+    ExplorerService
   ]
 })
 export class SectionComponent implements AfterViewInit {
