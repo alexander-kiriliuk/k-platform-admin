@@ -34,6 +34,7 @@ import {NgForOf, NgIf} from "@angular/common";
 export class MediaSectionRendererComponent implements ExplorerRenderer<Media | Media[]> {
 
   column: ExplorerColumn;
+  params: unknown;
   data: { [p: string]: Media | Media[] };
   target: TargetData;
 

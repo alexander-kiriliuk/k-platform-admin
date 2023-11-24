@@ -4,7 +4,8 @@
   </ng-template>
   <ng-template pTemplate="message">
     <div>
-      <input type="text" pInputText [placeholder]="'object.details.col.new.name' | transloco" [formControl]="newColName"/>
+      <input type="text" pInputText [placeholder]="'object.details.col.new.name' | transloco"
+             [formControl]="newColName"/>
     </div>
   </ng-template>
   <ng-template pTemplate="footer">
@@ -29,7 +30,9 @@
     </div>
     <p-accordion *ngFor="let colForm of form.controls.columns.controls; let i = index"
                  formArrayName="columns">
-      <p-accordionTab [ngClass]="{virtual: colForm.controls.virtual.value}" [header]="(colForm.controls.name.value | localize:colForm.controls.property.value)?.toString()">
+      <p-accordionTab
+        [ngClass]="{virtual: colForm.controls.virtual.value}"
+        [header]="(colForm.controls.name.value | localize:colForm.controls.property.value)?.toString()">
         <div class="tab">
           <div>
             <localize-string-input
@@ -80,6 +83,18 @@
                         [binary]="true"
                         [label]="'object.details.col.obj.enabled' | transloco"/>
           </div>
+          <div class="p-float-label">
+              <textarea pInputTextarea id="colsSecRdParams"
+                        [formControl]="colForm.controls.sectionRendererParams">
+              </textarea>
+            <label for="colsSecRdParams">{{'object.details.col.sec.rd.params' | transloco}}</label>
+          </div>
+          <div class="p-float-label">
+              <textarea pInputTextarea id="colsObjRdParams"
+                        [formControl]="colForm.controls.objectRendererParams">
+              </textarea>
+            <label for="colsObjRdParams">{{'object.details.col.obj.rd.params' | transloco}}</label>
+          </div>
           <div class="cbx-container">
             <p-checkbox inputId="colVirtual"
                         [formControl]="colForm.controls.virtual"
@@ -125,43 +140,45 @@
     </p-accordion>
   </div>
   <div class="right">
-    <div class="data-grid">
-      <div>
-        <div><i class="pi pi-box"></i>{{"object.details.target.name" | transloco}}</div>
+    <div class="info">
+      <div class="data-grid">
         <div>
-          {{target.entity.target}}
-          <a target="_blank" [attr.href]="'/section/' + target.entity.target">
-            <i class="pi pi-arrow-right"></i>
-          </a>
+          <div><i class="pi pi-box"></i>{{"object.details.target.name" | transloco}}</div>
+          <div>
+            {{target.entity.target}}
+            <a target="_blank" [attr.href]="'/section/' + target.entity.target">
+              <i class="pi pi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <div><i class="pi pi-database"></i>{{"object.details.target.table" | transloco}}</div>
+          <div>{{target.entity.tableName}}</div>
+        </div>
+        <div>
+          <div><i class="pi pi-key"></i>{{"object.details.target.pk" | transloco}}</div>
+          <div>{{target.primaryColumn.property}}</div>
         </div>
       </div>
       <div>
-        <div><i class="pi pi-database"></i>{{"object.details.target.table" | transloco}}</div>
-        <div>{{target.entity.tableName}}</div>
+        <localize-string-input
+          formControlName="name"
+          [placeholder]="'object.details.object.name' | transloco"/>
       </div>
       <div>
-        <div><i class="pi pi-key"></i>{{"object.details.target.pk" | transloco}}</div>
-        <div>{{target.primaryColumn.property}}</div>
+        <localize-string-input
+          formControlName="description"
+          [placeholder]="'object.details.object.description' | transloco"/>
       </div>
-    </div>
-    <div>
-      <localize-string-input
-        formControlName="name"
-        [placeholder]="'object.details.object.name' | transloco"/>
-    </div>
-    <div>
-      <localize-string-input
-        formControlName="description"
-        [placeholder]="'object.details.object.description' | transloco"/>
-    </div>
-    <div>
-      <media-input
-        formControlName="icon"
-        mediaSize="responsive"
-        [placeholder]="'object.details.object.icon' | transloco"/>
-    </div>
-    <div class="actions">
-      <button pButton (click)="saveObject()">{{"object.details.save" | transloco}}</button>
+      <div>
+        <media-input
+          formControlName="icon"
+          mediaSize="responsive"
+          [placeholder]="'object.details.object.icon' | transloco"/>
+      </div>
+      <div class="actions">
+        <button pButton [disabled]="!form.valid" (click)="saveObject()">{{"object.details.save" | transloco}}</button>
+      </div>
     </div>
   </div>
 </div>

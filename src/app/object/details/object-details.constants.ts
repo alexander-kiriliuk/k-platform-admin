@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {ColumnForm, TargetForm} from "../object.types";
 import {LocalizedString} from "../../modules/locale/locale.types";
 import {Media} from "../../modules/media/media.types";
 import {ExplorerColumn, ExplorerColumnRenderer} from "../../explorer/explorer.types";
+import {jsonStringValidator} from "../../global/validator/json-string.validator";
+
+
+function handleJsonColumn(data: unknown): object {
+  if (data && typeof data === "object") {
+    return JSON.stringify(data) as unknown as object;
+  }
+  return data as object;
+}
 
 export namespace ObjectDetails {
 
@@ -54,6 +63,12 @@ export namespace ObjectDetails {
       sectionEnabled: new FormControl<boolean>(payload.sectionEnabled),
       sectionPriority: new FormControl<number>(payload.sectionPriority),
       sectionRenderer: new FormControl<ExplorerColumnRenderer>(payload.sectionRenderer),
+      sectionRendererParams: new FormControl<object>(
+        handleJsonColumn(payload.sectionRendererParams), [jsonStringValidator()]
+      ),
+      objectRendererParams: new FormControl<object>(
+        handleJsonColumn(payload.objectRendererParams), [jsonStringValidator()]
+      ),
     });
   }
 

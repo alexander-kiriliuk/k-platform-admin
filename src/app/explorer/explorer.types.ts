@@ -54,6 +54,8 @@ export interface ExplorerColumn {
   virtual: boolean;
   sectionRenderer: ExplorerColumnRenderer;
   objectRenderer: ExplorerColumnRenderer;
+  sectionRendererParams: object;
+  objectRendererParams: object;
 }
 
 export type ExplorerRendererType = "section" | "object";
@@ -84,10 +86,11 @@ export interface SectionDialogConfig {
   initialPageableParams?: PageableParams;
 }
 
-export interface ExplorerRenderer<T = unknown> {
+export interface ExplorerRenderer<Data = unknown, Params = unknown> {
   target: TargetData;
   column: ExplorerColumn;
-  data: { [k: string]: T };
+  params: Params;
+  data: { [k: string]: Data };
 }
 
 export type ExplorerRendererLoader = {

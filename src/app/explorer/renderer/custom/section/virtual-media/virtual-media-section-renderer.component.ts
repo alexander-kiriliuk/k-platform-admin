@@ -34,6 +34,7 @@ import {NgForOf, NgIf} from "@angular/common";
 export class VirtualMediaSectionRendererComponent implements ExplorerRenderer {
 
   column: ExplorerColumn;
+  params: unknown;
   data: { [p: string]: unknown };
   target: TargetData;
 

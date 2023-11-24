@@ -28,7 +28,7 @@ p-accordionTab {
   .tab {
     @apply flex flex-col gap-6;
     ::ng-deep {
-      input, p-inputnumber, .p-inputnumber, p-autoComplete, .p-autocomplete, .p-autocomplete-input {
+      textarea, input, p-inputnumber, .p-inputnumber, p-autoComplete, .p-autocomplete, .p-autocomplete-input {
         @apply w-full;
       }
     }
@@ -77,8 +77,12 @@ p-accordionTab {
 }
 
 .right {
-  & > div:not(.actions) {
-    @apply py-2;
+  @apply relative;
+  .info {
+    @apply sticky top-0;
+    & > div:not(.actions) {
+      @apply py-2;
+    }
   }
 }
 

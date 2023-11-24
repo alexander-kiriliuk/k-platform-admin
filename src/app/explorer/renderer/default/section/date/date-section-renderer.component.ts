@@ -31,6 +31,7 @@ import {DatePipe} from "@angular/common";
 export class DateSectionRendererComponent implements ExplorerRenderer<string> {
 
   column: ExplorerColumn;
+  params: unknown;
   data: { [p: string]: string };
   target: TargetData;
 

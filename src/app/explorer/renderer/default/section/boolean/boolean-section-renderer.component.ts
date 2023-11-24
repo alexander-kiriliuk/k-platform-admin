@@ -31,6 +31,7 @@ import {NgClass} from "@angular/common";
 export class BooleanSectionRendererComponent implements ExplorerRenderer {
 
   column: ExplorerColumn;
+  params: unknown;
   data: { [p: string]: unknown };
   target: TargetData;
 
@@ -43,5 +44,6 @@ export class BooleanSectionRendererComponent implements ExplorerRenderer {
     }
     return "pi-ellipsis-h";
   }
+
 
 }

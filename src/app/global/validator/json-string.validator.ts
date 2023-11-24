@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
+import {AbstractControl, ValidatorFn} from "@angular/forms";
 
-@Component({
-  selector: "string-section-renderer",
-  standalone: true,
-  templateUrl: "./string-section-renderer.component.html",
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class StringSectionRendererComponent implements ExplorerRenderer {
-
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: unknown };
-  target: TargetData;
-
+export function jsonStringValidator(): ValidatorFn {
+  const jsonRegex = /^\{.*}$/;
+  return (control: AbstractControl): { [key: string]: unknown } | null => {
+    const value = control.value;
+    if (!value?.length) {
+      return null;
+    }
+    if (!jsonRegex.test(value)) {
+      return {invalidJsonError: {value}};
+    }
+    try {
+      JSON.parse(value);
+    } catch {
+      return {invalidJsonError: {value}};
+    }
+    return null;
+  };
 }
+

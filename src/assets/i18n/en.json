@@ -107,6 +107,8 @@
         "primary": "Primary",
         "unique": "Unique",
         "multiple": "Array of values",
+        "sec.rd.params": "Section renderer params",
+        "obj.rd.params": "Object renderer params",
         "ref.tbl.name": "Name of the related table",
         "ref.ent.name": "Name of the associated entity",
         "sec.priority": "Section priority",

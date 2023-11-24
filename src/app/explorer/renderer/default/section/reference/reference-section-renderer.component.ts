@@ -38,6 +38,7 @@ export class ReferenceSectionRendererComponent implements ExplorerRenderer, OnIn
   private readonly localizePipe = inject(LocalizePipe);
 
   column: ExplorerColumn;
+  params: unknown;
   data: { [p: string]: unknown };
   target: TargetData;
   refTarget: TargetData;

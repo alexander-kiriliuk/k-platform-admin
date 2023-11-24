@@ -50,6 +50,7 @@ import {ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
 import createForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 @Component({
   selector: "object-details",
@@ -76,7 +77,8 @@ import createColumnForm = ObjectDetails.createColumnForm;
     AutoCompleteModule,
     RefInputComponent,
     ConfirmDialogModule,
-    NgClass
+    NgClass,
+    InputTextareaModule
   ],
   providers: [
     ExplorerService,

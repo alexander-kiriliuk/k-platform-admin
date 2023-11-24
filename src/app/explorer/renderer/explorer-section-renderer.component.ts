@@ -26,7 +26,6 @@ import {EXPLORER_SECTION_RENDERER} from "../explorer.constants";
 import {
 ColumnDataType,
 ExplorerColumn,
-ExplorerRenderer,
 ExplorerRendererLoader,
 TargetData
 } from "../explorer.types";
@@ -37,7 +36,7 @@ TargetData
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorerSectionRendererComponent implements OnInit, ExplorerRenderer {
+export class ExplorerSectionRendererComponent implements OnInit {
 
   @Input({required: true}) target: TargetData;
   @Input({required: true}) column: ExplorerColumn;
@@ -61,11 +60,15 @@ export class ExplorerSectionRendererComponent implements OnInit, ExplorerRendere
       console.warn(`Renderer with ${code ? `code ${code}` : `type ${this.column.type}`} is not found`);
       renderer = this.getRendererByCode("string-section-renderer");
     }
+    const rendererParams = this.column?.sectionRenderer?.params ?? {};
+    const columnRendererParams = this.column?.sectionRendererParams ?? {};
+    Object.assign(rendererParams, columnRendererParams);
     renderer.load.then(component => {
       const ref = this.viewContainer.createComponent(component);
       ref.instance.column = this.column;
       ref.instance.target = this.target;
       ref.instance.data = this.data;
+      ref.instance.params = rendererParams;
       ref.changeDetectorRef.detectChanges();
     });
   }
