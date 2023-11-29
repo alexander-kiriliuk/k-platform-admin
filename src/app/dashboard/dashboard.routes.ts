@@ -28,6 +28,11 @@ export const DashboardRoutes: Routes = [
           .then(m => m.SectionComponent)
       },
       {
+        path: "object/:target/:id",
+        loadComponent: () => import("../explorer/object/explorer-object.component")
+          .then(m => m.ExplorerObjectComponent)
+      },
+      {
         path: "system/objects",
         loadComponent: () => import("../object/object.component")
           .then(m => m.ObjectComponent)

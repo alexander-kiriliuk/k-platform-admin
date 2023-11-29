@@ -106,6 +106,7 @@
         "virtual": "Virtual",
         "primary": "Primary",
         "unique": "Unique",
+        "alias": "Alias",
         "multiple": "Array of values",
         "sec.rd.params": "Section renderer params",
         "obj.rd.params": "Object renderer params",

@@ -40,6 +40,7 @@ export namespace ObjectDetails {
       name: new FormControl<LocalizedString[]>(null),
       tableName: new FormControl<string>(null),
       target: new FormControl<string>(null),
+      alias: new FormControl<string>(null),
       columns: new FormArray<FormGroup<ColumnForm>>([])
     });
   }

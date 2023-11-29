@@ -27,6 +27,7 @@ export type RendererId = "string-section-renderer" | "boolean-section-renderer" 
   "media-section-renderer" | "reference-section-renderer" | string;
 
 export interface ExplorerTarget {
+  alias: string;
   target: string;
   tableName: string;
   name: LocalizedString[];

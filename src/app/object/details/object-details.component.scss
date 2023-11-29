@@ -48,6 +48,7 @@ p-accordionTab {
 }
 
 .data-grid {
+  @apply mb-8;
   & > div {
     @apply grid grid-cols-2 gap-4 py-1;
     & > div {

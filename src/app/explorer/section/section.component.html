@@ -33,7 +33,7 @@
     </tr>
   </ng-template>
   <ng-template let-item pTemplate="body">
-    <tr [ngClass]="{selected: isSelected(item)}">
+    <tr [ngClass]="{selected: isSelected(item)}" (dblclick)="openObjectUi(item)">
       <td *ngIf="dialogMode" class="set-btn" (click)="selectEntityAndCloseDialog(item)">
         <i class="pi pi-arrow-down-left"></i>
       </td>

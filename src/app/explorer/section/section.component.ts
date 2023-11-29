@@ -241,6 +241,17 @@ export class SectionComponent implements AfterViewInit {
     return this.selectedRows[pk] !== undefined;
   }
 
+  openObjectUi(item: { [pk: string | number]: unknown }) {
+    if (this.dialogMode) {
+      // TODO open new dialog
+      return;
+    }
+    const entity = this.targetData.entity;
+    this.router.navigate([
+      `/object/${entity.alias || entity.target}/${item[this.targetData.primaryColumn.property]}`
+    ]);
+  }
+
   private getSection(params?: PageableParams) {
     this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
     this.sectionSub?.unsubscribe();
