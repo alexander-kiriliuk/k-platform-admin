@@ -115,7 +115,9 @@
         "sec.priority": "Section priority",
         "obj.priority": "Priority in object",
         "sec.enabled": "Available in section",
-        "obj.enabled": "Enabled in object",
+        "obj.enabled": "Available in object",
+        "sec.visibility": "Visible in section",
+        "obj.visibility": "Visible in object",
         "renderer": {
           "section": "Section renderer",
           "object": "Object renderer"

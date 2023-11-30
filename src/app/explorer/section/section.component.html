@@ -16,20 +16,22 @@
           {{"explorer.select" | transloco: {v: selectedRowsCount} }}
         </p-button>
       </th>
-      <th *ngFor="let item of targetData.entity.columns">
-        <ng-container *ngIf="queryParamsSnapshot['sort'] === item.property">
-          <i class="indicator pi" [ngClass]="{
+      <ng-container *ngFor="let item of targetData.entity.columns">
+        <th *ngIf="item.sectionVisibility">
+          <ng-container *ngIf="queryParamsSnapshot['sort'] === item.property">
+            <i class="indicator pi" [ngClass]="{
               'pi-sort-amount-down': queryParamsSnapshot['order'] === 'DESC',
               'pi-sort-amount-up': queryParamsSnapshot['order'] === 'ASC'
              }"
-             (click)="removeSorting()"></i>
-        </ng-container>
-        <ng-container *ngIf="propertyFilter(item.property)">
-          <i class="indicator pi pi-filter" (click)="removeFilter(item.property)"></i>
-        </ng-container>
-        {{item.name | localize:item.property}}
-        <i *ngIf="!item.virtual" class="ctrl pi pi-window-maximize" pRipple (click)="showFilterDialog(item)"></i>
-      </th>
+               (click)="removeSorting()"></i>
+          </ng-container>
+          <ng-container *ngIf="propertyFilter(item.property)">
+            <i class="indicator pi pi-filter" (click)="removeFilter(item.property)"></i>
+          </ng-container>
+          {{item.name | localize:item.property}}
+          <i *ngIf="!item.virtual" class="ctrl pi pi-window-maximize" pRipple (click)="showFilterDialog(item)"></i>
+        </th>
+      </ng-container>
     </tr>
   </ng-template>
   <ng-template let-item pTemplate="body">
@@ -37,9 +39,11 @@
       <td *ngIf="dialogMode" class="set-btn" (click)="selectEntityAndCloseDialog(item)">
         <i class="pi pi-arrow-down-left"></i>
       </td>
-      <td *ngFor="let col of targetData.entity.columns">
-        <explorer-section-renderer [target]="targetData" [column]="col" [data]="item" />
-      </td>
+      <ng-container *ngFor="let col of targetData.entity.columns">
+        <td *ngIf="col.sectionVisibility">
+          <explorer-section-renderer [target]="targetData" [column]="col" [data]="item" />
+        </td>
+      </ng-container>
     </tr>
   </ng-template>
 </p-table>

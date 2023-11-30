@@ -116,6 +116,8 @@
         "obj.priority": "Приоритет в объекте",
         "sec.enabled": "Доступно в секции",
         "obj.enabled": "Доступно в объекте",
+        "sec.visibility": "Видимый в секции",
+        "obj.visibility": "Видимый в объекте",
         "renderer": {
           "section": "Рендерер в секции",
           "object": "Рендерер в объекте"

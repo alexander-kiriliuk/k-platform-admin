@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
-import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
+import {DialogService, DynamicDialogConfig} from "primeng/dynamicdialog";
 import {ExplorerService} from "../../explorer/explorer.service";
 import {finalize, Observable, tap} from "rxjs";
 import {PreloaderEvent} from "../../modules/preloader/preloader.event";
@@ -26,9 +26,8 @@ import {PreloaderDirective} from "../../modules/preloader/preloader.directive";
 import {ExplorerColumn, TargetData} from "../../explorer/explorer.types";
 import {AsyncPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
-import {AccordionModule} from "primeng/accordion";
 import {InputTextModule} from "primeng/inputtext";
-import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {ButtonModule} from "primeng/button";
 import {
@@ -36,11 +35,6 @@ LocalizeStringInputComponent
 } from "../../modules/locale/string-input/localize-string-input.component";
 import {map} from "rxjs/operators";
 import {MediaInputComponent} from "../../modules/media/input/media-input.component";
-import {InputNumberModule} from "primeng/inputnumber";
-import {CheckboxModule} from "primeng/checkbox";
-import {AutoCompleteCompleteEvent, AutoCompleteModule} from "primeng/autocomplete";
-import {Explorer} from "../../explorer/explorer.constants";
-import {RefInputComponent} from "../../modules/ref-input/ref-input.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ConfirmationService} from "primeng/api";
 import {
@@ -48,9 +42,9 @@ onlyLatinLettersAndNumbersValidator
 } from "../../global/validator/only-latin-letters-and-numbers.validator";
 import {ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
+import {ColumnForm} from "../object.types";
 import createForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
-import {InputTextareaModule} from "primeng/inputtextarea";
 
 @Component({
   selector: "object-details",
@@ -65,20 +59,14 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     NgIf,
     LocalizePipe,
     NgForOf,
-    AccordionModule,
     InputTextModule,
     ReactiveFormsModule,
     TranslocoPipe,
     ButtonModule,
     LocalizeStringInputComponent,
-    MediaInputComponent,
-    InputNumberModule,
-    CheckboxModule,
-    AutoCompleteModule,
-    RefInputComponent,
     ConfirmDialogModule,
     NgClass,
-    InputTextareaModule
+    MediaInputComponent,
   ],
   providers: [
     ExplorerService,
@@ -88,15 +76,14 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 export class ObjectDetailsComponent {
 
   private readonly config = inject(DynamicDialogConfig);
-  private readonly ref = inject(DynamicDialogRef);
+  private readonly dialogService = inject(DialogService);
+  private readonly localizePipe = inject(LocalizePipe);
   private readonly explorerService = inject(ExplorerService);
   private readonly confirmationService = inject(ConfirmationService);
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly ts = inject(TranslocoService);
   readonly target$: Observable<TargetData>;
   readonly form = createForm();
-  suggestions: string[] = [];
   newColName: FormControl<string> = new FormControl(null, [
     Validators.required,
     onlyLatinLettersAndNumbersValidator()
@@ -120,11 +107,6 @@ export class ObjectDetailsComponent {
 
   get preloaderChannel() {
     return ObjectDetails.PreloaderCn;
-  }
-
-  searchType(e: AutoCompleteCompleteEvent) {
-    this.suggestions = Explorer.Types.filter(s => s.startsWith(e.query.trim()));
-    this.cdr.markForCheck();
   }
 
   saveObject() {
@@ -166,6 +148,23 @@ export class ObjectDetailsComponent {
         });
       }
     });
+  }
+
+  openColumnEditor(colForm: FormGroup<ColumnForm>) {
+    import("./column-editor/object-details-column-editor.component").then(c => {
+      this.dialogService.open(c.ObjectDetailsColumnEditorComponent, {
+        header: this.localizePipe.transform(colForm.controls.name.value, colForm.controls.id.value).toString(),
+        data: colForm,
+        resizable: true,
+        draggable: true,
+        modal: true,
+        position: "center"
+      });
+    });
+  }
+
+  removeColumn(columnIndex: number) {
+    this.form.controls.columns.removeAt(columnIndex);
   }
 
 }

@@ -18,7 +18,7 @@ import {FormArray, FormControl, FormGroup} from "@angular/forms";
 import {ColumnForm, TargetForm} from "../object.types";
 import {LocalizedString} from "../../modules/locale/locale.types";
 import {Media} from "../../modules/media/media.types";
-import {ExplorerColumn, ExplorerColumnRenderer} from "../../explorer/explorer.types";
+import {ExplorerColumn, ExplorerColumnRenderer, ExplorerTab} from "../../explorer/explorer.types";
 import {jsonStringValidator} from "../../global/validator/json-string.validator";
 
 
@@ -59,9 +59,11 @@ export namespace ObjectDetails {
       name: new FormControl<LocalizedString[]>(payload.name),
       type: new FormControl<string>(payload.type),
       objectEnabled: new FormControl<boolean>(payload.objectEnabled),
+      sectionVisibility: new FormControl<boolean>(payload.sectionVisibility),
       objectPriority: new FormControl<number>(payload.objectPriority),
       objectRenderer: new FormControl<ExplorerColumnRenderer>(payload.objectRenderer),
       sectionEnabled: new FormControl<boolean>(payload.sectionEnabled),
+      objectVisibility:  new FormControl<boolean>(payload.objectVisibility),
       sectionPriority: new FormControl<number>(payload.sectionPriority),
       sectionRenderer: new FormControl<ExplorerColumnRenderer>(payload.sectionRenderer),
       sectionRendererParams: new FormControl<object>(
@@ -70,6 +72,7 @@ export namespace ObjectDetails {
       objectRendererParams: new FormControl<object>(
         handleJsonColumn(payload.objectRendererParams), [jsonStringValidator()]
       ),
+      tab: new FormControl<ExplorerTab>(payload.tab),
     });
   }
 

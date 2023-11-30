@@ -52,11 +52,21 @@ export interface ExplorerColumn {
   objectPriority: number;
   sectionEnabled: boolean;
   objectEnabled: boolean;
+  sectionVisibility: boolean;
+  objectVisibility: boolean;
   virtual: boolean;
   sectionRenderer: ExplorerColumnRenderer;
   objectRenderer: ExplorerColumnRenderer;
   sectionRendererParams: object;
   objectRendererParams: object;
+  tab: ExplorerTab;
+}
+
+export interface ExplorerTab {
+  id: string;
+  name: LocalizedString[];
+  priority: number;
+  size: object;
 }
 
 export type ExplorerRendererType = "section" | "object";

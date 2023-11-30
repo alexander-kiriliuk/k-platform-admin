@@ -10,28 +10,22 @@ p-confirmDialog {
   div, input {
     @apply w-full;
   }
-
 }
 
-p-accordionTab {
-  &.virtual {
-    ::ng-deep {
-      .p-accordion-header-text {
-        color: var(--primary-color);
-      }
-    }
+.cols-list {
+  .virtual {
+    color: var(--primary-color);
+  }
+
+  & > div {
+    @apply flex items-center gap-x-2;
   }
 }
 
 .cols {
   @apply flex flex-col gap-4;
-  .tab {
-    @apply flex flex-col gap-6;
-    ::ng-deep {
-      textarea, input, p-inputnumber, .p-inputnumber, p-autoComplete, .p-autocomplete, .p-autocomplete-input {
-        @apply w-full;
-      }
-    }
+  & > div:first-child {
+    @apply my-2;
   }
 }
 
@@ -48,7 +42,6 @@ p-accordionTab {
 }
 
 .data-grid {
-  @apply mb-8;
   & > div {
     @apply grid grid-cols-2 gap-4 py-1;
     & > div {

@@ -1,0 +1,19 @@
+.content-wrapper {
+  max-width: 100%;
+  min-width: 50vw;
+  @apply flex gap-8 justify-between w-full;
+}
+
+.tab {
+  @apply flex flex-col gap-6 w-full;
+  ::ng-deep {
+    textarea, input, p-inputnumber, .p-inputnumber, p-autoComplete, .p-autocomplete, .p-autocomplete-input {
+      @apply w-full;
+    }
+  }
+}
+
+.actions {
+  @apply py-8 text-center;
+}
+
