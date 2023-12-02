@@ -89,6 +89,18 @@
       },
       "cols": "Columns",
       "save": "Save",
+      "tabs": "Tabs",
+      "tab": {
+        "label": "Object tab",
+        "id": "ID",
+        "name": "Name",
+        "priority": "Priority",
+        "params": "Params",
+        "cancel": "Cancel",
+        "ok": "Save",
+        "error": "Error saving tab",
+        "success": "Tab saved"
+      },
       "col": {
         "new": {
           "label": "Adding a new virtual column",

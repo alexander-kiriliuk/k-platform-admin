@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
-import {FormArray, FormControl, FormGroup} from "@angular/forms";
-import {ColumnForm, TargetForm} from "../object.types";
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ColumnForm, TabForm, TargetForm} from "../object.types";
 import {LocalizedString} from "../../modules/locale/locale.types";
 import {Media} from "../../modules/media/media.types";
-import {ExplorerColumn, ExplorerColumnRenderer, ExplorerTab} from "../../explorer/explorer.types";
+import {
+ExplorerColumn,
+ExplorerColumnRenderer,
+ExplorerTab,
+ExplorerTarget
+} from "../../explorer/explorer.types";
 import {jsonStringValidator} from "../../global/validator/json-string.validator";
+import {notOnlySpacesValidator} from "../../global/validator/not-only-spaces.validator";
+import {
+onlyLatinLettersAndNumbersValidator,
+onlyLatinLettersAndNumbersWithHyphensValidator
+} from "../../global/validator/only-latin-letters-and-numbers.validator";
 
 
 function handleJsonColumn(data: unknown): object {
@@ -63,7 +73,7 @@ export namespace ObjectDetails {
       objectPriority: new FormControl<number>(payload.objectPriority),
       objectRenderer: new FormControl<ExplorerColumnRenderer>(payload.objectRenderer),
       sectionEnabled: new FormControl<boolean>(payload.sectionEnabled),
-      objectVisibility:  new FormControl<boolean>(payload.objectVisibility),
+      objectVisibility: new FormControl<boolean>(payload.objectVisibility),
       sectionPriority: new FormControl<number>(payload.sectionPriority),
       sectionRenderer: new FormControl<ExplorerColumnRenderer>(payload.sectionRenderer),
       sectionRendererParams: new FormControl<object>(
@@ -73,6 +83,20 @@ export namespace ObjectDetails {
         handleJsonColumn(payload.objectRendererParams), [jsonStringValidator()]
       ),
       tab: new FormControl<ExplorerTab>(payload.tab),
+    });
+  }
+
+  export function createTabForm(target: ExplorerTarget): FormGroup<TabForm> {
+    return new FormGroup<TabForm>({
+      id: new FormControl<string>(null, [
+        Validators.required,
+        notOnlySpacesValidator(),
+        onlyLatinLettersAndNumbersWithHyphensValidator()
+      ]),
+      name: new FormControl<LocalizedString[]>(null),
+      priority: new FormControl<number>(0, [Validators.required]),
+      size: new FormControl<object>(null, [jsonStringValidator()]),
+      target: new FormControl<ExplorerTarget>(target),
     });
   }
 

@@ -67,6 +67,7 @@ export interface ExplorerTab {
   name: LocalizedString[];
   priority: number;
   size: object;
+  target: ExplorerTarget;
 }
 
 export type ExplorerRendererType = "section" | "object";

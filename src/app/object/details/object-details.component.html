@@ -1,24 +1,4 @@
-<p-confirmDialog #cd>
-  <ng-template pTemplate="header">
-    {{"object.details.col.new.label" | transloco}}
-  </ng-template>
-  <ng-template pTemplate="message">
-    <div>
-      <input type="text" pInputText [placeholder]="'object.details.col.new.name' | transloco"
-             [formControl]="newColName"/>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="footer">
-    <button type="button" pButton (click)="cd.reject()">
-      {{"object.details.col.new.cancel" | transloco}}
-    </button>
-    <button type="button" class="p-button-success" pButton [disabled]="!newColName.valid" (click)="cd.accept()">
-      {{"object.details.col.new.ok" | transloco}}
-    </button>
-  </ng-template>
-</p-confirmDialog>
-
-<div *ngIf="target$ | async as target" class="content-wrapper" [formGroup]="form">
+<div *ngIf="target$ | async as target" class="content-wrapper" [formGroup]="targetForm">
   <div class="cols">
     <div class="p-float-label">
       <input id="colAlias" type="text" pInputText
@@ -26,29 +6,53 @@
       <label for="colAlias">{{"object.details.col.alias" | transloco}}</label>
     </div>
     <div class="cols-actions">
-      {{"object.details.cols" | transloco}}
-      <p-button
-        icon="pi pi-plus" severity="success"
-        [rounded]="true"
-        [text]="true"
-        (click)="addVirtualColumn()"/>
+      <div>
+        <p-button
+          icon="pi pi-plus" severity="success"
+          [rounded]="true"
+          [text]="true"
+          (click)="addVirtualColumn()"/>
+        {{"object.details.cols" | transloco}}
+      </div>
+      <div>
+        {{"object.details.tabs" | transloco}}
+        <p-button
+          icon="pi pi-plus" severity="secondary"
+          [rounded]="true"
+          [text]="true"
+          (click)="createTab()"/>
+      </div>
     </div>
-    <div *ngFor="let colForm of form.controls.columns.controls; let i = index"
+    <div *ngFor="let colForm of targetForm.controls.columns.controls; let i = index"
          formArrayName="columns"
          class="cols-list">
-      <div
-        [ngClass]="{virtual: colForm.controls.virtual.value}">
-        <p-button
-          icon="pi pi-pencil" severity="warning"
-          [rounded]="true"
-          [text]="true"
-          (click)="openColumnEditor(colForm)"/>
-        {{(colForm.controls.name.value | localize:colForm.controls.property.value)?.toString()}}
-        <p-button *ngIf="colForm.controls.virtual.value"
-          icon="pi pi-times" severity="danger"
-          [rounded]="true"
-          [text]="true"
-          (click)="removeColumn(i)"/>
+      <div [ngClass]="{virtual: colForm.controls.virtual.value}">
+        <div>
+          <p-button
+            icon="pi pi-pencil" severity="warning"
+            [rounded]="true"
+            [text]="true"
+            (click)="openColumnEditor(colForm)"/>
+          {{(colForm.controls.name.value | localize:colForm.controls.property.value)?.toString()}}
+          <p-button *ngIf="colForm.controls.virtual.value"
+                    icon="pi pi-times" severity="danger"
+                    [rounded]="true"
+                    [text]="true"
+                    (click)="removeColumn(i)"/>
+        </div>
+        <div>
+          {{(colForm.controls.tab.value?.name | localize:colForm.controls.tab.value?.id)?.toString()}}
+          <p-button icon="pi pi-bookmark"
+                    severity="secondary"
+                    [rounded]="true"
+                    [text]="true"
+                    (click)="openTabFinder(colForm)"/>
+          <p-button icon="pi pi-trash"
+                    severity="danger"
+                    [rounded]="true"
+                    [text]="true"
+                    (click)="clearColumnTab(colForm)"/>
+        </div>
       </div>
     </div>
   </div>
@@ -90,7 +94,7 @@
           [placeholder]="'object.details.object.icon' | transloco"/>
       </div>
       <div class="actions">
-        <button pButton [disabled]="!form.valid" (click)="saveObject()">
+        <button pButton [disabled]="!targetForm.valid" (click)="saveObject()">
           {{"object.details.save" | transloco}}
         </button>
       </div>
@@ -98,3 +102,60 @@
   </div>
 </div>
 <preloader *preloading="{state: true, channel: preloaderChannel}"/>
+
+<p-confirmDialog #newColumnDialog [key]="newColumnDialogKey">
+  <ng-template pTemplate="header">
+    {{"object.details.col.new.label" | transloco}}
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div>
+      <input type="text" pInputText [placeholder]="'object.details.col.new.name' | transloco"
+             [formControl]="newColName"/>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton (click)="newColumnDialog.reject()">
+      {{"object.details.col.new.cancel" | transloco}}
+    </button>
+    <button type="button" class="p-button-success" pButton [disabled]="!newColName.valid"
+            (click)="newColumnDialog.accept()">
+      {{"object.details.col.new.ok" | transloco}}
+    </button>
+  </ng-template>
+</p-confirmDialog>
+
+<p-confirmDialog #newTabDialog [key]="newTabDialogKey">
+  <ng-template pTemplate="header">
+    {{"object.details.tab.label" | transloco}}
+  </ng-template>
+  <ng-template pTemplate="message">
+    <div class="tabs">
+      <div>
+        <localize-string-input
+          [formControl]="tabForm.controls.name"
+          [placeholder]="'object.details.tab.name' | transloco"/>
+      </div>
+      <div>
+        <input type="text" pInputText [formControl]="tabForm.controls.id"
+               [placeholder]="'object.details.tab.id' | transloco"/>
+      </div>
+      <div class="p-float-label">
+        <p-inputNumber inputId="tabPriority" [min]="0"
+                       [formControl]="tabForm.controls.priority"/>
+        <label for="tabPriority">{{"object.details.tab.priority" | transloco}}</label>
+      </div>
+      <div class="p-float-label">
+        <textarea pInputTextarea id="tabParams" [formControl]="tabForm.controls.size"></textarea>
+        <label for="tabParams">{{'object.details.tab.params' | transloco}}</label>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton (click)="newTabDialog.reject()">
+      {{"object.details.tab.cancel" | transloco}}
+    </button>
+    <button type="button" class="p-button-success" pButton [disabled]="!tabForm.valid" (click)="newTabDialog.accept()">
+      {{"object.details.tab.ok" | transloco}}
+    </button>
+  </ng-template>
+</p-confirmDialog>

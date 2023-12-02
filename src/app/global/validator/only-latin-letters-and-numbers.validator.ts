@@ -22,3 +22,10 @@ export function onlyLatinLettersAndNumbersValidator(): ValidatorFn {
     return forbidden ? {hyphensError: {value: control.value}} : null;
   };
 }
+
+export function onlyLatinLettersAndNumbersWithHyphensValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: unknown } | null => {
+    const forbidden = !/^[A-Za-z0-9-]+$/.test(control.value);
+    return forbidden ? {hyphensError: {value: control.value}} : null;
+  };
+}

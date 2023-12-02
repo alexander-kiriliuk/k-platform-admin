@@ -57,11 +57,11 @@ export class ExplorerService {
   }
 
   saveEntity<T = unknown>(entity: T, target: string, id?: number) {
-    return this.http.post<T>(fillParams("/explorer/entity/:target", target), null, {
-      params: {
-        id
-      }
-    });
+    const params: { id: number } = {} as { id: number };
+    if (id) {
+      params.id = id;
+    }
+    return this.http.post<T>(fillParams("/explorer/entity/:target", target), entity, {params});
   }
 
   saveTarget(data: ExplorerTarget) {

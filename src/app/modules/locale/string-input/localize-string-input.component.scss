@@ -1,5 +1,10 @@
 :host {
   @apply block relative;
+  ::ng-deep {
+    .p-tabview-panels {
+      @apply px-0 pb-0;
+    }
+  }
 }
 
 textarea {
