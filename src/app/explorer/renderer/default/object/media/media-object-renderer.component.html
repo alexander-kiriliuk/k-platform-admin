@@ -1,0 +1,7 @@
+<ng-template #emptyUI>
+  &lt;null&gt;
+</ng-template>
+<ng-container *ngFor="let item of dataSet" >
+  media =  {{column.property}} >> x<br>
+  <!--<media-res *ngIf="item else emptyUI" format="thumb" [src]="item" />-->
+</ng-container>

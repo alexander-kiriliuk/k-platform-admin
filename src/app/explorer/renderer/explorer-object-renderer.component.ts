@@ -22,7 +22,7 @@ Input,
 OnInit,
 ViewContainerRef
 } from "@angular/core";
-import {EXPLORER_SECTION_RENDERER} from "../explorer.constants";
+import {EXPLORER_OBJECT_RENDERER} from "../explorer.constants";
 import {
 ColumnDataType,
 ExplorerColumn,
@@ -32,22 +32,22 @@ TargetData
 import {AbstractExplorerRendererComponent} from "./abstract-explorer-renderer.component";
 
 @Component({
-  selector: "explorer-section-renderer",
+  selector: "explorer-object-renderer",
   template: "",
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorerSectionRendererComponent extends AbstractExplorerRendererComponent implements OnInit {
+export class ExplorerObjectRendererComponent extends AbstractExplorerRendererComponent implements OnInit {
 
   @Input({required: true}) target: TargetData;
   @Input({required: true}) column: ExplorerColumn;
   @Input({required: true}) data: { [k: string]: unknown };
   protected viewContainer = inject(ViewContainerRef);
-  protected readonly renderers = inject(EXPLORER_SECTION_RENDERER);
+  protected readonly renderers = inject(EXPLORER_OBJECT_RENDERER);
 
   ngOnInit(): void {
     let renderer: ExplorerRendererLoader;
-    const code = this.column.sectionRenderer?.code;
+    const code = this.column.objectRenderer?.code;
     if (code) {
       renderer = this.getRendererByCode(code);
     } else {
@@ -55,11 +55,11 @@ export class ExplorerSectionRendererComponent extends AbstractExplorerRendererCo
     }
     if (!renderer) {
       console.warn(`Renderer with ${code ? `code ${code}` : `type ${this.column.type}`} is not found`);
-      renderer = this.getRendererByCode("string-section-renderer");
+      renderer = this.getRendererByCode("string-object-renderer");
     }
-    const rendererParams = this.column?.sectionRenderer?.params ?? {};
-    const columnRendererParams = this.column?.sectionRendererParams ?? {};
-    this.mergeParamsAndDrawComponent(renderer, rendererParams,columnRendererParams);
+    const rendererParams = this.column?.objectRenderer?.params ?? {};
+    const columnRendererParams = this.column?.objectRendererParams ?? {};
+    this.mergeParamsAndDrawComponent(renderer, rendererParams, columnRendererParams);
   }
 
   private getRendererByCode(code: string): ExplorerRendererLoader {
@@ -67,19 +67,19 @@ export class ExplorerSectionRendererComponent extends AbstractExplorerRendererCo
   }
 
   private getRendererByDataType(type: ColumnDataType): ExplorerRendererLoader {
-    let code = "string-section-renderer";
+    let code = "string-object-renderer";
     switch (type) {
       case "boolean":
-        code = "boolean-section-renderer";
+        code = "boolean-object-renderer";
         break;
       case "date":
-        code = "date-section-renderer";
+        code = "date-object-renderer";
         break;
       case "reference":
         if (this.column.referencedEntityName === "MediaEntity") {
-          code = "media-section-renderer";
+          code = "media-object-renderer";
         } else {
-          code = "reference-section-renderer";
+          code = "reference-object-renderer";
         }
         break;
     }

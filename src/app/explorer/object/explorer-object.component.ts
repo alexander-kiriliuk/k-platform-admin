@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExplorerService} from "../explorer.service";
 import {forkJoin, throwError} from "rxjs";
@@ -9,7 +9,9 @@ import {TranslocoService} from "@ngneat/transloco";
 import {Store} from "../../modules/store/store";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
-import {ExplorerColumn, ExplorerTab} from "../explorer.types";
+import {ExplorerColumn, ExplorerTab, TargetData} from "../explorer.types";
+import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: "explorer-object",
@@ -17,6 +19,11 @@ import {ExplorerColumn, ExplorerTab} from "../explorer.types";
   templateUrl: "./explorer-object.component.html",
   styleUrls: ["./explorer-object.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ExplorerObjectRendererComponent,
+    NgForOf,
+    NgIf
+  ],
   providers: [
     ExplorerService,
     LocalizePipe
@@ -29,7 +36,10 @@ export class ExplorerObjectComponent implements OnInit {
   private readonly explorerService = inject(ExplorerService);
   private readonly ts = inject(TranslocoService);
   private readonly localizePipe = inject(LocalizePipe);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
+  targetData: TargetData;
+  entityData: { [k: string]: unknown };
 
   get id() {
     return this.ar.snapshot.params.id;
@@ -65,11 +75,13 @@ export class ExplorerObjectComponent implements OnInit {
       let title = this.localizePipe.transform(target.entity.name, target.entity.target) as string;
       title += ` #${entity[target.primaryColumn.property]}`;
       this.store.emit<string>(DashboardEvent.PatchHeader, title);
-      // todo
-      console.log("Target:", target);
-      console.log("Entity:", entity);
+      this.targetData = target;
+      this.entityData = entity;
       console.log("Tabs:", tabs);
       console.log("OutOfTabsColumns:", outOfTabsColumns);
+      // todo create form controls
+      // todo create tabs UI
+      this.cdr.markForCheck();
     });
   }
 

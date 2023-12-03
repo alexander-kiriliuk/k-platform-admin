@@ -42,6 +42,7 @@ import {LangUtils} from "./app/global/util/lang.utils";
 import {provideExplorerSectionRenderers} from "./app/explorer/explorer-secrion-renderer-providers";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import setNgTranslation = LangUtils.setNgTranslation;
+import {provideExplorerObjectRenderers} from "./app/explorer/explorer-object-renderer-providers";
 
 ThemeUtils.setDefaultTheme();
 
@@ -60,6 +61,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(APP_ROUTES),
     provideTranslocoLoader(TranslocoHttpLoader),
     provideExplorerSectionRenderers(),
+    provideExplorerObjectRenderers(),
     provideTransloco({
       config: {
         defaultLang: LangUtils.DefaultLang,

@@ -1,1 +1,5 @@
-<p>object works!</p>
+<ng-container *ngIf="targetData?.entity?.columns">
+  <div *ngFor="let col of targetData.entity.columns">
+    <explorer-object-renderer *ngIf="col.objectVisibility" [target]="targetData" [column]="col" [data]="entityData" />
+  </div>
+</ng-container>
