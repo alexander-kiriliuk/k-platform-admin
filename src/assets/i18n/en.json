@@ -87,6 +87,8 @@
         "description": "Description",
         "icon": "Icon"
       },
+      "error": "Error saving object",
+      "success": "Object saved successfully",
       "cols": "Columns",
       "save": "Save",
       "tabs": "Tabs",

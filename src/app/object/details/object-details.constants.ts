@@ -27,8 +27,7 @@ ExplorerTarget
 import {jsonStringValidator} from "../../global/validator/json-string.validator";
 import {notOnlySpacesValidator} from "../../global/validator/not-only-spaces.validator";
 import {
-onlyLatinLettersAndNumbersValidator,
-onlyLatinLettersAndNumbersWithHyphensValidator
+  onlyLatinLettersAndNumbersWithHyphensValidator
 } from "../../global/validator/only-latin-letters-and-numbers.validator";
 
 

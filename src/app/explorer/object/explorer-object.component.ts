@@ -9,6 +9,7 @@ import {TranslocoService} from "@ngneat/transloco";
 import {Store} from "../../modules/store/store";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
+import {ExplorerColumn, ExplorerTab} from "../explorer.types";
 
 @Component({
   selector: "explorer-object",
@@ -49,12 +50,26 @@ export class ExplorerObjectComponent implements OnInit {
         return throwError(() => res);
       })
     ).subscribe(([target, entity]) => {
-      console.log("Target:", target);
-      console.log("Entity:", entity);
-      // todo tabs ui get
+      const tabs: ExplorerTab[] = [];
+      const outOfTabsColumns: ExplorerColumn[] = [];
+      for (const col of target.entity.columns) {
+        if (!col.tab) {
+          outOfTabsColumns.push(col);
+          continue;
+        }
+        if (tabs.find(t => t.id === col.tab?.id)) {
+          continue;
+        }
+        tabs.push(col.tab);
+      }
       let title = this.localizePipe.transform(target.entity.name, target.entity.target) as string;
       title += ` #${entity[target.primaryColumn.property]}`;
       this.store.emit<string>(DashboardEvent.PatchHeader, title);
+      // todo
+      console.log("Target:", target);
+      console.log("Entity:", entity);
+      console.log("Tabs:", tabs);
+      console.log("OutOfTabsColumns:", outOfTabsColumns);
     });
   }
 

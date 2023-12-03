@@ -15,7 +15,7 @@
  */
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
-import {DialogService, DynamicDialogConfig} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ExplorerService} from "../../explorer/explorer.service";
 import {finalize, Observable, tap, throwError} from "rxjs";
 import {PreloaderEvent} from "../../modules/preloader/preloader.event";
@@ -89,6 +89,7 @@ export class ObjectDetailsComponent {
   readonly newColumnDialogKey = "newColumnDialog";
   readonly newTabDialogKey = "newTabDialog";
   private readonly config = inject(DynamicDialogConfig);
+  private readonly ref = inject(DynamicDialogRef);
   private readonly dialogService = inject(DialogService);
   private readonly localizePipe = inject(LocalizePipe);
   private readonly explorerService = inject(ExplorerService);
@@ -127,10 +128,20 @@ export class ObjectDetailsComponent {
   saveObject() {
     this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
     this.explorerService.saveTarget(this.targetForm.getRawValue()).pipe(
+      catchError((res) => {
+        this.store.emit<ToastData>(ToastEvent.Error, {
+          title: this.ts.translate("object.details.error")
+        });
+        return throwError(res);
+      }),
       finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel))
     ).subscribe(v => {
       this.targetForm.patchValue(v);
       v.columns.forEach(col => this.targetForm.controls.columns.push(createColumnForm(col)));
+      this.store.emit<ToastData>(ToastEvent.Success, {
+        title: this.ts.translate("object.details.success")
+      });
+      this.ref.close();
     });
   }
 
@@ -214,11 +225,11 @@ export class ObjectDetailsComponent {
   }
 
   createTab() {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
     this.tabForm = createTabForm({target: this.targetForm.value.target} as ExplorerTarget);
     this.confirmationService.confirm({
       key: this.newTabDialogKey,
       accept: () => {
+        this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
         const payload = this.tabForm.getRawValue();
         this.explorerService.saveEntity(payload, "ExplorerTabEntity")
           .pipe(
