@@ -15,33 +15,32 @@
  */
 
 import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
-import {Media} from "../../../../../modules/media/media.types";
-import {NgForOf, NgIf} from "@angular/common";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
-import {MediaInputComponent} from "../../../../../modules/media/input/media-input.component";
-import {PaginatorModule} from "primeng/paginator";
-import {ReactiveFormsModule} from "@angular/forms";
+import {RefInputComponent} from "../../../../../modules/ref-input/ref-input.component";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
-import {MediaObjectRendererParams} from "./media-object-renderer.types";
+import {ReactiveFormsModule} from "@angular/forms";
+import {
+LocalizeMediaInputComponent
+} from "../../../../../modules/locale/media-input/localize-media-input.component";
+import {LocalizedMedia} from "../../../../../modules/locale/locale.types";
+import {LocalizedMediaObjectRendererTypes} from "./localized-media-object-renderer.types";
 
 @Component({
-  selector: "media-object-renderer",
+  selector: "localized-media-object-renderer",
   standalone: true,
-  templateUrl: "./media-object-renderer.component.html",
+  templateUrl: "./localized-media-object-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgForOf,
-    NgIf,
-    MediaInputComponent,
-    PaginatorModule,
-    ReactiveFormsModule,
+    RefInputComponent,
     TranslocoPipe,
     LocalizePipe,
-  ],
+    ReactiveFormsModule,
+    LocalizeMediaInputComponent
+  ]
 })
-export class MediaObjectRendererComponent extends AbstractExplorerObjectRenderer
-  <Media | Media[], MediaObjectRendererParams> implements OnInit {
+export class LocalizedMediaObjectRendererComponent extends AbstractExplorerObjectRenderer
+  <LocalizedMedia, LocalizedMediaObjectRendererTypes> implements OnInit {
 
   mediaType = "default";
 

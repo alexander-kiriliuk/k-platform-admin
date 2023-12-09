@@ -24,23 +24,22 @@ import {
   Output
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {Media} from "../media.types";
-import {FileUploadModule, UploadEvent} from "primeng/fileupload";
+import {FileUploadEvent, Media} from "../media.types";
+import {FileUploadErrorEvent, FileUploadModule} from "primeng/fileupload";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {HttpResponse} from "@angular/common/http";
 import {FileSizePipe} from "../../../global/service/file-size.pipe";
 import {MediaComponent} from "../media.component";
 import {LocalizePipe} from "../../locale/localize.pipe";
-import {MediaSize} from "../media.constants";
-import {TranslocoPipe} from "@ngneat/transloco";
+import {MediaTypeVariant} from "../media.constants";
+import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {DialogService} from "primeng/dynamicdialog";
 import {SectionDialogConfig} from "../../../explorer/explorer.types";
 import {ExplorerService} from "../../../explorer/explorer.service";
 import {finalize} from "rxjs";
-
-interface FileUploadEvent extends UploadEvent {
-  files: File[];
-}
+import {ToastData} from "../../../global/types";
+import {ToastEvent} from "../../../global/events";
+import {Store} from "../../store/store";
 
 @Component({
   selector: "media-input",
@@ -69,7 +68,7 @@ interface FileUploadEvent extends UploadEvent {
 export class MediaInputComponent implements ControlValueAccessor {
 
   @Output() changeMedia = new EventEmitter<Media | Media[]>();
-  @Input({required: true}) mediaSize: MediaSize;
+  @Input({required: true}) mediaType: MediaTypeVariant;
   @Input() url: string = "/media/upload";
   @Input() placeholder: string;
   @Input() multi: boolean;
@@ -77,13 +76,15 @@ export class MediaInputComponent implements ControlValueAccessor {
   uploadedFiles: File[];
   data: Media | Media[];
   targetLoadingState: boolean;
+  private readonly store = inject(Store);
   private readonly dialogService = inject(DialogService);
   private readonly localizePipe = inject(LocalizePipe);
   private readonly explorerService = inject(ExplorerService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly ts = inject(TranslocoService);
 
   get uploadUrl() {
-    return `/media/upload/${(this.mediaSize)}`;
+    return `/media/upload/${(this.mediaType)}`;
   }
 
   get multiValue() {
@@ -122,6 +123,12 @@ export class MediaInputComponent implements ControlValueAccessor {
       this.uploadedFiles = undefined;
       this.cdr.markForCheck();
     }, 3000);
+  }
+
+  onUploadError(e: FileUploadErrorEvent) {
+    this.store.emit<ToastData>(ToastEvent.Error, {
+      title: this.ts.translate("msg.error"), message: e.error.error?.message || e.error.error?.status
+    });
   }
 
   openMediaSection() {

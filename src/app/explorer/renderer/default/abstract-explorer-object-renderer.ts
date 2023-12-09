@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {DatePipe} from "@angular/common";
-import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
+import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../explorer.types";
+import {FormControl, FormGroup} from "@angular/forms";
 
-@Component({
-  selector: "date-section-renderer",
-  standalone: true,
-  templateUrl: "./date-section-renderer.component.html",
-  styleUrls: ["./date-section-renderer.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    DatePipe
-  ],
-})
-export class DateSectionRendererComponent extends AbstractExplorerSectionRenderer<string> {
+export abstract class AbstractExplorerObjectRenderer<Data = unknown, Params = unknown>
+  implements ExplorerRenderer<Data, Params> {
+  column: ExplorerColumn;
+  params: Params;
+  data: { [p: string]: Data };
+  target: TargetData;
+  entityForm: FormGroup;
+
+  get ctrl() {
+    return this.entityForm.controls[this.column.property] as FormControl;
+  }
+
 }

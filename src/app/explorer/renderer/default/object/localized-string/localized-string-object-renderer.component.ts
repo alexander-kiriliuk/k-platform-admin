@@ -14,41 +14,28 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
-import {Media} from "../../../../../modules/media/media.types";
-import {NgForOf, NgIf} from "@angular/common";
+import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
-import {MediaInputComponent} from "../../../../../modules/media/input/media-input.component";
-import {PaginatorModule} from "primeng/paginator";
-import {ReactiveFormsModule} from "@angular/forms";
+import {
+LocalizeStringInputComponent
+} from "../../../../../modules/locale/string-input/localize-string-input.component";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
-import {MediaObjectRendererParams} from "./media-object-renderer.types";
+import {RefInputComponent} from "../../../../../modules/ref-input/ref-input.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @Component({
-  selector: "media-object-renderer",
+  selector: "localized-string-object-renderer",
   standalone: true,
-  templateUrl: "./media-object-renderer.component.html",
+  templateUrl: "./localized-string-object-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgForOf,
-    NgIf,
-    MediaInputComponent,
-    PaginatorModule,
-    ReactiveFormsModule,
+    LocalizeStringInputComponent,
     TranslocoPipe,
     LocalizePipe,
-  ],
+    RefInputComponent,
+    ReactiveFormsModule
+  ]
 })
-export class MediaObjectRendererComponent extends AbstractExplorerObjectRenderer
-  <Media | Media[], MediaObjectRendererParams> implements OnInit {
-
-  mediaType = "default";
-
-  ngOnInit(): void {
-    if (this.params?.type) {
-      this.mediaType = this.params.type;
-    }
-  }
-
+export class LocalizedStringObjectRendererComponent extends AbstractExplorerObjectRenderer {
 }

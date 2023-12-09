@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {DatePipe} from "@angular/common";
-import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
 
-@Component({
-  selector: "date-section-renderer",
-  standalone: true,
-  templateUrl: "./date-section-renderer.component.html",
-  styleUrls: ["./date-section-renderer.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    DatePipe
-  ],
-})
-export class DateSectionRendererComponent extends AbstractExplorerSectionRenderer<string> {
+export class DateObjectRendererParams {
+  firstDayOfWeek: number;
+  showTime: boolean;
+  showSeconds: boolean;
+  readonlyInput: boolean;
+  inline: boolean;
+  dateFormat: string;
 }

@@ -30,6 +30,7 @@ ExplorerRendererLoader,
 TargetData
 } from "../explorer.types";
 import {AbstractExplorerRendererComponent} from "./abstract-explorer-renderer.component";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: "explorer-object-renderer",
@@ -42,6 +43,7 @@ export class ExplorerObjectRendererComponent extends AbstractExplorerRendererCom
   @Input({required: true}) target: TargetData;
   @Input({required: true}) column: ExplorerColumn;
   @Input({required: true}) data: { [k: string]: unknown };
+  @Input({required: true}) override entityForm: FormGroup;
   protected viewContainer = inject(ViewContainerRef);
   protected readonly renderers = inject(EXPLORER_OBJECT_RENDERER);
 
@@ -76,10 +78,19 @@ export class ExplorerObjectRendererComponent extends AbstractExplorerRendererCom
         code = "date-object-renderer";
         break;
       case "reference":
-        if (this.column.referencedEntityName === "MediaEntity") {
-          code = "media-object-renderer";
-        } else {
-          code = "reference-object-renderer";
+        switch (this.column.referencedEntityName) {
+          case "MediaEntity":
+            code = "media-object-renderer";
+            break;
+          case "LocalizedStringEntity":
+            code = "localized-string-renderer";
+            break;
+          case "LocalizedMediaEntity":
+            code = "localized-media-renderer";
+            break;
+          default:
+            code = "reference-object-renderer";
+            break;
         }
         break;
     }

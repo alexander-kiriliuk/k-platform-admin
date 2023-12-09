@@ -1,17 +1,17 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ExplorerService} from "../explorer.service";
 import {forkJoin, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
-import {TranslocoService} from "@ngneat/transloco";
 import {Store} from "../../modules/store/store";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {ExplorerColumn, ExplorerTab, TargetData} from "../explorer.types";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
 import {NgForOf, NgIf} from "@angular/common";
+import {FormBuilder, FormControl} from "@angular/forms";
 
 @Component({
   selector: "explorer-object",
@@ -32,12 +32,12 @@ import {NgForOf, NgIf} from "@angular/common";
 export class ExplorerObjectComponent implements OnInit {
 
   private readonly ar = inject(ActivatedRoute);
-  private readonly router = inject(Router);
   private readonly explorerService = inject(ExplorerService);
-  private readonly ts = inject(TranslocoService);
   private readonly localizePipe = inject(LocalizePipe);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
+  private readonly fb = inject(FormBuilder);
+  readonly entityForm = this.fb.group({});
   targetData: TargetData;
   entityData: { [k: string]: unknown };
 
@@ -77,9 +77,11 @@ export class ExplorerObjectComponent implements OnInit {
       this.store.emit<string>(DashboardEvent.PatchHeader, title);
       this.targetData = target;
       this.entityData = entity;
+      this.targetData.entity.columns.forEach(col => this.entityForm.addControl(
+        col.property, new FormControl(this.entityData[col.property]))
+      );
       console.log("Tabs:", tabs);
       console.log("OutOfTabsColumns:", outOfTabsColumns);
-      // todo create form controls
       // todo create tabs UI
       this.cdr.markForCheck();
     });

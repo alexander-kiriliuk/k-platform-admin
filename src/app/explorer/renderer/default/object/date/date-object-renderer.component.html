@@ -1,2 +1,17 @@
-date = {{column.property}} >> {{data[column.property]}}
-
+<label [for]="id">
+  <span>
+    {{this.column.name | localize: this.column.property}}
+  </span>
+  <span>
+    {{data[column.property] | date: rendererParams.dateFormat}}
+  </span>
+</label>
+<p-calendar
+  [inputId]="id"
+  [formControl]="ctrl"
+  [placeholder]="(this.column.name | localize: this.column.property).toString()"
+  [firstDayOfWeek]="rendererParams.firstDayOfWeek"
+  [showTime]="rendererParams.showTime"
+  [showSeconds]="rendererParams.showSeconds"
+  [readonlyInput]="rendererParams.readonlyInput"
+  [inline]="rendererParams.inline"/>

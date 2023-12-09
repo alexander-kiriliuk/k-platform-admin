@@ -1,0 +1,22 @@
+:host {
+  ::ng-deep {
+    p-calendar {
+      & > span {
+        @apply w-full;
+      }
+    }
+  }
+}
+
+label {
+  @apply flex flex-col gap-4;
+  span {
+    &:first-child {
+      @apply font-semibold;
+    }
+    &:last-child {
+      @apply text-xs;
+      color: var(--orange-500);
+    }
+  }
+}

@@ -15,20 +15,20 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
+import {CheckboxModule} from "primeng/checkbox";
+import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
+import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 
 @Component({
   selector: "boolean-object-renderer",
   standalone: true,
   templateUrl: "./boolean-object-renderer.component.html",
+  styleUrls: ["./boolean-object-renderer.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CheckboxModule,
+    LocalizePipe,
+  ]
 })
-export class BooleanObjectRendererComponent implements ExplorerRenderer {
-
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: unknown };
-  target: TargetData;
-
-
+export class BooleanObjectRendererComponent extends AbstractExplorerObjectRenderer {
 }

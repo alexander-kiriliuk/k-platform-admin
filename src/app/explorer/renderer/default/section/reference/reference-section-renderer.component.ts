@@ -15,11 +15,12 @@
  */
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
+import {TargetData} from "../../../../explorer.types";
 import {NgIf} from "@angular/common";
 import {CachedExplorerService} from "../../../../cached-explorer.service";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {LocalizedString} from "../../../../../modules/locale/locale.types";
+import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
 
 @Component({
   selector: "reference-section-renderer",
@@ -31,16 +32,11 @@ import {LocalizedString} from "../../../../../modules/locale/locale.types";
     NgIf
   ],
 })
-export class ReferenceSectionRendererComponent implements ExplorerRenderer, OnInit {
+export class ReferenceSectionRendererComponent extends AbstractExplorerSectionRenderer implements OnInit {
 
   private readonly cachedExplorerService = inject(CachedExplorerService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly localizePipe = inject(LocalizePipe);
-
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: unknown };
-  target: TargetData;
   refTarget: TargetData;
 
   get value() {

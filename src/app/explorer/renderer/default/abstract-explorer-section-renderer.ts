@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {DatePipe} from "@angular/common";
-import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
+import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../explorer.types";
 
-@Component({
-  selector: "date-section-renderer",
-  standalone: true,
-  templateUrl: "./date-section-renderer.component.html",
-  styleUrls: ["./date-section-renderer.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    DatePipe
-  ],
-})
-export class DateSectionRendererComponent extends AbstractExplorerSectionRenderer<string> {
+export abstract class AbstractExplorerSectionRenderer<T = unknown> implements ExplorerRenderer {
+  column: ExplorerColumn;
+  params: unknown;
+  data: { [p: string]: T };
+  target: TargetData;
 }

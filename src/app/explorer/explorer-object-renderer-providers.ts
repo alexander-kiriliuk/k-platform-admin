@@ -64,6 +64,24 @@ export function provideExplorerObjectRenderers(): RendererProvider[] {
           .then(m => m.MediaObjectRendererComponent)
       }
     },
+    {
+      provide: EXPLORER_OBJECT_RENDERER,
+      multi: true,
+      useValue: {
+        code: "localized-string-renderer",
+        load: import("./renderer/default/object/localized-string/localized-string-object-renderer.component")
+          .then(m => m.LocalizedStringObjectRendererComponent)
+      }
+    },
+    {
+      provide: EXPLORER_OBJECT_RENDERER,
+      multi: true,
+      useValue: {
+        code: "localized-media-renderer",
+        load: import("./renderer/default/object/localized-media/localized-media-object-renderer.component")
+          .then(m => m.LocalizedMediaObjectRendererComponent)
+      }
+    },
   ];
 }
 

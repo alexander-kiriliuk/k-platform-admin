@@ -15,10 +15,10 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
 import {Media} from "../../../../../modules/media/media.types";
 import {MediaComponent} from "../../../../../modules/media/media.component";
 import {NgForOf, NgIf} from "@angular/common";
+import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
 
 @Component({
   selector: "media-section-renderer",
@@ -31,12 +31,7 @@ import {NgForOf, NgIf} from "@angular/common";
     NgIf,
   ],
 })
-export class MediaSectionRendererComponent implements ExplorerRenderer<Media | Media[]> {
-
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: Media | Media[] };
-  target: TargetData;
+export class MediaSectionRendererComponent extends AbstractExplorerSectionRenderer<Media | Media[]> {
 
   get dataSet() {
     if (!this.column.multiple) {

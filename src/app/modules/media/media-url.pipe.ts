@@ -16,7 +16,7 @@
 
 import {inject, Pipe, PipeTransform} from "@angular/core";
 import {Media} from "./media.types";
-import {ReservedMediaSize, WEBP_SUPPORT} from "./media.constants";
+import {ReservedMediaFormat, WEBP_SUPPORT} from "./media.constants";
 import {environment} from "../../global/env/env";
 
 @Pipe({
@@ -27,13 +27,13 @@ export class MediaUrlPipe implements PipeTransform {
 
   private readonly webpSupport = inject(WEBP_SUPPORT);
 
-  transform(media: Media, format: string = ReservedMediaSize.THUMB) {
+  transform(media: Media, format: string = ReservedMediaFormat.THUMB) {
     if (!media) {
       return undefined;
     }
     const ext = this.webpSupport && media.type.vp6 ? "webp" : media.type.ext.code;
     if (ext === "svg") {
-      format = ReservedMediaSize.ORIGINAL;
+      format = ReservedMediaFormat.ORIGINAL;
     }
     const file = media.files.find(v => v.format.code === format);
     const fileName = `${file.name}.${ext}`;

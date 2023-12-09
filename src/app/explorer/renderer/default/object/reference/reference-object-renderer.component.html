@@ -1,1 +1,4 @@
-ref =  {{column.property}} >> {{data[column.property]}}
+<ref-input [target]="column.referencedEntityName"
+           [multi]="column.multiple"
+           [placeholder]="(this.column.name | localize: this.column.property).toString()"
+           [formControl]="ctrl"/>

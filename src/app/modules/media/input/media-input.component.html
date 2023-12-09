@@ -9,6 +9,7 @@
   [showCancelButton]="false"
   [url]="uploadUrl"
   [multiple]="false"
+  (onError)="onUploadError($event)"
   (onUpload)="onUpload($event)">
   <ng-template pTemplate="toolbar">
     <button pButton class="p-button-success"

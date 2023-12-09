@@ -31,7 +31,7 @@ import {NgForOf} from "@angular/common";
 import {SharedModule} from "primeng/api";
 import {TabViewModule} from "primeng/tabview";
 import {MediaInputComponent} from "../../media/input/media-input.component";
-import {MediaSize} from "../../media/media.constants";
+import {MediaTypeVariant} from "../../media/media.constants";
 
 @Component({
   selector: "localize-media-input",
@@ -60,7 +60,7 @@ import {MediaSize} from "../../media/media.constants";
 })
 export class LocalizeMediaInputComponent  implements ControlValueAccessor {
   @Input() placeholder: string;
-  @Input({required: true}) mediaSize: MediaSize;
+  @Input({required: true}) mediaType: MediaTypeVariant;
   resData: { [k: string]: LocalizedMedia };
   disabled = false;
   activeTab = 0;

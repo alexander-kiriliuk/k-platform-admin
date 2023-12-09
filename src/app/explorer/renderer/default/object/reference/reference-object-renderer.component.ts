@@ -15,19 +15,23 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
+import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
+import {RefInputComponent} from "../../../../../modules/ref-input/ref-input.component";
+import {TranslocoPipe} from "@ngneat/transloco";
+import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: "reference-object-renderer",
   standalone: true,
   templateUrl: "./reference-object-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    RefInputComponent,
+    TranslocoPipe,
+    LocalizePipe,
+    ReactiveFormsModule
+  ]
 })
-export class ReferenceObjectRendererComponent implements ExplorerRenderer {
-
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: unknown };
-  target: TargetData;
-
+export class ReferenceObjectRendererComponent extends AbstractExplorerObjectRenderer {
 }

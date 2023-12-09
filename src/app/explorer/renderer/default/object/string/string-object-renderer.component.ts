@@ -14,20 +14,34 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {InputTextModule} from "primeng/inputtext";
+import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
+import {NumberUtils} from "../../../../../global/util/number.utils";
+import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 
 @Component({
   selector: "string-object-renderer",
   standalone: true,
   templateUrl: "./string-object-renderer.component.html",
+  styleUrls: ["./string-object-renderer.component.scss"],
+  imports: [
+    FormsModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    LocalizePipe
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StringObjectRendererComponent implements ExplorerRenderer {
+export class StringObjectRendererComponent extends AbstractExplorerObjectRenderer implements OnInit {
 
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: unknown };
-  target: TargetData;
+  readonly id = NumberUtils.getRandomInt();
+
+  ngOnInit(): void {
+    if (this.column.primary) {
+      this.ctrl.disable();
+    }
+  }
 
 }

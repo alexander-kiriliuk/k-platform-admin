@@ -18,9 +18,12 @@ import {InjectionToken} from "@angular/core";
 
 export const WEBP_SUPPORT = new InjectionToken<boolean>("WEBP media format support flag");
 
-export enum ReservedMediaSize {
+export enum ReservedMediaFormat {
   THUMB = "thumb",
   ORIGINAL = "original"
 }
 
-export type MediaSize = "thumb" | "original" | string ;
+export type MediaFormat = "thumb" | "original" | string;
+
+export type MediaTypeVariant = "default" | "default-private" | "responsive" | "vector" | string;
+

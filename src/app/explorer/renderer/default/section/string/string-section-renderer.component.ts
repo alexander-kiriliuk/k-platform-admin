@@ -15,7 +15,7 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
+import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
 
 @Component({
   selector: "string-section-renderer",
@@ -23,11 +23,5 @@ import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer
   templateUrl: "./string-section-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StringSectionRendererComponent implements ExplorerRenderer {
-
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: unknown };
-  target: TargetData;
-
+export class StringSectionRendererComponent extends AbstractExplorerSectionRenderer {
 }

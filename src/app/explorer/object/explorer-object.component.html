@@ -1,5 +1,9 @@
 <ng-container *ngIf="targetData?.entity?.columns">
-  <div *ngFor="let col of targetData.entity.columns">
-    <explorer-object-renderer *ngIf="col.objectVisibility" [target]="targetData" [column]="col" [data]="entityData" />
+  <div *ngFor="let col of targetData.entity.columns" class="box-container">
+    <explorer-object-renderer *ngIf="col.objectVisibility"
+                              [target]="targetData"
+                              [column]="col"
+                              [data]="entityData"
+                              [entityForm]="entityForm"/>
   </div>
 </ng-container>

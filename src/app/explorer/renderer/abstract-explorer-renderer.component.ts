@@ -16,12 +16,14 @@
 
 import {ExplorerColumn, ExplorerRendererLoader, TargetData} from "../explorer.types";
 import {ViewContainerRef} from "@angular/core";
+import {FormGroup} from "@angular/forms";
 
 export abstract class AbstractExplorerRendererComponent {
 
   abstract target: TargetData;
   abstract column: ExplorerColumn;
   abstract data: { [k: string]: unknown };
+  entityForm: FormGroup;
   protected abstract viewContainer: ViewContainerRef;
   protected abstract readonly renderers: ExplorerRendererLoader[];
 
@@ -33,6 +35,7 @@ export abstract class AbstractExplorerRendererComponent {
       ref.instance.column = this.column;
       ref.instance.target = this.target;
       ref.instance.data = this.data;
+      ref.instance.entityForm = this.entityForm;
       ref.instance.params = rendererParams;
       ref.changeDetectorRef.detectChanges();
     });

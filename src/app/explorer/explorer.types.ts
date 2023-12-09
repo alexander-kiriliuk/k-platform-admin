@@ -20,11 +20,14 @@ import {Media} from "../modules/media/media.types";
 import {Params, QueryParamsHandling} from "@angular/router";
 import {PageableParams} from "../global/types";
 import {Type, ValueProvider} from "@angular/core";
+import {FormGroup} from "@angular/forms";
 
 export type ColumnDataType = "string" | "number" | "boolean" | "date" | "reference" | "unknown";
 
 export type RendererId = "string-section-renderer" | "boolean-section-renderer" | "date-section-renderer" |
-  "media-section-renderer" | "reference-section-renderer" | string;
+  "media-section-renderer" | "reference-section-renderer" | "string-object-renderer" | "boolean-object-renderer" |
+  "date-object-renderer" | "reference-object-renderer" | "media-object-renderer" | "localized-string-renderer" |
+  "localized-media-renderer" | string;
 
 export interface ExplorerTarget {
   alias: string;
@@ -103,6 +106,7 @@ export interface ExplorerRenderer<Data = unknown, Params = unknown> {
   column: ExplorerColumn;
   params: Params;
   data: { [k: string]: Data };
+  entityForm?: FormGroup;
 }
 
 export type ExplorerRendererLoader = {
@@ -110,6 +114,6 @@ export type ExplorerRendererLoader = {
   load: Promise<Type<ExplorerRenderer>>;
 }
 
-export interface RendererProvider extends ValueProvider{
+export interface RendererProvider extends ValueProvider {
   useValue: ExplorerRendererLoader;
 }

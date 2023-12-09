@@ -24,7 +24,7 @@ import {
   SimpleChanges
 } from "@angular/core";
 import {Media} from "./media.types";
-import {MediaSize, ReservedMediaSize} from "./media.constants";
+import {MediaFormat, ReservedMediaFormat} from "./media.constants";
 import {ImageModule} from "primeng/image";
 import {LocalizePipe} from "../locale/localize.pipe";
 import {MediaUrlPipe} from "./media-url.pipe";
@@ -43,7 +43,7 @@ import {NgIf} from "@angular/common";
 export class MediaComponent implements OnChanges {
 
   @Input({required: true}) src: Media;
-  @Input() format: MediaSize = ReservedMediaSize.ORIGINAL;
+  @Input() format: MediaFormat = ReservedMediaFormat.ORIGINAL;
   @Input() background: boolean;
   @Input() zoom: boolean;
   private readonly localizePipe = inject(LocalizePipe);
@@ -89,7 +89,7 @@ export class MediaComponent implements OnChanges {
   }
 
   get originalUrl() {
-    return this.getUrl(ReservedMediaSize.ORIGINAL);
+    return this.getUrl(ReservedMediaFormat.ORIGINAL);
   }
 
   get alt(): string {
@@ -99,7 +99,7 @@ export class MediaComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const ext = changes.src?.currentValue?.type?.ext?.code;
     if (ext === "svg") {
-      this.format = ReservedMediaSize.ORIGINAL;
+      this.format = ReservedMediaFormat.ORIGINAL;
     }
   }
 

@@ -15,8 +15,8 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
 import {NgClass} from "@angular/common";
+import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
 
 @Component({
   selector: "boolean-section-renderer",
@@ -28,12 +28,7 @@ import {NgClass} from "@angular/common";
     NgClass
   ],
 })
-export class BooleanSectionRendererComponent implements ExplorerRenderer {
-
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: unknown };
-  target: TargetData;
+export class BooleanSectionRendererComponent extends AbstractExplorerSectionRenderer {
 
   get cssClassName() {
     switch (this.data[this.column.property]) {
@@ -44,6 +39,5 @@ export class BooleanSectionRendererComponent implements ExplorerRenderer {
     }
     return "pi-ellipsis-h";
   }
-
 
 }

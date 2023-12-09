@@ -14,20 +14,48 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../../../explorer.types";
+import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
+import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
+import {DatePipe} from "@angular/common";
+import {CalendarModule} from "primeng/calendar";
+import {PaginatorModule} from "primeng/paginator";
+import {ReactiveFormsModule} from "@angular/forms";
+import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {DateObjectRendererParams} from "./date-object-renderer.types";
+import {NumberUtils} from "../../../../../global/util/number.utils";
 
 @Component({
   selector: "date-object-renderer",
   standalone: true,
   templateUrl: "./date-object-renderer.component.html",
+  styleUrls: ["./date-object-renderer.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    DatePipe,
+    CalendarModule,
+    PaginatorModule,
+    ReactiveFormsModule,
+    LocalizePipe
+  ]
 })
-export class DateObjectRendererComponent implements ExplorerRenderer<string> {
+export class DateObjectRendererComponent extends AbstractExplorerObjectRenderer<string, DateObjectRendererParams>
+  implements OnInit {
 
-  column: ExplorerColumn;
-  params: unknown;
-  data: { [p: string]: string };
-  target: TargetData;
+  readonly id = NumberUtils.getRandomInt().toString();
+  rendererParams: DateObjectRendererParams = {
+    dateFormat: "medium",
+    firstDayOfWeek: 1,
+    showTime: false,
+    showSeconds: false,
+    readonlyInput: true,
+    inline: false
+  };
+
+  ngOnInit(): void {
+    this.ctrl.setValue(new Date(this.ctrl.value));
+    if (this.params) {
+      Object.assign(this.rendererParams, this.params);
+    }
+  }
 
 }

@@ -16,6 +16,7 @@
 
 
 import {LocalizedString} from "../locale/locale.types";
+import {UploadEvent} from "primeng/fileupload";
 
 export interface Media {
   id: number;
@@ -56,4 +57,8 @@ export interface MediaFile {
 export interface MediaExt {
   code: string;
   name: string;
+}
+
+export interface FileUploadEvent extends UploadEvent {
+  files: File[];
 }
