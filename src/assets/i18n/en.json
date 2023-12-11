@@ -71,6 +71,9 @@
       "select": "Select target field",
       "value": "Enter value",
       "date": "Select date range"
+    },
+    "tab": {
+      "rest": "Administration"
     }
   },
   "object": {

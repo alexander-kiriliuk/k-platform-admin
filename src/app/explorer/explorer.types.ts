@@ -65,11 +65,16 @@ export interface ExplorerColumn {
   tab: ExplorerTab;
 }
 
+export interface ExplorerTabSize {
+  tablet: number;
+  desktop: number;
+}
+
 export interface ExplorerTab {
   id: string;
   name: LocalizedString[];
   priority: number;
-  size: object;
+  size: ExplorerTabSize;
   target: ExplorerTarget;
 }
 

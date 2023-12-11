@@ -1,9 +1,16 @@
-<ng-container *ngIf="targetData?.entity?.columns">
-  <div *ngFor="let col of targetData.entity.columns" class="box-container">
-    <explorer-object-renderer *ngIf="col.objectVisibility"
-                              [target]="targetData"
-                              [column]="col"
-                              [data]="entityData"
-                              [entityForm]="entityForm"/>
-  </div>
-</ng-container>
+<p-tabView [scrollable]="true" [(activeIndex)]="activeTabIndex">
+  <p-tabPanel *ngFor="let tab of tabs" [header]="tab.id === restTab.id ? ('explorer.tab.rest' | transloco) : tab.id">
+    <div *ngIf="targetData?.entity?.columns" [ngClass]="tabClassName">
+      <ng-container *ngFor="let col of targetData.entity.columns">
+        <div *ngIf="col.tab?.id === tab.id" class="box">
+          <explorer-object-renderer
+            *ngIf="col.objectVisibility"
+            [target]="targetData"
+            [column]="col"
+            [data]="entityData"
+            [entityForm]="entityForm"/>
+        </div>
+      </ng-container>
+    </div>
+  </p-tabPanel>
+</p-tabView>

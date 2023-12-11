@@ -8,10 +8,14 @@ import {ToastEvent} from "../../global/events";
 import {Store} from "../../modules/store/store";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
-import {ExplorerColumn, ExplorerTab, TargetData} from "../explorer.types";
+import {ExplorerTab, ExplorerTabSize, TargetData} from "../explorer.types";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormControl} from "@angular/forms";
+import {TabViewModule} from "primeng/tabview";
+import {ExplorerObject} from "./explorer-object.constants";
+import {TranslocoPipe} from "@ngneat/transloco";
+import {DEVICE} from "../../modules/device/device.constants";
 
 @Component({
   selector: "explorer-object",
@@ -19,15 +23,18 @@ import {FormBuilder, FormControl} from "@angular/forms";
   templateUrl: "./explorer-object.component.html",
   styleUrls: ["./explorer-object.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    ExplorerObjectRendererComponent,
-    NgForOf,
-    NgIf
-  ],
   providers: [
     ExplorerService,
     LocalizePipe
-  ]
+  ],
+  imports: [
+    ExplorerObjectRendererComponent,
+    NgForOf,
+    NgIf,
+    TabViewModule,
+    TranslocoPipe,
+    NgClass
+  ],
 })
 export class ExplorerObjectComponent implements OnInit {
 
@@ -37,9 +44,13 @@ export class ExplorerObjectComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly fb = inject(FormBuilder);
+  private readonly device = inject(DEVICE);
   readonly entityForm = this.fb.group({});
+  readonly restTab = ExplorerObject.RestTab;
   targetData: TargetData;
   entityData: { [k: string]: unknown };
+  tabs: ExplorerTab[] = [];
+  activeTabIndex = 0;
 
   get id() {
     return this.ar.snapshot.params.id;
@@ -47,6 +58,18 @@ export class ExplorerObjectComponent implements OnInit {
 
   get target() {
     return this.ar.snapshot.params.target;
+  }
+
+  get tabClassName() {
+    const tabSize = this.tabs[this.activeTabIndex]?.size;
+    if (!tabSize) {
+      return null;
+    }
+    const key: keyof ExplorerTabSize = this.device.isDesktop ? "desktop" : this.device.isTablet ? "tablet" : null;
+    if (!key) {
+      return null;
+    }
+    return `col-${tabSize[key]}`;
   }
 
   ngOnInit(): void {
@@ -60,18 +83,17 @@ export class ExplorerObjectComponent implements OnInit {
         return throwError(() => res);
       })
     ).subscribe(([target, entity]) => {
-      const tabs: ExplorerTab[] = [];
-      const outOfTabsColumns: ExplorerColumn[] = [];
       for (const col of target.entity.columns) {
         if (!col.tab) {
-          outOfTabsColumns.push(col);
+          col.tab = this.restTab;
           continue;
         }
-        if (tabs.find(t => t.id === col.tab?.id)) {
+        if (this.tabs.find(t => t.id === col.tab?.id)) {
           continue;
         }
-        tabs.push(col.tab);
+        this.tabs.push(col.tab);
       }
+      this.tabs.push(this.restTab);
       let title = this.localizePipe.transform(target.entity.name, target.entity.target) as string;
       title += ` #${entity[target.primaryColumn.property]}`;
       this.store.emit<string>(DashboardEvent.PatchHeader, title);
@@ -80,9 +102,6 @@ export class ExplorerObjectComponent implements OnInit {
       this.targetData.entity.columns.forEach(col => this.entityForm.addControl(
         col.property, new FormControl(this.entityData[col.property]))
       );
-      console.log("Tabs:", tabs);
-      console.log("OutOfTabsColumns:", outOfTabsColumns);
-      // todo create tabs UI
       this.cdr.markForCheck();
     });
   }

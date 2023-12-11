@@ -22,6 +22,7 @@ import {
 ExplorerColumn,
 ExplorerColumnRenderer,
 ExplorerTab,
+ExplorerTabSize,
 ExplorerTarget
 } from "../../explorer/explorer.types";
 import {jsonStringValidator} from "../../global/validator/json-string.validator";
@@ -94,7 +95,7 @@ export namespace ObjectDetails {
       ]),
       name: new FormControl<LocalizedString[]>(null),
       priority: new FormControl<number>(0, [Validators.required]),
-      size: new FormControl<object>(null, [jsonStringValidator()]),
+      size: new FormControl<ExplorerTabSize>(null, [jsonStringValidator()]),
       target: new FormControl<ExplorerTarget>(target),
     });
   }

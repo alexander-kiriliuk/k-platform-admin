@@ -14,28 +14,10 @@
  * limitations under the License.
  */
 
-import {DeviceDetectorService} from "ngx-device-detector";
-import {inject, Injectable} from "@angular/core";
-import {Device} from "./device.constants";
+import {ExplorerTab} from "../explorer.types";
 
-@Injectable()
-export class DeviceInfoImpl implements Device {
+export namespace ExplorerObject {
 
-  private readonly _isDesktop: boolean;
-  private readonly _isTablet: boolean;
-  private readonly ds = inject(DeviceDetectorService);
-
-  constructor() {
-    this._isDesktop = this.ds.isDesktop();
-    this._isTablet = this.ds.isTablet();
-  }
-
-  get isDesktop() {
-    return this._isDesktop;
-  }
-
-  get isTablet() {
-    return this._isTablet;
-  }
+  export const RestTab: ExplorerTab = { id: "rest-ex-tab" } as ExplorerTab;
 
 }

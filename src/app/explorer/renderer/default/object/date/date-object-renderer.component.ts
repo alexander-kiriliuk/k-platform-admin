@@ -48,7 +48,7 @@ export class DateObjectRendererComponent extends AbstractExplorerObjectRenderer<
     showTime: false,
     showSeconds: false,
     readonlyInput: true,
-    inline: false
+    inline: true
   };
 
   ngOnInit(): void {
