@@ -57,6 +57,8 @@
     }
   },
   "explorer": {
+    "save": "Save",
+    "delete": "Delete",
     "select": "Set {{v}}",
     "sort": "Sorting",
     "asc": "Ascending order",
@@ -74,6 +76,16 @@
     },
     "tab": {
       "rest": "Administration"
+    },
+    "msg": {
+      "object": {
+        "save": {
+          "success": "Object saved successfully"
+        },
+        "delete": {
+          "success": "Object deleted successfully"
+        }
+      }
     }
   },
   "object": {

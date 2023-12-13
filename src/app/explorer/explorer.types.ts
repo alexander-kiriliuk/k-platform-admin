@@ -111,6 +111,12 @@ export interface ObjectDialogConfig {
   target: string;
 }
 
+export interface ExplorerObjectDto<T = unknown> {
+  target: string;
+  entity?: T;
+  id?: number;
+}
+
 export interface ExplorerRenderer<Data = unknown, Params = unknown> {
   target: TargetData;
   column: ExplorerColumn;

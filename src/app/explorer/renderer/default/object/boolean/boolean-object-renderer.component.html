@@ -1,5 +1,7 @@
 <div class="cbx-container">
-  <p-checkbox [formControl]="ctrl"
-              [binary]="true"
-              [label]="(this.column.name | localize: this.column.property).toString()"/>
+  <p-checkbox
+    [inputId]="id"
+    [formControl]="ctrl"
+    [binary]="true"/>
+  <label [for]="id">{{this.column.name | localize: this.column.property}}</label>
 </div>

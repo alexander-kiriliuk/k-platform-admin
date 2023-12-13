@@ -18,6 +18,8 @@ import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {CheckboxModule} from "primeng/checkbox";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {NumberUtils} from "../../../../../global/util/number.utils";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: "boolean-object-renderer",
@@ -28,7 +30,9 @@ import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
   imports: [
     CheckboxModule,
     LocalizePipe,
+    ReactiveFormsModule,
   ]
 })
 export class BooleanObjectRendererComponent extends AbstractExplorerObjectRenderer {
+  readonly id = NumberUtils.getRandomInt().toString();
 }

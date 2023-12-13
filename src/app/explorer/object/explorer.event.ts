@@ -14,22 +14,7 @@
  * limitations under the License.
  */
 
-import {InjectionToken} from "@angular/core";
-import {ExplorerRendererLoader} from "./explorer.types";
-
-export namespace Explorer {
-
-  export const SectionPreloaderCn = "section-cn";
-
-  export const ObjectPreloaderCn = "object-cn";
-
-  export const Types = ["string", "number", "boolean", "date", "reference", "unknown"];
-
+export enum ExplorerEvent {
+  SaveObject = "explorer:object:save",
+  DeleteObject = "explorer:object:delete"
 }
-
-export const EXPLORER_SECTION_RENDERER = new InjectionToken<ExplorerRendererLoader[]>(
-  "Explorer section renderer collection"
-);
-export const EXPLORER_OBJECT_RENDERER = new InjectionToken<ExplorerRendererLoader[]>(
-  "Explorer object renderer collection"
-);

@@ -1,8 +1,18 @@
 :host {
+  @apply relative flex flex-col justify-between h-full;
   ::ng-deep {
     & > p-tabview > div > .p-tabview-panels {
       @apply p-0 #{!important};
     }
+  }
+}
+
+.actions {
+  @apply p-4 flex justify-between sticky bottom-0 z-50;
+  background: var(--neutral-a);
+
+  & > div {
+    @apply flex items-center justify-end gap-x-4;
   }
 }
 

@@ -106,7 +106,7 @@ export class SectionComponent implements AfterViewInit {
   }
 
   get preloaderChannel() {
-    return Explorer.PreloaderCn;
+    return Explorer.SectionPreloaderCn;
   }
 
   get currentPos() {
