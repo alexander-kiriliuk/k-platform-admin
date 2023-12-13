@@ -8,7 +8,7 @@ import {ToastEvent} from "../../global/events";
 import {Store} from "../../modules/store/store";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
-import {ExplorerTab, ExplorerTabSize, TargetData} from "../explorer.types";
+import {ExplorerTab, ExplorerTabSize, ObjectDialogConfig, TargetData} from "../explorer.types";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormControl} from "@angular/forms";
@@ -16,6 +16,7 @@ import {TabViewModule} from "primeng/tabview";
 import {ExplorerObject} from "./explorer-object.constants";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {DEVICE} from "../../modules/device/device.constants";
+import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
   selector: "explorer-object",
@@ -38,6 +39,8 @@ import {DEVICE} from "../../modules/device/device.constants";
 })
 export class ExplorerObjectComponent implements OnInit {
 
+  private readonly dialogRef = inject(DynamicDialogRef, {optional: true});
+  private readonly config = inject(DynamicDialogConfig, {optional: true});
   private readonly ar = inject(ActivatedRoute);
   private readonly explorerService = inject(ExplorerService);
   private readonly localizePipe = inject(LocalizePipe);
@@ -52,12 +55,20 @@ export class ExplorerObjectComponent implements OnInit {
   tabs: ExplorerTab[] = [];
   activeTabIndex = 0;
 
+  private get data() {
+    return this.config?.data as ObjectDialogConfig;
+  }
+
+  get dialogMode() {
+    return !!this.dialogRef;
+  }
+
   get id() {
-    return this.ar.snapshot.params.id;
+    return this.dialogMode ? this.data.id : this.ar.snapshot.params.id;
   }
 
   get target() {
-    return this.ar.snapshot.params.target;
+    return this.dialogMode ? this.data.target : this.ar.snapshot.params.target;
   }
 
   get tabClassName() {

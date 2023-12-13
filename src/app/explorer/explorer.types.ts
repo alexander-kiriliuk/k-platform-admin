@@ -106,6 +106,11 @@ export interface SectionDialogConfig {
   initialPageableParams?: PageableParams;
 }
 
+export interface ObjectDialogConfig {
+  id: string;
+  target: string;
+}
+
 export interface ExplorerRenderer<Data = unknown, Params = unknown> {
   target: TargetData;
   column: ExplorerColumn;

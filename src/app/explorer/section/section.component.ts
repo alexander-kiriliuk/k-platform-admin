@@ -35,7 +35,12 @@ import {PageableData, PageableParams, PlainObject, ToastData} from "../../global
 import {ToastEvent} from "../../global/events";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {TableModule, TablePageEvent} from "primeng/table";
-import {ExplorerColumn, SectionDialogConfig, TargetData} from "../explorer.types";
+import {
+ExplorerColumn,
+ObjectDialogConfig,
+SectionDialogConfig,
+TargetData
+} from "../explorer.types";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {RippleModule} from "primeng/ripple";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
@@ -242,13 +247,24 @@ export class SectionComponent implements AfterViewInit {
   }
 
   openObjectUi(item: { [pk: string | number]: unknown }) {
+    const entity = this.targetData.entity;
+    const id = item[this.targetData.primaryColumn.property];
+    const title = this.localizePipe.transform(entity.name, entity.target) as string;
     if (this.dialogMode) {
-      // TODO open new dialog
+      import("../../explorer/object/explorer-object.component").then(m => {
+        this.dialogService.open(m.ExplorerObjectComponent, {
+          header: title + ` #${id}`,
+          data: {target: this.target, id} as ObjectDialogConfig,
+          modal: true,
+          position: "top",
+          maximizable: true,
+          width: "100vw",
+        });
+      });
       return;
     }
-    const entity = this.targetData.entity;
     this.router.navigate([
-      `/object/${entity.alias || entity.target}/${item[this.targetData.primaryColumn.property]}`
+      `/object/${entity.alias || entity.target}/${id}`
     ]);
   }
 
