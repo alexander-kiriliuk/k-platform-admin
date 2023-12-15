@@ -15,15 +15,17 @@
  */
 
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ColumnForm, TabForm, TargetForm} from "../object.types";
+import {ColumnForm, ExplorerActionForm, TabForm, TargetForm} from "../object.types";
 import {LocalizedString} from "../../modules/locale/locale.types";
 import {Media} from "../../modules/media/media.types";
 import {
-ExplorerColumn,
-ExplorerColumnRenderer,
-ExplorerTab,
-ExplorerTabSize,
-ExplorerTarget
+  ExplorerAction,
+  ExplorerColumn,
+  ExplorerColumnRenderer,
+  ExplorerTab,
+  ExplorerTabSize,
+  ExplorerTarget,
+  ExplorerVariation
 } from "../../explorer/explorer.types";
 import {jsonStringValidator} from "../../global/validator/json-string.validator";
 import {notOnlySpacesValidator} from "../../global/validator/not-only-spaces.validator";
@@ -51,7 +53,8 @@ export namespace ObjectDetails {
       tableName: new FormControl<string>(null),
       target: new FormControl<string>(null),
       alias: new FormControl<string>(null),
-      columns: new FormArray<FormGroup<ColumnForm>>([])
+      columns: new FormArray<FormGroup<ColumnForm>>([]),
+      actions: new FormArray<FormGroup<ExplorerActionForm>>([])
     });
   }
 
@@ -83,6 +86,18 @@ export namespace ObjectDetails {
         handleJsonColumn(payload.objectRendererParams), [jsonStringValidator()]
       ),
       tab: new FormControl<ExplorerTab>(payload.tab),
+    });
+  }
+
+  export function createActionForm(payload: ExplorerAction): FormGroup<ExplorerActionForm> {
+    return new FormGroup<ExplorerActionForm>({
+      code: new FormControl<string>(payload.code),
+      name: new FormControl<LocalizedString[]>(payload.name),
+      description: new FormControl<LocalizedString[]>(payload.description),
+      type: new FormControl<ExplorerVariation>(payload.type),
+      params: new FormControl<object>(
+        handleJsonColumn(payload.params), [jsonStringValidator()]
+      ),
     });
   }
 

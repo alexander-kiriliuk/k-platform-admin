@@ -37,6 +37,7 @@ export interface ExplorerTarget {
   description: LocalizedString[];
   icon: Media;
   columns: ExplorerColumn[];
+  actions: ExplorerAction[];
   size?: number;
 }
 
@@ -65,6 +66,14 @@ export interface ExplorerColumn {
   tab: ExplorerTab;
 }
 
+export class ExplorerAction {
+  code: string;
+  name: LocalizedString[];
+  description: LocalizedString[];
+  type: ExplorerVariation;
+  params: object;
+}
+
 export interface ExplorerTabSize {
   tablet: number;
   desktop: number;
@@ -78,13 +87,13 @@ export interface ExplorerTab {
   target: ExplorerTarget;
 }
 
-export type ExplorerRendererType = "section" | "object";
+export type ExplorerVariation = "section" | "object";
 
 export class ExplorerColumnRenderer {
   code: string;
   name: LocalizedString[];
   description: LocalizedString[];
-  type: ExplorerRendererType;
+  type: ExplorerVariation;
   params: object;
 }
 

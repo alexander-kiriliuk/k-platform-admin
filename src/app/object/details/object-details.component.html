@@ -93,6 +93,11 @@
           mediaType="responsive"
           [placeholder]="'object.details.object.icon' | transloco"/>
       </div>
+      <div *ngFor="let actForm of targetForm.controls.actions.controls; let i = index"
+           formArrayName="actions"
+           class="actions-list">
+        actions-list > {{actForm.controls.code.value}}
+      </div>
       <div class="actions">
         <button pButton [disabled]="!targetForm.valid" (click)="saveObject()">
           {{"object.details.save" | transloco}}
@@ -101,6 +106,7 @@
     </div>
   </div>
 </div>
+
 <preloader *preloading="{state: true, channel: preloaderChannel}"/>
 
 <p-confirmDialog #newColumnDialog [key]="newColumnDialogKey">

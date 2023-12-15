@@ -54,6 +54,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import createTargetForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
 import createTabForm = ObjectDetails.createTabForm;
+import createActionForm = ObjectDetails.createActionForm;
 
 @Component({
   selector: "object-details",
@@ -111,6 +112,7 @@ export class ObjectDetailsComponent {
       map(target => {
         this.targetForm.patchValue(target.entity);
         target.entity.columns.forEach(col => this.targetForm.controls.columns.push(createColumnForm(col)));
+        target.entity.actions.forEach(action => this.targetForm.controls.actions.push(createActionForm(action)));
         return target;
       }),
       finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),

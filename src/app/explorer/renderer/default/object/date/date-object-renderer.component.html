@@ -3,7 +3,7 @@
     {{this.column.name | localize: this.column.property}}
   </span>
   <span>
-    {{data[column.property] | date: rendererParams.dateFormat}}
+    {{ctrl.value | date: rendererParams.dateFormat}}
   </span>
 </label>
 <p-calendar
