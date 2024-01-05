@@ -36,10 +36,11 @@ import {ToastEvent} from "../../global/events";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {TableModule, TablePageEvent} from "primeng/table";
 import {
-ExplorerColumn,
-ObjectDialogConfig,
-SectionDialogConfig,
-TargetData
+  ExplorerAction,
+  ExplorerColumn,
+  ObjectDialogConfig,
+  SectionDialogConfig,
+  TargetData
 } from "../explorer.types";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {RippleModule} from "primeng/ripple";
@@ -71,7 +72,7 @@ import stringifyParamsObject = StringUtils.stringifyParamsObject;
     NgForOf,
     TranslocoPipe,
     ButtonModule,
-    ExplorerSectionRendererComponent
+    ExplorerSectionRendererComponent,
   ],
   providers: [
     ExplorerService
@@ -266,6 +267,19 @@ export class SectionComponent implements AfterViewInit {
     this.router.navigate([
       `/object/${entity.alias || entity.target}/${id}`
     ]);
+  }
+
+  navToCreateNewItemUi() {
+    const entity = this.targetData.entity;
+    this.router.navigate([
+      `/object/${entity.alias || entity.target}/${Explorer.NewItemToken}`
+    ]);
+  }
+
+  performCustomAction(action: ExplorerAction) {
+    // TODO
+    console.log(action);
+    alert(action.code);
   }
 
   private getSection(params?: PageableParams) {

@@ -51,8 +51,12 @@ export class DateObjectRendererComponent extends AbstractExplorerObjectRenderer<
     inline: true
   };
 
+  get currentDate(){
+    return new Date();
+  }
+
   ngOnInit(): void {
-    this.ctrl.setValue(new Date(this.ctrl.value));
+    this.ctrl.setValue(this.ctrl.value ? new Date(this.ctrl.value) : this.currentDate);
     if (this.params) {
       Object.assign(this.rendererParams, this.params);
     }

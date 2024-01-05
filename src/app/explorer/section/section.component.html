@@ -10,6 +10,20 @@
          [totalRecords]="pageableData?.totalCount"
          (onPage)="getItems($event)">
   <ng-template pTemplate="header">
+    <tr *ngIf="!dialogMode">
+      <th [colSpan]="targetData.entity.columns.length">
+        <button class="p-button-sm p-button-success" pButton pRipple (click)="navToCreateNewItemUi()">
+          <i class="pi pi-plus"></i>&nbsp;
+          {{"explorer.create" | transloco}}
+        </button>
+        <div *ngIf="targetData.entity?.actions?.length" class="section-actions">
+          <button *ngFor="let action of targetData.entity.actions" class="p-button-sm" pButton pRipple
+                  (click)="performCustomAction(action)">
+            {{action.name | localize:action.code}}
+          </button>
+        </div>
+      </th>
+    </tr>
     <tr>
       <th *ngIf="dialogMode">
         <p-button *ngIf="multiselect" [disabled]="!selectedRowsCount" (click)="applySelectedRows()">
@@ -41,7 +55,7 @@
       </td>
       <ng-container *ngFor="let col of targetData.entity.columns">
         <td *ngIf="col.sectionVisibility">
-          <explorer-section-renderer [target]="targetData" [column]="col" [data]="item" />
+          <explorer-section-renderer [target]="targetData" [column]="col" [data]="item"/>
         </td>
       </ng-container>
     </tr>

@@ -88,15 +88,16 @@
           [placeholder]="'object.details.object.description' | transloco"/>
       </div>
       <div>
+        <ref-input target="ExplorerActionEntity"
+                   [multi]="true"
+                   [placeholder]="'object.details.col.actions' | transloco"
+                   [formControl]="targetForm.controls.actions"/>
+      </div>
+      <div>
         <media-input
           formControlName="icon"
           mediaType="responsive"
           [placeholder]="'object.details.object.icon' | transloco"/>
-      </div>
-      <div *ngFor="let actForm of targetForm.controls.actions.controls; let i = index"
-           formArrayName="actions"
-           class="actions-list">
-        actions-list > {{actForm.controls.code.value}}
       </div>
       <div class="actions">
         <button pButton [disabled]="!targetForm.valid" (click)="saveObject()">

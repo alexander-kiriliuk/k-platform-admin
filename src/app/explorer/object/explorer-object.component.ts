@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ExplorerService} from "../explorer.service";
-import {finalize, forkJoin, throwError} from "rxjs";
+import {finalize, forkJoin, of, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
@@ -9,15 +9,16 @@ import {Store} from "../../modules/store/store";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {
-ExplorerObjectDto,
-ExplorerTab,
-ExplorerTabSize,
-ObjectDialogConfig,
-TargetData
+  ExplorerAction,
+  ExplorerObjectDto,
+  ExplorerTab,
+  ExplorerTabSize,
+  ObjectDialogConfig,
+  TargetData
 } from "../explorer.types";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {FormBuilder, FormControl} from "@angular/forms";
+import {FormBuilder, FormControl, ReactiveFormsModule} from "@angular/forms";
 import {TabViewModule} from "primeng/tabview";
 import {ExplorerObject} from "./explorer-object.constants";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
@@ -32,6 +33,9 @@ import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../../modules/preloader/preloader.directive";
 import {PreloaderEvent} from "../../modules/preloader/preloader.event";
 import {StoreMessage} from "../../modules/store/store-message";
+import {ConfirmationService} from "primeng/api";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {InputTextModule} from "primeng/inputtext";
 
 @UntilDestroy()
 @Component({
@@ -42,7 +46,8 @@ import {StoreMessage} from "../../modules/store/store-message";
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     ExplorerService,
-    LocalizePipe
+    LocalizePipe,
+    ConfirmationService
   ],
   imports: [
     ExplorerObjectRendererComponent,
@@ -54,7 +59,11 @@ import {StoreMessage} from "../../modules/store/store-message";
     ButtonModule,
     RippleModule,
     PreloaderComponent,
-    PreloaderDirective
+    PreloaderDirective,
+    LocalizePipe,
+    ConfirmDialogModule,
+    InputTextModule,
+    ReactiveFormsModule
   ],
 })
 export class ExplorerObjectComponent implements OnInit {
@@ -69,6 +78,8 @@ export class ExplorerObjectComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly device = inject(DEVICE);
   private readonly ts = inject(TranslocoService);
+  private readonly router = inject(Router);
+  private readonly confirmationService = inject(ConfirmationService);
   readonly entityForm = this.fb.group({});
   readonly restTab = ExplorerObject.RestTab;
   targetData: TargetData;
@@ -125,15 +136,26 @@ export class ExplorerObjectComponent implements OnInit {
   ngOnInit(): void {
     const targetObs = this.explorerService.getTarget(this.target, "object");
     const entityObs = this.explorerService.getEntity<{ [k: string]: unknown }>(this.target, this.id);
-    forkJoin([targetObs, entityObs]).pipe(
+    forkJoin({target: targetObs, entity: this.id === Explorer.NewItemToken ? of(null) : entityObs}).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {
           title: res.error.message, message: res.error.statusCode
         });
         return throwError(() => res);
       })
-    ).subscribe(([target, entity]) => {
-      for (const col of target.entity.columns) {
+    ).subscribe((payload) => {
+      this.targetData = payload.target;
+      this.entityData = payload.entity;
+      let title = this.localizePipe.transform(
+        this.targetData.entity.name, this.targetData.entity.target
+      ) as string;
+      if (this.entityData) {
+        title += ` #${this.entityData[this.targetData.primaryColumn.property]}`;
+      } else {
+        title += " #new";
+      }
+      this.store.emit<string>(DashboardEvent.PatchHeader, title);
+      for (const col of this.targetData.entity.columns) {
         if (!col.tab) {
           col.tab = this.restTab;
           continue;
@@ -144,30 +166,31 @@ export class ExplorerObjectComponent implements OnInit {
         this.tabs.push(col.tab);
       }
       this.tabs.push(this.restTab);
-      let title = this.localizePipe.transform(target.entity.name, target.entity.target) as string;
-      title += ` #${entity[target.primaryColumn.property]}`;
-      this.store.emit<string>(DashboardEvent.PatchHeader, title);
-      this.targetData = target;
-      this.entityData = entity;
       this.targetData.entity.columns.forEach(col => this.entityForm.addControl(
-        col.property, new FormControl(this.entityData[col.property]))
+        col.property, new FormControl(this.entityData ? this.entityData[col.property] : undefined))
       );
       this.cdr.markForCheck();
     });
   }
 
   saveObject() {
+    const id = this.id === Explorer.NewItemToken ?
+      undefined : this.entityData[this.targetData.primaryColumn.property] as number;
     this.store.emit<ExplorerObjectDto>(ExplorerEvent.SaveObject, {
-      id: this.entityData[this.targetData.primaryColumn.property] as number,
+      id,
       target: this.targetData.entity.target,
       entity: this.entityForm.getRawValue()
     });
   }
 
   deleteObject() {
-    this.store.emit<ExplorerObjectDto>(ExplorerEvent.DeleteObject, {
-      id: this.entityData[this.targetData.primaryColumn.property] as number,
-      target: this.targetData.entity.target,
+    this.confirmationService.confirm({
+      accept: () => {
+        this.store.emit<ExplorerObjectDto>(ExplorerEvent.DeleteObject, {
+          id: this.entityData[this.targetData.primaryColumn.property] as number,
+          target: this.targetData.entity.target,
+        });
+      }
     });
   }
 
@@ -183,11 +206,23 @@ export class ExplorerObjectComponent implements OnInit {
         });
         return throwError(() => res);
       })
-    ).subscribe(() => {
+    ).subscribe((entity) => {
       this.store.emit<ToastData>(ToastEvent.Success, {
         title: this.ts.translate("explorer.msg.object.save.success")
       });
+      if (this.id === Explorer.NewItemToken) {
+        const p1 = this.getEntityTargetOrAlias();
+        this.router.navigate([
+          `/object/${p1}/${(entity as { [k: string]: unknown })[this.targetData.primaryColumn.property]}`
+        ], {replaceUrl: true});
+      }
     });
+  }
+
+  performCustomAction(action: ExplorerAction) {
+    // TODO
+    console.log(action);
+    alert(action.code);
   }
 
   private handleDeleteEvent(data: StoreMessage<ExplorerObjectDto>) {
@@ -206,7 +241,14 @@ export class ExplorerObjectComponent implements OnInit {
       this.store.emit<ToastData>(ToastEvent.Success, {
         title: this.ts.translate("explorer.msg.object.delete.success")
       });
+      this.router.navigate([
+        `/section/${this.getEntityTargetOrAlias()}`
+      ], {replaceUrl: true});
     });
+  }
+
+  private getEntityTargetOrAlias(){
+    return this.targetData.entity.alias || this.targetData.entity.target;
   }
 
 }

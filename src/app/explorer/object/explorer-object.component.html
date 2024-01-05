@@ -16,15 +16,38 @@
 </p-tabView>
 <div class="actions">
   <div>
-    TODO: custom actions
+    <ng-container *ngIf="targetData?.entity?.actions?.length">
+      <button *ngFor="let action of targetData.entity.actions" class="p-button-sm" pButton pRipple
+              (click)="performCustomAction(action)">
+        {{action.name | localize:action.code}}
+      </button>
+    </ng-container>
   </div>
   <div>
     <button class="p-button-sm p-button-danger" pButton pRipple [disabled]="!canDeleteObject" (click)="deleteObject()">
+      <i class="pi pi-times"></i>&nbsp;
       {{"explorer.delete" | transloco}}
     </button>
-    <button class="p-button-sm" pButton pRipple [disabled]="!entityForm.valid" (click)="saveObject()">
+    <button class="p-button-sm p-button-success" pButton pRipple [disabled]="!entityForm.valid" (click)="saveObject()">
+      <i class="pi pi-save"></i>&nbsp;
       {{"explorer.save" | transloco}}
     </button>
   </div>
 </div>
+
 <preloader *preloading="{state: false, channel: preloaderChannel}"/>
+
+<p-confirmDialog #delDialog>
+  <ng-template pTemplate="header">
+    {{"explorer.msg.delete" | transloco}}
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button type="button" pButton (click)="delDialog.reject()">
+      {{"msg.cancel" | transloco}}
+    </button>
+    <button type="button" class="p-button-success" pButton
+            (click)="delDialog.accept()">
+      {{"msg.accept" | transloco}}
+    </button>
+  </ng-template>
+</p-confirmDialog>

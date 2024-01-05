@@ -51,10 +51,10 @@ import {ToastEvent} from "../../global/events";
 import {ColumnForm, TabForm} from "../object.types";
 import {InputNumberModule} from "primeng/inputnumber";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {RefInputComponent} from "../../modules/ref-input/ref-input.component";
 import createTargetForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
 import createTabForm = ObjectDetails.createTabForm;
-import createActionForm = ObjectDetails.createActionForm;
 
 @Component({
   selector: "object-details",
@@ -79,6 +79,7 @@ import createActionForm = ObjectDetails.createActionForm;
     MediaInputComponent,
     InputNumberModule,
     InputTextareaModule,
+    RefInputComponent,
   ],
   providers: [
     ExplorerService,
@@ -112,7 +113,6 @@ export class ObjectDetailsComponent {
       map(target => {
         this.targetForm.patchValue(target.entity);
         target.entity.columns.forEach(col => this.targetForm.controls.columns.push(createColumnForm(col)));
-        target.entity.actions.forEach(action => this.targetForm.controls.actions.push(createActionForm(action)));
         return target;
       }),
       finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),

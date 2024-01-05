@@ -1,7 +1,9 @@
 {
   "msg": {
     "error": "Error",
-    "warn": "Warning"
+    "warn": "Warning",
+    "cancel": "Cancel",
+    "accept": "Accept"
   },
   "config": {
     "key": "Key",
@@ -57,6 +59,7 @@
     }
   },
   "explorer": {
+    "create": "Create",
     "save": "Save",
     "delete": "Delete",
     "select": "Set {{v}}",
@@ -78,6 +81,7 @@
       "rest": "Administration"
     },
     "msg": {
+      "delete": "Remove object?",
       "object": {
         "save": {
           "success": "Object saved successfully"
@@ -137,6 +141,7 @@
         "unique": "Unique",
         "alias": "Alias",
         "multiple": "Array of values",
+        "actions": "Actions",
         "sec.rd.params": "Section renderer params",
         "obj.rd.params": "Object renderer params",
         "ref.tbl.name": "Name of the related table",

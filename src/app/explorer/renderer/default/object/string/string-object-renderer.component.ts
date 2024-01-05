@@ -39,7 +39,7 @@ export class StringObjectRendererComponent extends AbstractExplorerObjectRendere
   readonly id = NumberUtils.getRandomInt();
 
   ngOnInit(): void {
-    if (this.column.primary) {
+    if (this.column.primary && this.column.type === "unknown") {
       this.ctrl.disable();
     }
   }

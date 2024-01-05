@@ -25,6 +25,8 @@ export namespace Explorer {
 
   export const Types = ["string", "number", "boolean", "date", "reference", "unknown"];
 
+  export const NewItemToken = "create-new-item";
+
 }
 
 export const EXPLORER_SECTION_RENDERER = new InjectionToken<ExplorerRendererLoader[]>(

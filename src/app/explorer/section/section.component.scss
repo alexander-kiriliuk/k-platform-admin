@@ -20,6 +20,10 @@
       @apply px-4 py-3;
     }
 
+    .p-datatable-table {
+      @apply border-separate;
+    }
+
     .p-datatable-thead {
       th {
         @apply whitespace-nowrap;
@@ -28,6 +32,7 @@
         }
       }
     }
+
   }
 
 }
@@ -80,4 +85,8 @@ tr.selected {
       @apply absolute left-0 right-0 top-0 bottom-0 opacity-20;
     }
   }
+}
+
+.section-actions {
+  @apply inline-flex px-4 gap-x-4;
 }
