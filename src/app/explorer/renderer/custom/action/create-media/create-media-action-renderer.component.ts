@@ -15,26 +15,29 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {Media} from "../../../../../modules/media/media.types";
-import {MediaComponent} from "../../../../../modules/media/media.component";
-import {NgForOf, NgIf} from "@angular/common";
-import {AbstractExplorerSectionRenderer} from "../../../default/abstract-explorer-section-renderer";
+import {AbstractExplorerActionRenderer} from "../../../default/abstract-explorer-action-renderer";
+import {RippleModule} from "primeng/ripple";
+import {ButtonModule} from "primeng/button";
+import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {NgIf} from "@angular/common";
 
 @Component({
-  selector: "virtual-media-section-renderer",
+  selector: "create-media-action-renderer",
   standalone: true,
-  templateUrl: "./virtual-media-section-renderer.component.html",
+  templateUrl: "./create-media-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    MediaComponent,
-    NgForOf,
-    NgIf,
+    RippleModule,
+    ButtonModule,
+    LocalizePipe,
+    NgIf
   ],
 })
-export class VirtualMediaSectionRendererComponent extends AbstractExplorerSectionRenderer<Media> {
+export class CreateMediaActionRendererComponent extends AbstractExplorerActionRenderer {
 
-  get media() {
-    return this.data as unknown as Media;
+  createMedia() {
+    // todo
+    alert("todo createMedia");
   }
 
 }

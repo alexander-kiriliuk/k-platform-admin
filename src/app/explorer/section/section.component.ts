@@ -36,11 +36,10 @@ import {ToastEvent} from "../../global/events";
 import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {TableModule, TablePageEvent} from "primeng/table";
 import {
-  ExplorerAction,
-  ExplorerColumn,
-  ObjectDialogConfig,
-  SectionDialogConfig,
-  TargetData
+ExplorerColumn,
+ObjectDialogConfig,
+SectionDialogConfig,
+TargetData
 } from "../explorer.types";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {RippleModule} from "primeng/ripple";
@@ -51,6 +50,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {ButtonModule} from "primeng/button";
 import {ExplorerSectionRendererComponent} from "../renderer/explorer-section-renderer.component";
+import { ExplorerActionRendererComponent } from "../renderer/explorer-action-renderer.component";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
 
@@ -73,6 +73,7 @@ import stringifyParamsObject = StringUtils.stringifyParamsObject;
     TranslocoPipe,
     ButtonModule,
     ExplorerSectionRendererComponent,
+    ExplorerActionRendererComponent,
   ],
   providers: [
     ExplorerService
@@ -274,12 +275,6 @@ export class SectionComponent implements AfterViewInit {
     this.router.navigate([
       `/object/${entity.alias || entity.target}/${Explorer.NewItemToken}`
     ]);
-  }
-
-  performCustomAction(action: ExplorerAction) {
-    // TODO
-    console.log(action);
-    alert(action.code);
   }
 
   private getSection(params?: PageableParams) {

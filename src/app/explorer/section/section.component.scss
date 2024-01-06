@@ -88,5 +88,8 @@ tr.selected {
 }
 
 .section-actions {
-  @apply inline-flex px-4 gap-x-4;
+  @apply inline-flex items-center px-4 gap-x-4;
+  explorer-action-renderer {
+    @apply hidden;
+  }
 }

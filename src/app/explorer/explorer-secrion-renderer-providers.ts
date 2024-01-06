@@ -15,9 +15,9 @@
  */
 
 import {EXPLORER_SECTION_RENDERER} from "./explorer.constants";
-import {RendererProvider} from "./explorer.types";
+import {ExplorerRendererProvider} from "./explorer.types";
 
-export function provideExplorerSectionRenderers(): RendererProvider[] {
+export function provideExplorerSectionRenderers(): ExplorerRendererProvider[] {
   return [
     {
       provide: EXPLORER_SECTION_RENDERER,

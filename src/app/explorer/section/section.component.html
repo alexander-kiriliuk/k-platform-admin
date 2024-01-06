@@ -17,10 +17,10 @@
           {{"explorer.create" | transloco}}
         </button>
         <div *ngIf="targetData.entity?.actions?.length" class="section-actions">
-          <button *ngFor="let action of targetData.entity.actions" class="p-button-sm" pButton pRipple
-                  (click)="performCustomAction(action)">
-            {{action.name | localize:action.code}}
-          </button>
+          <explorer-action-renderer
+            [target]="targetData"
+            [data]="pageableData?.items"
+            [actions]="targetData.entity.actions"/>
         </div>
       </th>
     </tr>

@@ -15,7 +15,7 @@
  */
 
 import {InjectionToken} from "@angular/core";
-import {ExplorerRendererLoader} from "./explorer.types";
+import {ExplorerActionRendererLoader, ExplorerRendererLoader} from "./explorer.types";
 
 export namespace Explorer {
 
@@ -34,4 +34,7 @@ export const EXPLORER_SECTION_RENDERER = new InjectionToken<ExplorerRendererLoad
 );
 export const EXPLORER_OBJECT_RENDERER = new InjectionToken<ExplorerRendererLoader[]>(
   "Explorer object renderer collection"
+);
+export const EXPLORER_ACTION_RENDERER = new InjectionToken<ExplorerActionRendererLoader[]>(
+  "Explorer action renderer collection"
 );

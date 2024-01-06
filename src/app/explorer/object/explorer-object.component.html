@@ -16,12 +16,11 @@
 </p-tabView>
 <div class="actions">
   <div>
-    <ng-container *ngIf="targetData?.entity?.actions?.length">
-      <button *ngFor="let action of targetData.entity.actions" class="p-button-sm" pButton pRipple
-              (click)="performCustomAction(action)">
-        {{action.name | localize:action.code}}
-      </button>
-    </ng-container>
+    <explorer-action-renderer *ngIf="targetData?.entity?.actions?.length"
+                              [entityForm]="entityForm"
+                              [target]="targetData"
+                              [data]="entityData"
+                              [actions]="targetData.entity.actions"/>
   </div>
   <div>
     <button class="p-button-sm p-button-danger" pButton pRipple [disabled]="!canDeleteObject" (click)="deleteObject()">

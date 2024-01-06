@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import {RendererProvider} from "./explorer.types";
+import {ExplorerRendererProvider} from "./explorer.types";
 import {EXPLORER_OBJECT_RENDERER} from "./explorer.constants";
 
-export function provideExplorerObjectRenderers(): RendererProvider[] {
+export function provideExplorerObjectRenderers(): ExplorerRendererProvider[] {
   return [
     {
       provide: EXPLORER_OBJECT_RENDERER,

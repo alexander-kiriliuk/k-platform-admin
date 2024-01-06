@@ -9,12 +9,11 @@ import {Store} from "../../modules/store/store";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {
-  ExplorerAction,
-  ExplorerObjectDto,
-  ExplorerTab,
-  ExplorerTabSize,
-  ObjectDialogConfig,
-  TargetData
+ExplorerObjectDto,
+ExplorerTab,
+ExplorerTabSize,
+ObjectDialogConfig,
+TargetData
 } from "../explorer.types";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
@@ -36,6 +35,7 @@ import {StoreMessage} from "../../modules/store/store-message";
 import {ConfirmationService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {InputTextModule} from "primeng/inputtext";
+import { ExplorerActionRendererComponent } from "../renderer/explorer-action-renderer.component";
 
 @UntilDestroy()
 @Component({
@@ -63,7 +63,8 @@ import {InputTextModule} from "primeng/inputtext";
     LocalizePipe,
     ConfirmDialogModule,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ExplorerActionRendererComponent
   ],
 })
 export class ExplorerObjectComponent implements OnInit {
@@ -219,12 +220,6 @@ export class ExplorerObjectComponent implements OnInit {
     });
   }
 
-  performCustomAction(action: ExplorerAction) {
-    // TODO
-    console.log(action);
-    alert(action.code);
-  }
-
   private handleDeleteEvent(data: StoreMessage<ExplorerObjectDto>) {
     this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
     this.explorerService.removeEntity(data.payload.target, data.payload.id).pipe(
@@ -247,7 +242,7 @@ export class ExplorerObjectComponent implements OnInit {
     });
   }
 
-  private getEntityTargetOrAlias(){
+  private getEntityTargetOrAlias() {
     return this.targetData.entity.alias || this.targetData.entity.target;
   }
 

@@ -43,6 +43,7 @@ import {provideExplorerSectionRenderers} from "./app/explorer/explorer-secrion-r
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import setNgTranslation = LangUtils.setNgTranslation;
 import {provideExplorerObjectRenderers} from "./app/explorer/explorer-object-renderer-providers";
+import {provideExplorerActionRenderers} from "./app/explorer/explorer-action-renderer-providers";
 
 ThemeUtils.setDefaultTheme();
 
@@ -62,6 +63,7 @@ bootstrapApplication(AppComponent, {
     provideTranslocoLoader(TranslocoHttpLoader),
     provideExplorerSectionRenderers(),
     provideExplorerObjectRenderers(),
+    provideExplorerActionRenderers(),
     provideTransloco({
       config: {
         defaultLang: LangUtils.DefaultLang,

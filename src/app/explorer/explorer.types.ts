@@ -139,6 +139,22 @@ export type ExplorerRendererLoader = {
   load: Promise<Type<ExplorerRenderer>>;
 }
 
-export interface RendererProvider extends ValueProvider {
+export interface ExplorerRendererProvider extends ValueProvider {
   useValue: ExplorerRendererLoader;
+}
+
+export interface ExplorerActionRenderer<Data = unknown> {
+  target: TargetData;
+  action: ExplorerAction;
+  data?: Data | Data[];
+  entityForm?: FormGroup;
+}
+
+export type ExplorerActionRendererLoader = {
+  code: string;
+  load: Promise<Type<ExplorerActionRenderer>>;
+}
+
+export interface ExplorerActionRendererProvider extends ValueProvider {
+  useValue: ExplorerActionRendererLoader;
 }
