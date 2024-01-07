@@ -52,6 +52,7 @@ import {ColumnForm, TabForm} from "../object.types";
 import {InputNumberModule} from "primeng/inputnumber";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {RefInputComponent} from "../../modules/ref-input/ref-input.component";
+import {CheckboxModule} from "primeng/checkbox";
 import createTargetForm = ObjectDetails.createTargetForm;
 import createColumnForm = ObjectDetails.createColumnForm;
 import createTabForm = ObjectDetails.createTabForm;
@@ -80,6 +81,7 @@ import createTabForm = ObjectDetails.createTabForm;
     InputNumberModule,
     InputTextareaModule,
     RefInputComponent,
+    CheckboxModule,
   ],
   providers: [
     ExplorerService,

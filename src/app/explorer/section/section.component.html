@@ -12,11 +12,14 @@
   <ng-template pTemplate="header">
     <tr *ngIf="!dialogMode">
       <th [colSpan]="targetData.entity.columns.length">
-        <button class="p-button-sm p-button-success" pButton pRipple (click)="navToCreateNewItemUi()">
+        <button *ngIf="targetData.entity.defaultActionCreate"
+                class="default-action p-button-sm p-button-success" pButton pRipple
+                (click)="navToCreateNewItemUi()">
           <i class="pi pi-plus"></i>&nbsp;
           {{"explorer.create" | transloco}}
         </button>
-        <div *ngIf="targetData.entity?.actions?.length" class="section-actions">
+        <div *ngIf="targetData.entity?.actions?.length"
+             class="section-actions">
           <explorer-action-renderer
             [target]="targetData"
             [data]="pageableData?.items"

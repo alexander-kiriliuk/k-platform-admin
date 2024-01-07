@@ -82,6 +82,15 @@ export function provideExplorerObjectRenderers(): ExplorerRendererProvider[] {
           .then(m => m.LocalizedMediaObjectRendererComponent)
       }
     },
+    {
+      provide: EXPLORER_OBJECT_RENDERER,
+      multi: true,
+      useValue: {
+        code: "images-stats-media-object-renderer",
+        load: import("./renderer/custom/object/images-stats/images-stats-media-object-renderer.component")
+          .then(m => m.ImagesStatsMediaObjectRendererComponent)
+      }
+    },
   ];
 }
 

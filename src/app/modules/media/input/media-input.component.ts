@@ -72,6 +72,7 @@ export class MediaInputComponent implements ControlValueAccessor {
   @Input() url: string = "/media/upload";
   @Input() placeholder: string;
   @Input() multi: boolean;
+  @Input() galleryEnabled = true;
   disabled = false;
   uploadedFiles: File[];
   data: Media | Media[];

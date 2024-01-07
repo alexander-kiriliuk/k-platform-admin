@@ -1,0 +1,3 @@
+<button *ngIf="action" class="p-button-sm p-button-danger" pButton pRipple (click)="deleteMedia()">
+  {{action.name | localize:action.code}}
+</button>

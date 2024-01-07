@@ -14,20 +14,22 @@
     </div>
   </p-tabPanel>
 </p-tabView>
-<div class="actions">
+<div *ngIf="targetData?.entity" class="actions">
   <div>
-    <explorer-action-renderer *ngIf="targetData?.entity?.actions?.length"
+    <explorer-action-renderer *ngIf="targetData.entity.actions?.length"
                               [entityForm]="entityForm"
                               [target]="targetData"
                               [data]="entityData"
                               [actions]="targetData.entity.actions"/>
   </div>
   <div>
-    <button class="p-button-sm p-button-danger" pButton pRipple [disabled]="!canDeleteObject" (click)="deleteObject()">
+    <button *ngIf="targetData.entity.defaultActionDelete" class="p-button-sm p-button-danger" pButton pRipple
+            [disabled]="!canDeleteObject" (click)="deleteObject()">
       <i class="pi pi-times"></i>&nbsp;
       {{"explorer.delete" | transloco}}
     </button>
-    <button class="p-button-sm p-button-success" pButton pRipple [disabled]="!entityForm.valid" (click)="saveObject()">
+    <button *ngIf="targetData.entity.defaultActionSave" class="p-button-sm p-button-success" pButton pRipple
+            [disabled]="!entityForm.valid" (click)="saveObject()">
       <i class="pi pi-save"></i>&nbsp;
       {{"explorer.save" | transloco}}
     </button>

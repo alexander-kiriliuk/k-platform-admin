@@ -38,6 +38,9 @@ export interface ExplorerTarget {
   icon: Media;
   columns: ExplorerColumn[];
   actions: ExplorerAction[];
+  defaultActionCreate: boolean;
+  defaultActionSave: boolean;
+  defaultActionDelete: boolean;
   size?: number;
 }
 

@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {AbstractExplorerActionRenderer} from "../../../default/abstract-explorer-action-renderer";
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {NgIf} from "@angular/common";
-import {DialogService} from "primeng/dynamicdialog";
-import {TranslocoService} from "@ngneat/transloco";
-import {Router} from "@angular/router";
-import {Media} from "../../../../../modules/media/media.types";
 
 @Component({
-  selector: "create-media-action-renderer",
+  selector: "delete-media-action-renderer",
   standalone: true,
-  templateUrl: "./create-media-action-renderer.component.html",
+  templateUrl: "./delete-media-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RippleModule,
@@ -37,25 +33,11 @@ import {Media} from "../../../../../modules/media/media.types";
     NgIf
   ],
 })
-export class CreateMediaActionRendererComponent extends AbstractExplorerActionRenderer {
+export class DeleteMediaActionRendererComponent extends AbstractExplorerActionRenderer {
 
-  private readonly dialogService = inject(DialogService);
-  private readonly ts = inject(TranslocoService);
-  private readonly router = inject(Router);
-
-  createMedia() {
-    import("./dialog/create-media-action-dialog.component").then(m => {
-      this.dialogService.open(m.CreateMediaActionDialogComponent, {
-        header: this.ts.translate("media.dialog.title"),
-        modal: true,
-        position: "top",
-      }).onClose.subscribe((media: Media) => {
-        if (!media) {
-          return;
-        }
-        this.router.navigate([`/object/media/${media.id}`]);
-      });
-    });
+  deleteMedia() {
+    // todo
+    alert("todo deleteMedia");
   }
 
 }

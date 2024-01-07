@@ -4,7 +4,7 @@
   chooseIcon="pi pi-folder-open"
   [disabled]="disabled"
   [cancelLabel]="'media.input.cancel' | transloco"
-  [chooseLabel]="'media.input.chose' | transloco"
+  [chooseLabel]="'media.input.choose' | transloco"
   [uploadLabel]="'media.input.upload' | transloco"
   [showCancelButton]="false"
   [url]="uploadUrl"
@@ -12,7 +12,7 @@
   (onError)="onUploadError($event)"
   (onUpload)="onUpload($event)">
   <ng-template pTemplate="toolbar">
-    <button pButton class="p-button-success"
+    <button *ngIf="galleryEnabled" pButton class="p-button-success"
             [disabled]="disabled"
             [loading]="targetLoadingState"
             (click)="openMediaSection()">

@@ -24,8 +24,7 @@ import {
   ExplorerColumnRenderer,
   ExplorerTab,
   ExplorerTabSize,
-  ExplorerTarget,
-  ExplorerVariation
+  ExplorerTarget
 } from "../../explorer/explorer.types";
 import {jsonStringValidator} from "../../global/validator/json-string.validator";
 import {notOnlySpacesValidator} from "../../global/validator/not-only-spaces.validator";
@@ -54,6 +53,9 @@ export namespace ObjectDetails {
       target: new FormControl<string>(null),
       alias: new FormControl<string>(null),
       actions: new FormControl<ExplorerAction[]>(null),
+      defaultActionCreate: new FormControl<boolean>(undefined),
+      defaultActionSave: new FormControl<boolean>(undefined),
+      defaultActionDelete: new FormControl<boolean>(undefined),
       columns: new FormArray<FormGroup<ColumnForm>>([]),
     });
   }

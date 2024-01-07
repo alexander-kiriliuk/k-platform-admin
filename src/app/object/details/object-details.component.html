@@ -99,6 +99,24 @@
           mediaType="responsive"
           [placeholder]="'object.details.object.icon' | transloco"/>
       </div>
+      <div class="cbx-container">
+        <p-checkbox inputId="colSecEnabled"
+                    [formControl]="targetForm.controls.defaultActionCreate"
+                    [binary]="true"
+                    [label]="'object.details.action.create' | transloco"/>
+      </div>
+      <div class="cbx-container">
+        <p-checkbox inputId="colSecEnabled"
+                    [formControl]="targetForm.controls.defaultActionDelete"
+                    [binary]="true"
+                    [label]="'object.details.action.delete' | transloco"/>
+      </div>
+      <div class="cbx-container">
+        <p-checkbox inputId="colSecEnabled"
+                    [formControl]="targetForm.controls.defaultActionSave"
+                    [binary]="true"
+                    [label]="'object.details.action.save' | transloco"/>
+      </div>
       <div class="actions">
         <button pButton [disabled]="!targetForm.valid" (click)="saveObject()">
           {{"object.details.save" | transloco}}

@@ -37,5 +37,14 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
           .then(m => m.ReCreateMediaActionRendererComponent)
       }
     },
+    {
+      provide: EXPLORER_ACTION_RENDERER,
+      multi: true,
+      useValue: {
+        code: "delete-media-files-object-action",
+        load: import("./renderer/custom/action/delete-media/delete-media-action-renderer.component")
+          .then(m => m.DeleteMediaActionRendererComponent)
+      }
+    }
   ];
 }
