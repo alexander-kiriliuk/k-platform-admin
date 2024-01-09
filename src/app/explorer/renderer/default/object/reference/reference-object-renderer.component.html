@@ -1,4 +1,4 @@
 <ref-input [target]="column.referencedEntityName"
            [multi]="column.multiple"
-           [placeholder]="(this.column.name | localize: this.column.property).toString()"
+           [placeholder]="(column.name | localize: column.property).toString()"
            [formControl]="ctrl"/>

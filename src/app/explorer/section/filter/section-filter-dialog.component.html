@@ -22,7 +22,7 @@
   <li>
     <span>
       <i class="pi pi-sliders-h"></i>
-      {{this.column.type !== 'date' ? ("explorer.filter.label" | transloco) : ("explorer.filter.date" | transloco) }}
+      {{column.type !== 'date' ? ("explorer.filter.label" | transloco) : ("explorer.filter.date" | transloco) }}
     </span>
     <ul>
       <li *ngIf="isReference" class="reference">
@@ -38,10 +38,10 @@
       </li>
       <li *ngIf="!isReference || (isReference && referenceField?.ref)">
         <ng-container *ngIf="form.controls.name.value.length">
-          <ng-container *ngIf="this.column.type !== 'reference'">
-            <ng-container *ngTemplateOutlet="editorCtrl; context: {type: this.column.type}"/>
+          <ng-container *ngIf="column.type !== 'reference'">
+            <ng-container *ngTemplateOutlet="editorCtrl; context: {type: column.type}"/>
           </ng-container>
-          <ng-container *ngIf="this.column.type === 'reference' && referencedColumn">
+          <ng-container *ngIf="column.type === 'reference' && referencedColumn">
             <ng-container *ngTemplateOutlet="editorCtrl; context: {type: referencedColumn.type}"/>
           </ng-container>
           <div class="actions">

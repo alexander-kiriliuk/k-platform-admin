@@ -14,20 +14,61 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {Media} from "../../../../../modules/media/media.types";
 import {AbstractExplorerSectionRenderer} from "../../../default/abstract-explorer-section-renderer";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
+import {environment} from "../../../../../global/env/env";
+import {FileSizePipe} from "../../../../../global/service/file-size.pipe";
+import {ImageModule} from "primeng/image";
+import {MediaUrlPipe} from "../../../../../modules/media/media-url.pipe";
+import {ReservedMediaFormat} from "../../../../../modules/media/media.constants";
+import {ImagesStatFileItem} from "./images-stats-media-object-renderer.types";
 
 @Component({
   selector: "images-stats-media-object-renderer",
   standalone: true,
   templateUrl: "./images-stats-media-object-renderer.component.html",
+  styleUrls: ["./images-stats-media-object-renderer.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [MediaUrlPipe],
   imports: [
-    LocalizePipe
+    LocalizePipe,
+    NgForOf,
+    FileSizePipe,
+    ImageModule,
+    NgIf,
+    NgTemplateOutlet
   ],
 })
-export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerSectionRenderer<Media> {
+export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerSectionRenderer {
+
+  private readonly mediaUrlPipe = inject(MediaUrlPipe);
+
+  get thumbUrl() {
+    return this.mediaUrlPipe.transform(this.media, ReservedMediaFormat.THUMB);
+  }
+
+  get url() {
+    return `${environment.mediaUrl}/${this.media.id}`;
+  }
+
+  get media() {
+    return this.data as unknown as Media;
+  }
+
+  get files() {
+    const res: ImagesStatFileItem[] = [];
+    for (const file of this.media.files) {
+      const founded = res.find(f => f.name === file.name);
+      if (founded) {
+        founded.duplicate = file;
+        continue;
+      }
+      res.push(file as ImagesStatFileItem);
+    }
+    return res;
+  }
 
 }

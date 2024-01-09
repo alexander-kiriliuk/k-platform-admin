@@ -1,6 +1,6 @@
 <label [for]="id">
   <span>
-    {{this.column.name | localize: this.column.property}}
+    {{column.name | localize: column.property}}
   </span>
   <span>
     {{ctrl.value | date: rendererParams.dateFormat}}
@@ -9,7 +9,7 @@
 <p-calendar
   [inputId]="id"
   [formControl]="ctrl"
-  [placeholder]="(this.column.name | localize: this.column.property).toString()"
+  [placeholder]="(column.name | localize: column.property).toString()"
   [firstDayOfWeek]="rendererParams.firstDayOfWeek"
   [showTime]="rendererParams.showTime"
   [showSeconds]="rendererParams.showSeconds"

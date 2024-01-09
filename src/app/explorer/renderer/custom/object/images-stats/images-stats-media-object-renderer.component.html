@@ -1,3 +1,24 @@
-{{this.column.name | localize: this.column.property}}
-<br>// TODO
-<!--TODO-->
+<div class="label">{{column.name | localize: column.property}}</div>
+<div class="items">
+  <div *ngFor="let file of files">
+    <p-image
+      [src]="thumbUrl"
+      [previewImageSrc]="url + '/' + file.name + '.' + media.type.ext.code"
+      [preview]="true"/>
+    <div>
+      <p>{{file.format.name}}: {{file.width}}x{{file.height}}</p>
+      <p>
+        {{file.size | fileSize}}
+        <ng-container *ngIf="file.duplicate">
+          & {{file.duplicate.size | fileSize}}
+        </ng-container>
+      </p>
+      <p>
+        {{media.type.ext.code}}
+        <ng-container *ngIf="file.duplicate">
+          & <a target="_blank" [href]="url + '/' + file.name + '.webp'">webp</a>
+        </ng-container>
+      </p>
+    </div>
+  </div>
+</div>
