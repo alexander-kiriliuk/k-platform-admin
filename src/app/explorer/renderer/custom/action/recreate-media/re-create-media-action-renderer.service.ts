@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-export enum ExplorerEvent {
-  SaveObject = "explorer:object:save",
-  DeleteObject = "explorer:object:delete",
-  ReloadObject = "explorer:object:reload"
+import {inject, Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {StringUtils} from "../../../../../global/util/string.utils";
+import {Media} from "../../../../../modules/media/media.types";
+import fillParams = StringUtils.fillParams;
+
+@Injectable()
+export class ReCreateMediaActionRendererService {
+
+  private readonly http = inject(HttpClient);
+
+  reCreate(id: string) {
+    return this.http.post<Media>(fillParams("/media/recreate/:id", id), undefined);
+  }
+
 }

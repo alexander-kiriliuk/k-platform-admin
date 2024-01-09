@@ -35,7 +35,7 @@ import {StoreMessage} from "../../modules/store/store-message";
 import {ConfirmationService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {InputTextModule} from "primeng/inputtext";
-import { ExplorerActionRendererComponent } from "../renderer/explorer-action-renderer.component";
+import {ExplorerActionRendererComponent} from "../renderer/explorer-action-renderer.component";
 
 @UntilDestroy()
 @Component({
@@ -93,6 +93,11 @@ export class ExplorerObjectComponent implements OnInit {
       .subscribe(data => this.handleSaveEvent(data));
     this.store.on<ExplorerObjectDto>(ExplorerEvent.DeleteObject).pipe(untilDestroyed(this))
       .subscribe(data => this.handleDeleteEvent(data));
+    this.store.on<void>(ExplorerEvent.ReloadObject).pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.tabs = [];
+        this.initObject();
+      });
   }
 
   private get data() {
@@ -135,43 +140,7 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const targetObs = this.explorerService.getTarget(this.target, "object");
-    const entityObs = this.explorerService.getEntity<{ [k: string]: unknown }>(this.target, this.id);
-    forkJoin({target: targetObs, entity: this.id === Explorer.NewItemToken ? of(null) : entityObs}).pipe(
-      catchError((res) => {
-        this.store.emit<ToastData>(ToastEvent.Error, {
-          title: res.error.message, message: res.error.statusCode
-        });
-        return throwError(() => res);
-      })
-    ).subscribe((payload) => {
-      this.targetData = payload.target;
-      this.entityData = payload.entity;
-      let title = this.localizePipe.transform(
-        this.targetData.entity.name, this.targetData.entity.target
-      ) as string;
-      if (this.entityData) {
-        title += ` #${this.entityData[this.targetData.primaryColumn.property]}`;
-      } else {
-        title += " #new";
-      }
-      this.store.emit<string>(DashboardEvent.PatchHeader, title);
-      for (const col of this.targetData.entity.columns) {
-        if (!col.tab) {
-          col.tab = this.restTab;
-          continue;
-        }
-        if (this.tabs.find(t => t.id === col.tab?.id)) {
-          continue;
-        }
-        this.tabs.push(col.tab);
-      }
-      this.tabs.push(this.restTab);
-      this.targetData.entity.columns.forEach(col => this.entityForm.addControl(
-        col.property, new FormControl(this.entityData ? this.entityData[col.property] : undefined))
-      );
-      this.cdr.markForCheck();
-    });
+    this.initObject();
   }
 
   saveObject() {
@@ -244,6 +213,46 @@ export class ExplorerObjectComponent implements OnInit {
 
   private getEntityTargetOrAlias() {
     return this.targetData.entity.alias || this.targetData.entity.target;
+  }
+
+  private initObject() {
+    const targetObs = this.explorerService.getTarget(this.target, "object");
+    const entityObs = this.explorerService.getEntity<{ [k: string]: unknown }>(this.target, this.id);
+    forkJoin({target: targetObs, entity: this.id === Explorer.NewItemToken ? of(null) : entityObs}).pipe(
+      catchError((res) => {
+        this.store.emit<ToastData>(ToastEvent.Error, {
+          title: res.error.message, message: res.error.statusCode
+        });
+        return throwError(() => res);
+      })
+    ).subscribe((payload) => {
+      this.targetData = payload.target;
+      this.entityData = payload.entity;
+      let title = this.localizePipe.transform(
+        this.targetData.entity.name, this.targetData.entity.target
+      ) as string;
+      if (this.entityData) {
+        title += ` #${this.entityData[this.targetData.primaryColumn.property]}`;
+      } else {
+        title += " #new";
+      }
+      this.store.emit<string>(DashboardEvent.PatchHeader, title);
+      for (const col of this.targetData.entity.columns) {
+        if (!col.tab) {
+          col.tab = this.restTab;
+          continue;
+        }
+        if (this.tabs.find(t => t.id === col.tab?.id)) {
+          continue;
+        }
+        this.tabs.push(col.tab);
+      }
+      this.tabs.push(this.restTab);
+      this.targetData.entity.columns.forEach(col => this.entityForm.addControl(
+        col.property, new FormControl(this.entityData ? this.entityData[col.property] : undefined))
+      );
+      this.cdr.markForCheck();
+    });
   }
 
 }

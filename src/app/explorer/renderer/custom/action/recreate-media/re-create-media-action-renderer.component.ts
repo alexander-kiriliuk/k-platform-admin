@@ -14,30 +14,73 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {AbstractExplorerActionRenderer} from "../../../default/abstract-explorer-action-renderer";
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {NgIf} from "@angular/common";
+import {ReCreateMediaActionRendererService} from "./re-create-media-action-renderer.service";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {PreloaderComponent} from "../../../../../modules/preloader/preloader.component";
+import {TranslocoPipe} from "@ngneat/transloco";
+import {ConfirmationService} from "primeng/api";
+import {Store} from "../../../../../modules/store/store";
+import {Router} from "@angular/router";
+import {PreloaderEvent} from "../../../../../modules/preloader/preloader.event";
+import {finalize, throwError} from "rxjs";
+import {Explorer} from "../../../../explorer.constants";
+import {ExplorerObjectDto} from "../../../../explorer.types";
+import {ExplorerEvent} from "../../../../object/explorer.event";
+import {catchError} from "rxjs/operators";
+import {ToastData} from "../../../../../global/types";
+import {ToastEvent} from "../../../../../global/events";
 
 @Component({
   selector: "re-create-media-action-renderer",
   standalone: true,
   templateUrl: "./re-create-media-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ReCreateMediaActionRendererService],
   imports: [
     RippleModule,
     ButtonModule,
     LocalizePipe,
-    NgIf
+    NgIf,
+    ConfirmDialogModule,
+    PreloaderComponent,
+    TranslocoPipe
   ],
 })
 export class ReCreateMediaActionRendererComponent extends AbstractExplorerActionRenderer {
 
+  readonly dialogKey = "recreate-media-action-dialog";
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly store = inject(Store);
+  private readonly router = inject(Router);
+  private readonly service = inject(ReCreateMediaActionRendererService);
+
+  private get preloaderChannel() {
+    return Explorer.ObjectPreloaderCn;
+  }
+
   reCreateMedia() {
-    // todo
-    alert("todo reCreateMedia");
+    this.confirmationService.confirm({
+      key: this.dialogKey,
+      accept: () => {
+        this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+        this.service.reCreate(this.entityForm.controls.id.value).pipe(
+          catchError((res) => {
+            this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
+            return throwError(res);
+          }),
+          finalize(() => {
+            this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+          })).subscribe(() => {
+          this.store.emit<ExplorerObjectDto>(ExplorerEvent.ReloadObject);
+        });
+      }
+    });
   }
 
 }

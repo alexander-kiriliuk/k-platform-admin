@@ -14,30 +14,68 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {AbstractExplorerActionRenderer} from "../../../default/abstract-explorer-action-renderer";
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {NgIf} from "@angular/common";
+import {DeleteMediaActionRendererService} from "./delete-media-action-renderer.service";
+import {Explorer} from "../../../../explorer.constants";
+import {PreloaderEvent} from "../../../../../modules/preloader/preloader.event";
+import {Store} from "../../../../../modules/store/store";
+import {finalize, throwError} from "rxjs";
+import {Router} from "@angular/router";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {TranslocoPipe} from "@ngneat/transloco";
+import {ConfirmationService} from "primeng/api";
+import {catchError} from "rxjs/operators";
+import {ToastData} from "../../../../../global/types";
+import {ToastEvent} from "../../../../../global/events";
 
 @Component({
   selector: "delete-media-action-renderer",
   standalone: true,
   templateUrl: "./delete-media-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DeleteMediaActionRendererService],
   imports: [
     RippleModule,
     ButtonModule,
     LocalizePipe,
-    NgIf
+    NgIf,
+    ConfirmDialogModule,
+    TranslocoPipe
   ],
 })
 export class DeleteMediaActionRendererComponent extends AbstractExplorerActionRenderer {
 
+  readonly dialogKey = "del-media-action-dialog";
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly service = inject(DeleteMediaActionRendererService);
+  private readonly store = inject(Store);
+  private readonly router = inject(Router);
+
+  private get preloaderChannel() {
+    return Explorer.ObjectPreloaderCn;
+  }
+
   deleteMedia() {
-    // todo
-    alert("todo deleteMedia");
+    this.confirmationService.confirm({
+      key: this.dialogKey,
+      accept: () => {
+        this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+        this.service.remove(this.entityForm.controls.id.value).pipe(
+          catchError((res) => {
+            this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
+            return throwError(res);
+          }),finalize(() => {
+          this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        })).subscribe(() => {
+          this.router.navigate(["/section/media"], {replaceUrl: true});
+        });
+      }
+    });
   }
 
 }

@@ -30,6 +30,10 @@
       "choose.file": "Image file",
       "choose.type": "Media Type"
     },
+    "recreate.title": "Recreate thumbnails?",
+    "delete.title": "Delete media?",
+    "cancel": "Cancel",
+    "accept": "Confirm",
     "input": {
       "choose": "Choose",
       "upload": "Upload",

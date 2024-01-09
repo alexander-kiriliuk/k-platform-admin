@@ -30,6 +30,10 @@
       "choose.file": "Файл изображения",
       "choose.type": "Тип медиа"
     },
+    "recreate.title": "Пересоздать миниатюры?",
+    "delete.title": "Удалить медиа?",
+    "cancel": "Отмена",
+    "accept": "Подтвердить",
     "input": {
       "choose": "Выбрать",
       "upload": "Загрузить",
