@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {fieldMatchValidator} from "../../../../../global/validator/field-match.validator";
 
-export class DateObjectRendererParams {
-  firstDayOfWeek: number;
-  showCalendar: boolean;
-  showTime: boolean;
-  showSeconds: boolean;
-  readonlyInput: boolean;
-  inline: boolean;
-  dateFormat: string;
+export function createNewPasswordObjectRendererForm() {
+  return new FormGroup({
+    newPassword: new FormControl<string>("", [Validators.required]),
+    repeatPassword: new FormControl<string>("", [Validators.required])
+  }, fieldMatchValidator("newPassword", "repeatPassword"));
 }
+
+

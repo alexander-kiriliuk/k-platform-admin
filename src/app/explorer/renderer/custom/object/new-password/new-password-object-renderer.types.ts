@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-
-export class DateObjectRendererParams {
-  firstDayOfWeek: number;
-  showCalendar: boolean;
-  showTime: boolean;
-  showSeconds: boolean;
-  readonlyInput: boolean;
-  inline: boolean;
-  dateFormat: string;
+export interface NewPasswordObjectRendererParams {
+  minLength: number
 }

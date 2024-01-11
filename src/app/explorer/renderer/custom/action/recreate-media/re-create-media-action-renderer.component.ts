@@ -26,7 +26,6 @@ import {PreloaderComponent} from "../../../../../modules/preloader/preloader.com
 import {TranslocoPipe} from "@ngneat/transloco";
 import {ConfirmationService} from "primeng/api";
 import {Store} from "../../../../../modules/store/store";
-import {Router} from "@angular/router";
 import {PreloaderEvent} from "../../../../../modules/preloader/preloader.event";
 import {finalize, throwError} from "rxjs";
 import {Explorer} from "../../../../explorer.constants";
@@ -57,7 +56,6 @@ export class ReCreateMediaActionRendererComponent extends AbstractExplorerAction
   readonly dialogKey = "recreate-media-action-dialog";
   private readonly confirmationService = inject(ConfirmationService);
   private readonly store = inject(Store);
-  private readonly router = inject(Router);
   private readonly service = inject(ReCreateMediaActionRendererService);
 
   private get preloaderChannel() {

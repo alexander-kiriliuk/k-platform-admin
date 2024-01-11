@@ -16,7 +16,6 @@
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {Media} from "../../../../../modules/media/media.types";
-import {AbstractExplorerSectionRenderer} from "../../../default/abstract-explorer-section-renderer";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {environment} from "../../../../../global/env/env";
@@ -25,6 +24,7 @@ import {ImageModule} from "primeng/image";
 import {MediaUrlPipe} from "../../../../../modules/media/media-url.pipe";
 import {ReservedMediaFormat} from "../../../../../modules/media/media.constants";
 import {ImagesStatFileItem} from "./images-stats-media-object-renderer.types";
+import {AbstractExplorerObjectRenderer} from "../../../default/abstract-explorer-object-renderer";
 
 @Component({
   selector: "images-stats-media-object-renderer",
@@ -42,7 +42,7 @@ import {ImagesStatFileItem} from "./images-stats-media-object-renderer.types";
     NgTemplateOutlet
   ],
 })
-export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerSectionRenderer {
+export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerObjectRenderer {
 
   private readonly mediaUrlPipe = inject(MediaUrlPipe);
 

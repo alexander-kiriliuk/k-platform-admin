@@ -20,6 +20,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
 import {NumberUtils} from "../../../../../global/util/number.utils";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {StringObjectRendererParams} from "./string-object-renderer.types";
 
 @Component({
   selector: "string-object-renderer",
@@ -37,9 +38,19 @@ import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 export class StringObjectRendererComponent extends AbstractExplorerObjectRenderer implements OnInit {
 
   readonly id = NumberUtils.getRandomInt();
+  rendererParams: StringObjectRendererParams = {
+    readonly: false,
+    disabled: false
+  };
 
   ngOnInit(): void {
     if (this.column.primary && this.column.type === "unknown") {
+      this.ctrl.disable();
+    }
+    if (this.params) {
+      Object.assign(this.rendererParams, this.params);
+    }
+    if (this.rendererParams.disabled) {
       this.ctrl.disable();
     }
   }

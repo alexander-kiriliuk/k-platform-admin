@@ -1,4 +1,11 @@
 <div class="p-float-label">
-  <input type="text" pInputText [id]="id" [formControl]="ctrl"/>
-  <label [for]="id">{{column.name | localize: column.property}}</label>
+  <input
+    pInputText
+    type="text"
+    [id]="id"
+    [formControl]="ctrl"
+    [readonly]="rendererParams.readonly && data && (data[column.property]).toString()?.length"/>
+  <label [for]="id">
+    {{column.name | localize: column.property}}
+  </label>
 </div>

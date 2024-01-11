@@ -91,6 +91,15 @@ export function provideExplorerObjectRenderers(): ExplorerRendererProvider[] {
           .then(m => m.ImagesStatsMediaObjectRendererComponent)
       }
     },
+    {
+      provide: EXPLORER_OBJECT_RENDERER,
+      multi: true,
+      useValue: {
+        code: "new-password-object-renderer",
+        load: import("./renderer/custom/object/new-password/new-password-object-renderer.component")
+          .then(m => m.NewPasswordObjectRendererComponent)
+      }
+    },
   ];
 }
 

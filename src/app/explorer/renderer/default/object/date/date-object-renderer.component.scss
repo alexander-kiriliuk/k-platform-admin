@@ -14,7 +14,7 @@ label {
     &:first-child {
       @apply font-semibold;
     }
-    &:last-child {
+    &:last-child:not(.string-value) {
       @apply text-xs;
       color: var(--orange-500);
     }

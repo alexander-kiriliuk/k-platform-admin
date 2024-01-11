@@ -188,6 +188,15 @@
     },
     "roles": "Roles"
   },
+  "password": {
+    "prompt": "Enter password",
+    "repeat": "Repeat password",
+    "label": {
+      "weak": "Insecure password",
+      "medium": "Simple password",
+      "strong": "Strong password"
+    }
+  },
   "primeng": {
     "format": {
       "date": {

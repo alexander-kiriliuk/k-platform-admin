@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
+import {FormGroup, ValidatorFn} from "@angular/forms";
 
-export class DateObjectRendererParams {
-  firstDayOfWeek: number;
-  showCalendar: boolean;
-  showTime: boolean;
-  showSeconds: boolean;
-  readonlyInput: boolean;
-  inline: boolean;
-  dateFormat: string;
+export function fieldMatchValidator(firstCtrl: string, secondCtrl: string): ValidatorFn {
+  return ((formGroup: FormGroup) => {
+    const control = formGroup.controls[firstCtrl];
+    const matchingControl = formGroup.controls[secondCtrl];
+    if (matchingControl.errors && !matchingControl.errors.fieldMatch) {
+      return null;
+    }
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({fieldMatch: true});
+    } else {
+      matchingControl.setErrors(null);
+    }
+    return null;
+  }) as ValidatorFn;
 }

@@ -16,7 +16,7 @@
 
 import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
-import {DatePipe} from "@angular/common";
+import {DatePipe, NgClass, NgIf} from "@angular/common";
 import {CalendarModule} from "primeng/calendar";
 import {PaginatorModule} from "primeng/paginator";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -35,7 +35,9 @@ import {NumberUtils} from "../../../../../global/util/number.utils";
     CalendarModule,
     PaginatorModule,
     ReactiveFormsModule,
-    LocalizePipe
+    LocalizePipe,
+    NgIf,
+    NgClass
   ]
 })
 export class DateObjectRendererComponent extends AbstractExplorerObjectRenderer<string, DateObjectRendererParams>
@@ -43,6 +45,7 @@ export class DateObjectRendererComponent extends AbstractExplorerObjectRenderer<
 
   readonly id = NumberUtils.getRandomInt().toString();
   rendererParams: DateObjectRendererParams = {
+    showCalendar: true,
     dateFormat: "medium",
     firstDayOfWeek: 1,
     showTime: false,

@@ -1,5 +1,6 @@
 <p-tabView [scrollable]="true" [(activeIndex)]="activeTabIndex">
-  <p-tabPanel *ngFor="let tab of tabs" [header]="tab.id === restTab.id ? ('explorer.tab.rest' | transloco) : tab.id">
+  <p-tabPanel *ngFor="let tab of tabs"
+              [header]="tab.id === restTab.id ? ('explorer.tab.rest' | transloco) : (tab.name | localize: tab.id).toString()">
     <div *ngIf="targetData?.entity?.columns" [ngClass]="tabClassName">
       <ng-container *ngFor="let col of targetData.entity.columns">
         <div *ngIf="col.tab?.id === tab.id" class="box">
