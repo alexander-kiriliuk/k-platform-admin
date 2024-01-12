@@ -35,8 +35,8 @@ export class MediaUrlPipe implements PipeTransform {
     if (ext === "svg") {
       format = ReservedMediaFormat.ORIGINAL;
     }
-    const file = media.files.find(v => v.format.code === format);
-    const fileName = `${file.name}.${ext}`;
+    const file = media.files?.find(v => v.format.code === format);
+    const fileName = `${file?.name}.${ext}`;
     return `${environment.mediaUrl}/${media.id}/${fileName}`;
   }
 

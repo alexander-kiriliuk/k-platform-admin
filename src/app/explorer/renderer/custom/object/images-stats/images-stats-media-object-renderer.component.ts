@@ -60,6 +60,9 @@ export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerObj
 
   get files() {
     const res: ImagesStatFileItem[] = [];
+    if (!this.media.files) {
+      return res;
+    }
     for (const file of this.media.files) {
       const founded = res.find(f => f.name === file.name);
       if (founded) {

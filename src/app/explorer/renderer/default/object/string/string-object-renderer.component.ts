@@ -44,6 +44,9 @@ export class StringObjectRendererComponent extends AbstractExplorerObjectRendere
   };
 
   ngOnInit(): void {
+    if (this.ctrl.value && typeof this.ctrl.value === "object") {
+      this.ctrl.setValue(JSON.stringify(this.ctrl.value), {emitEvent: false});
+    }
     if (this.column.primary && this.column.type === "unknown") {
       this.ctrl.disable();
     }

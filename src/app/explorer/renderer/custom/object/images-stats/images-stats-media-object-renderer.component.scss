@@ -1,3 +1,12 @@
+p-image {
+  ::ng-deep{
+    img {
+      width: auto;
+      max-height: 50px;
+    }
+  }
+}
+
 .label {
   @apply py-2 font-semibold;
 }
@@ -17,3 +26,4 @@
     }
   }
 }
+

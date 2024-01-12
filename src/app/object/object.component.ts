@@ -122,6 +122,9 @@ export class ObjectComponent {
       if (et.tableName.toLowerCase().indexOf(val) !== -1 || et.target.toLowerCase().indexOf(val) !== -1) {
         return true;
       }
+      if (!et?.name) {
+        return false;
+      }
       for (const ls of et.name) {
         if (ls.value.toLowerCase().indexOf(val) !== -1) {
           return true;

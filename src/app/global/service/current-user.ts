@@ -45,10 +45,10 @@ export class CurrentUser {
     const usr = this.sub.value;
     const result: string[] = [];
     if (usr.firstName) {
-      result.push(this.localizePipe.transform(usr.firstName) as string);
+      result.push(usr.firstName);
     }
     if (usr.lastName) {
-      result.push(this.localizePipe.transform(usr.lastName) as string);
+      result.push(usr.lastName);
     }
     return result.length > 1 ? result.join(" ") : usr.login;
   }

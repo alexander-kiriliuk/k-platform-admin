@@ -17,7 +17,6 @@
 import {FormControl, FormGroup} from "@angular/forms";
 import {UserRole} from "../global/types";
 import {Media} from "../modules/media/media.types";
-import {LocalizedString} from "../modules/locale/locale.types";
 import {UserForm} from "./profile.types";
 
 export function CreateProfileForm() {
@@ -29,8 +28,8 @@ export function CreateProfileForm() {
     email: new FormControl<string>(null),
     active: new FormControl<boolean>(null),
     avatar: new FormControl<Media>(null),
-    firstName: new FormControl<LocalizedString[]>(null),
-    lastName: new FormControl<LocalizedString[]>(null),
+    firstName: new FormControl<string>(null),
+    lastName: new FormControl<string>(null),
     roles: new FormControl<UserRole[]>(null),
   });
 }

@@ -63,8 +63,8 @@ export interface User {
   login: string;
   email: string;
   phone: string;
-  firstName: LocalizedString[];
-  lastName: LocalizedString[];
+  firstName: string;
+  lastName: string;
   active: boolean;
   roles: UserRole[];
   tsCreated?: Date;
