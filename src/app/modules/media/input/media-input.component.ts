@@ -70,6 +70,7 @@ export class MediaInputComponent implements ControlValueAccessor {
   @Output() changeMedia = new EventEmitter<Media | Media[]>();
   @Input({required: true}) mediaType: MediaTypeVariant;
   @Input() url: string = "/media/upload";
+  @Input() mediaId: number;
   @Input() placeholder: string;
   @Input() multi: boolean;
   @Input() galleryEnabled = true;
@@ -85,7 +86,7 @@ export class MediaInputComponent implements ControlValueAccessor {
   private readonly ts = inject(TranslocoService);
 
   get uploadUrl() {
-    return `/media/upload/${(this.mediaType)}`;
+    return `/media/upload/${(this.mediaType)}${!this.mediaId ? "" : `?id=${this.mediaId}`}`;
   }
 
   get multiValue() {

@@ -28,7 +28,8 @@
     "dialog": {
       "title": "Create media-object",
       "choose.file": "Image file",
-      "choose.type": "Media Type"
+      "choose.type": "Media Type",
+      "update": "Update media-file"
     },
     "recreate.title": "Recreate thumbnails?",
     "delete.title": "Delete media?",
