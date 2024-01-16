@@ -29,7 +29,7 @@ export class AppService {
   }
 
   getMenu() {
-    return this.http.get<Category>("/app/menu");
+    return this.http.get<Category<{ iconClass: string }>>("/app/menu");
   }
 
 }

@@ -45,15 +45,15 @@ export interface ToastData {
   message?: string;
 }
 
-export interface Category {
+export interface Category<Params = unknown> {
   id: number;
   code: string;
   url: string;
   name: LocalizedString[];
-  attrs: string;
+  params: Params;
   icon: Media;
-  parent: Category;
-  children: Category[];
+  parent: Category<Params>;
+  children: Category<Params>[];
 }
 
 export interface User {

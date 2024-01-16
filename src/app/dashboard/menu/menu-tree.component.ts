@@ -63,7 +63,7 @@ import {StopPropagationDirective} from "../../modules/events/stop-propagation.di
 export class MenuTreeComponent implements AfterViewInit {
 
   openedNodes: { [k: number]: boolean } = {};
-  data: Category[] = [];
+  data: Category<{ iconClass: string }>[] = [];
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
   private readonly appService = inject(AppService);
