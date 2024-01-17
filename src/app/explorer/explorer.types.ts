@@ -18,7 +18,7 @@
 import {LocalizedString} from "../modules/locale/locale.types";
 import {Media} from "../modules/media/media.types";
 import {Params, QueryParamsHandling} from "@angular/router";
-import {PageableParams} from "../global/types";
+import {PageableParams, UserRole} from "../global/types";
 import {Type, ValueProvider} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 
@@ -41,6 +41,8 @@ export interface ExplorerTarget {
   defaultActionCreate: boolean;
   defaultActionSave: boolean;
   defaultActionDelete: boolean;
+  canRead: UserRole[];
+  canWrite: UserRole[];
   size?: number;
 }
 

@@ -117,6 +117,18 @@
                     [binary]="true"
                     [label]="'object.details.action.save' | transloco"/>
       </div>
+      <div>
+        <ref-input target="UserRoleEntity"
+                   [multi]="true"
+                   [placeholder]="'object.details.col.can.read' | transloco"
+                   [formControl]="targetForm.controls.canRead"/>
+      </div>
+      <div>
+        <ref-input target="UserRoleEntity"
+                   [multi]="true"
+                   [placeholder]="'object.details.col.can.write' | transloco"
+                   [formControl]="targetForm.controls.canWrite"/>
+      </div>
       <div class="actions">
         <button pButton [disabled]="!targetForm.valid" (click)="saveObject()">
           {{"object.details.save" | transloco}}

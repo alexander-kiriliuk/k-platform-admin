@@ -31,6 +31,7 @@ import {notOnlySpacesValidator} from "../../global/validator/not-only-spaces.val
 import {
   onlyLatinLettersAndNumbersWithHyphensValidator
 } from "../../global/validator/only-latin-letters-and-numbers.validator";
+import {UserRole} from "../../global/types";
 
 
 function handleJsonColumn(data: unknown): object {
@@ -56,6 +57,8 @@ export namespace ObjectDetails {
       defaultActionCreate: new FormControl<boolean>(undefined),
       defaultActionSave: new FormControl<boolean>(undefined),
       defaultActionDelete: new FormControl<boolean>(undefined),
+      canRead: new FormControl<UserRole[]>(undefined),
+      canWrite: new FormControl<UserRole[]>(undefined),
       columns: new FormArray<FormGroup<ColumnForm>>([]),
     });
   }
