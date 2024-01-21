@@ -4,3 +4,7 @@
     @apply flex flex-col gap-4 py-4;
   }
 }
+
+ul {
+  @apply list-disc pl-4;
+}

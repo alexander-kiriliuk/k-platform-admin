@@ -8,6 +8,21 @@
       <input pInputText id="login" formControlName="login"/>
       <label for="login">{{"profile.login" | transloco}}</label>
     </div>
+    <media-input
+      mediaType="default"
+      formControlName="avatar"
+      [galleryEnabled]="false"
+      [placeholder]="'profile.avatar' | transloco"/>
+  </div>
+  <div>
+    <div class="p-float-label">
+      <input pInputText id="firstName" formControlName="firstName"/>
+      <label for="email">{{"profile.name.first" | transloco}}</label>
+    </div>
+    <div class="p-float-label">
+      <input pInputText id="lastName" formControlName="lastName"/>
+      <label for="email">{{"profile.name.last" | transloco}}</label>
+    </div>
     <div class="p-float-label">
       <input pInputText id="email" formControlName="email"/>
       <label for="email">{{"profile.email" | transloco}}</label>
@@ -23,29 +38,11 @@
         [feedback]="false"/>
       <label for="password">{{"profile.password" | transloco}}</label>
     </div>
-  </div>
-  <div>
-    <div>
-      <p-checkbox inputId="active" formControlName="active" [label]="'profile.active' | transloco" [binary]="true"/>
-    </div>
-    <div>
-      {{"profile.avatar" | transloco}}
-      <media-res
-        format="thumb"
-        [zoom]="true"
-        [src]="currentUser.data.avatar"/>
-    </div>
-    <div>
-      {{"profile.name.first" | transloco}}
-      {{form.controls.firstName.value}}
-    </div>
-    <div>
-      {{"profile.name.last" | transloco}}
-      {{form.controls.lastName.value}}
-    </div>
-    <div>
+    <div *ngIf="roles.length">
       {{"profile.roles" | transloco}}
-      {{form.controls.roles.value}}
+      <ul>
+        <li *ngFor="let item of roles">{{item}}</li>
+      </ul>
     </div>
   </div>
 </div>
@@ -53,3 +50,5 @@
 <div>
   <button pButton (click)="save()">{{"profile.save" | transloco}}</button>
 </div>
+
+<preloader *preloading="{state: false, channel: preloaderChannel}"/>

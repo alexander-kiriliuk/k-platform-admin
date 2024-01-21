@@ -58,6 +58,7 @@ import {Store} from "../../store/store";
     NgTemplateOutlet
   ],
   providers: [
+    ExplorerService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,

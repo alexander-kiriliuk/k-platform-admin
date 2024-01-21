@@ -33,3 +33,9 @@ export function CreateProfileForm() {
     roles: new FormControl<UserRole[]>(null),
   });
 }
+
+export namespace Profile {
+
+  export const PreloaderCn = "profile-cn";
+
+}

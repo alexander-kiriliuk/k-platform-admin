@@ -1,0 +1,12 @@
+:host {
+  @apply block;
+  min-width: 300px;
+  min-height: 200px;
+
+  & > div {
+    @apply flex gap-4;
+    & > div {
+      @apply p-2 flex items-center;
+    }
+  }
+}

@@ -16,7 +16,7 @@
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
-import {MenuCommandHandler} from "../global/types";
+import {MenuCommandHandler, User} from "../global/types";
 import {Store} from "../modules/store/store";
 import {AuthEvent} from "../auth/auth.event";
 import {Dashboard} from "./dashboard.constants";
@@ -26,14 +26,13 @@ import {AsyncPipe, NgClass, NgIf} from "@angular/common";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {MenuTreeComponent} from "./menu/menu-tree.component";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
-import {LangSwitcherComponent} from "./lang-switcher/lang-switcher.component";
-import {ThemeSwitcherComponent} from "./theme-switcher/theme-switcher.component";
 import {MenuModule} from "primeng/menu";
 import {AvatarModule} from "primeng/avatar";
 import {MediaComponent} from "../modules/media/media.component";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 import {DashboardEvent} from "./dashboard.event";
+import {CurrentUserEvent} from "../global/events";
 
 
 @Component({
@@ -47,8 +46,6 @@ import {DashboardEvent} from "./dashboard.event";
     ScrollPanelModule,
     MenuTreeComponent,
     PreloaderComponent,
-    LangSwitcherComponent,
-    ThemeSwitcherComponent,
     MenuModule,
     AvatarModule,
     MediaComponent,
@@ -95,11 +92,24 @@ export class DashboardComponent implements MenuCommandHandler {
             draggable: true,
             modal: false,
             position: "topright"
+          }).onClose.subscribe(data => {
+            if (!data) {
+              return;
+            }
+            this.store.emit<User>(CurrentUserEvent.Set, data);
           });
         });
         break;
       case "settings":
-        // todo
+        import("./app-settings/app-settings.component").then(c => {
+          this.dialogService.open(c.AppSettingsComponent, {
+            header: this.ts.translate("dashboard.menu.settings"),
+            resizable: true,
+            draggable: true,
+            modal: false,
+            position: "topright"
+          });
+        });
         break;
       case "exit":
         this.store.emit(AuthEvent.Logout);
