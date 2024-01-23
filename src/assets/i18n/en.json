@@ -20,8 +20,10 @@
   "xdb": {
     "title": "Data Import",
     "import": "Import",
+    "upload": "Download import file",
     "success": {
-      "import": "Successful import"
+      "import": "Successful import",
+      "upload": "Successful file upload"
     }
   },
   "media": {

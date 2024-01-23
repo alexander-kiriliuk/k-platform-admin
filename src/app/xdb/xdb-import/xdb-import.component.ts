@@ -31,6 +31,7 @@ import {finalize, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
+import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/fileupload";
 
 @Component({
   selector: "xdb-import",
@@ -48,7 +49,8 @@ import {ToastEvent} from "../../global/events";
     TranslocoPipe,
     ReactiveFormsModule,
     PreloaderComponent,
-    PreloaderDirective
+    PreloaderDirective,
+    FileUploadModule
   ],
 })
 export class XdbImportComponent implements OnInit {
@@ -62,8 +64,30 @@ export class XdbImportComponent implements OnInit {
     return Xdb.PreloaderCn;
   }
 
+  get uploadUrl() {
+    return "/xdb/import-file";
+  }
+
   ngOnInit(): void {
     this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("xdb.title"));
+  }
+
+  onBeforeUploadFile() {
+    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+  }
+
+  onUploadFile(payload: FileUploadEvent) {
+    this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+    this.store.emit<ToastData>(ToastEvent.Success, {
+      title: this.ts.translate("xdb.success.upload"), message: payload.files[0].name
+    });
+  }
+
+  onErrorFileUpload(payload: FileUploadErrorEvent) {
+    this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+    this.store.emit<ToastData>(ToastEvent.Error, {
+      title: payload.error.error.message, message: payload.error.error.statusCode
+    });
   }
 
   doImport() {

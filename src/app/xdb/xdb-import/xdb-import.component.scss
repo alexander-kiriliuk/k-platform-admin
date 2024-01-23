@@ -3,7 +3,7 @@
 }
 
 .actions {
-  @apply sticky top-0 pb-4;
+  @apply sticky top-0 pb-4 flex gap-6;
   background: var(--neutral-a);
 }
 
