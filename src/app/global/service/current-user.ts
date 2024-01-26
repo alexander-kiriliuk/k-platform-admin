@@ -20,6 +20,7 @@ import {AppConfig, User} from "../types";
 import {Store} from "../../modules/store/store";
 import {CurrentUserEvent} from "../events";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
+import {Roles} from "../constants";
 
 @Injectable({providedIn: "root"})
 export class CurrentUser {
@@ -58,6 +59,22 @@ export class CurrentUser {
     const parts = this.fullName.split(" ");
     parts.forEach(str => res += str.charAt(0));
     return res.substring(0, 2);
+  }
+
+  hasSomeRole(...roles: string[]) {
+    const usr = this.sub.value;
+    if (!usr?.roles?.length) {
+      return false;
+    }
+    if (usr.roles.find(v => v.code === Roles.ROOT)) {
+      return true;
+    }
+    for (const role of roles) {
+      if (usr.roles.find(v => v.code === role)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private setUser(user: User) {

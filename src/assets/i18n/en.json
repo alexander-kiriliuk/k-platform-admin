@@ -24,6 +24,14 @@
     "success": {
       "import": "Successful import",
       "upload": "Successful file upload"
+    },
+    "export": {
+      "btn": "Export",
+      "form.use.files": "Export files",
+      "properties.label": "List of fields to export",
+      "filter.hint": "Search",
+      "depth": "Depth",
+      "success": "Export completed"
     }
   },
   "media": {
@@ -83,6 +91,10 @@
     "exact": "Exact match",
     "sate": "State",
     "title": "{{name}} <span class=\"c-primary\">{{count}}</span>",
+    "export": {
+      "btn": "Export",
+      "label": "Export object"
+    },
     "filter": {
       "label": "Search and filtering",
       "head": "Field {{v}}",

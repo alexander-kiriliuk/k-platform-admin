@@ -22,7 +22,7 @@ import {TabViewModule} from "primeng/tabview";
 import {ExplorerObject} from "./explorer-object.constants";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {DEVICE} from "../../modules/device/device.constants";
-import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {ExplorerEvent} from "./explorer.event";
@@ -36,6 +36,9 @@ import {ConfirmationService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {InputTextModule} from "primeng/inputtext";
 import {ExplorerActionRendererComponent} from "../renderer/explorer-action-renderer.component";
+import {CurrentUser} from "../../global/service/current-user";
+import {Roles} from "../../global/constants";
+import {XdbExportDialogParams} from "../../xdb/xdb.types";
 
 @UntilDestroy()
 @Component({
@@ -70,6 +73,7 @@ import {ExplorerActionRendererComponent} from "../renderer/explorer-action-rende
 export class ExplorerObjectComponent implements OnInit {
 
   private readonly dialogRef = inject(DynamicDialogRef, {optional: true});
+  private readonly dialogService = inject(DialogService);
   private readonly config = inject(DynamicDialogConfig, {optional: true});
   private readonly ar = inject(ActivatedRoute);
   private readonly explorerService = inject(ExplorerService);
@@ -81,6 +85,7 @@ export class ExplorerObjectComponent implements OnInit {
   private readonly ts = inject(TranslocoService);
   private readonly router = inject(Router);
   private readonly confirmationService = inject(ConfirmationService);
+  readonly currentUser = inject(CurrentUser);
   readonly entityForm = this.fb.group({});
   readonly restTab = ExplorerObject.RestTab;
   targetData: TargetData;
@@ -139,6 +144,10 @@ export class ExplorerObjectComponent implements OnInit {
     return `col-${tabSize[key]}`;
   }
 
+  get canExport() {
+    return this.currentUser.hasSomeRole(Roles.ADMIN);
+  }
+
   ngOnInit(): void {
     this.initObject();
   }
@@ -161,6 +170,17 @@ export class ExplorerObjectComponent implements OnInit {
           target: this.targetData.entity.target,
         });
       }
+    });
+  }
+
+  exportObject() {
+    import("../../xdb/xdb-export/xdb-export-dialog.component").then(c => {
+      this.dialogService.open(c.XdbExportDialogComponent, {
+        header: this.ts.translate("explorer.export.label"),
+        data: {target: this.targetData, entity: this.entityData} as XdbExportDialogParams,
+        modal: true,
+        position: "center"
+      });
     });
   }
 

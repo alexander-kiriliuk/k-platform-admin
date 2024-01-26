@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-export enum ToastKey {
-  Global = "global"
-}
+import {XdbExportForm} from "../xdb.types";
+import {FormControl, FormGroup} from "@angular/forms";
 
-export enum ToastType {
-  Error  = "error",
-  Warn  = "warn",
-  Info  = "info",
-  Success  = "success",
-}
+export namespace XdbExportDialog {
 
-export class Roles {
-  static readonly ROOT = "root";
-  static readonly ADMIN = "admin";
-  static readonly MANAGER = "manager";
+  export function createForm(): FormGroup<XdbExportForm> {
+    return new FormGroup<XdbExportForm>({
+      target: new FormControl<string>(null),
+      id: new FormControl<string>(null),
+      depth: new FormControl<number>(null),
+      useFiles: new FormControl<boolean>(null),
+      properties: new FormControl<string[]>(null),
+    });
+  }
+
 }

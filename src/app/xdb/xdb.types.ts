@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-export enum ToastKey {
-  Global = "global"
+import {TargetData} from "../explorer/explorer.types";
+import {FormControl} from "@angular/forms";
+
+export interface XdbExportDialogParams {
+  target: TargetData;
+  entity: { [k: string]: unknown };
 }
 
-export enum ToastType {
-  Error  = "error",
-  Warn  = "warn",
-  Info  = "info",
-  Success  = "success",
+export interface XdbExportParams {
+  target: string;
+  id: string;
+  depth: number;
+  useFiles: boolean;
+  properties: string[];
 }
 
-export class Roles {
-  static readonly ROOT = "root";
-  static readonly ADMIN = "admin";
-  static readonly MANAGER = "manager";
+export type XdbExportForm = {
+  [K in keyof XdbExportParams]: FormControl<XdbExportParams[K]>;
 }

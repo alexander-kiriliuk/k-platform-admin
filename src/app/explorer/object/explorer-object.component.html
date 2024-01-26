@@ -24,6 +24,11 @@
                               [actions]="targetData.entity.actions"/>
   </div>
   <div>
+    <button *ngIf="canExport" class="p-button-sm p-button-secondary" pButton pRipple
+            (click)="exportObject()">
+      <i class="pi pi-file-export"></i>&nbsp;
+      {{"explorer.export.btn" | transloco}}
+    </button>
     <button *ngIf="targetData.entity.defaultActionDelete" class="p-button-sm p-button-danger" pButton pRipple
             [disabled]="!canDeleteObject" (click)="deleteObject()">
       <i class="pi pi-times"></i>&nbsp;
