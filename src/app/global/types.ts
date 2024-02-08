@@ -33,6 +33,7 @@ export type Env = {
   apiUrl: string;
   mediaUrl: string;
   fileUrl: string;
+  tmpUrl: string;
 }
 
 export type AppConfig = {

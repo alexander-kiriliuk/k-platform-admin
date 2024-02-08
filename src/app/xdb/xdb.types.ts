@@ -27,9 +27,13 @@ export interface XdbExportParams {
   id: string;
   depth: number;
   useFiles: boolean;
-  properties: string[];
+  excludeProperties: string[];
 }
 
 export type XdbExportForm = {
   [K in keyof XdbExportParams]: FormControl<XdbExportParams[K]>;
+}
+
+export type XdbExportDto = {
+  file: string;
 }

@@ -16,7 +16,7 @@
 
 import {inject, Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {XdbExportParams} from "./xdb.types";
+import {XdbExportDto, XdbExportParams} from "./xdb.types";
 
 @Injectable()
 export class XdbService {
@@ -31,7 +31,7 @@ export class XdbService {
   }
 
   exportData(params: XdbExportParams) {
-    return this.http.post<string>("/xdb/export", params);
+    return this.http.post<XdbExportDto>("/xdb/export", params);
   }
 
   private ensureValidXml(data: string): string {

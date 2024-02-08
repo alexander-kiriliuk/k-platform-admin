@@ -22,6 +22,7 @@ import {ToastEvent} from "../../global/events";
 import {finalize, throwError} from "rxjs";
 import createForm = XdbExportDialog.createForm;
 import {InputNumberModule} from "primeng/inputnumber";
+import {environment} from "../../global/env/env";
 
 @Component({
   selector: "xdb-export-dialog",
@@ -84,11 +85,10 @@ export class XdbExportDialogComponent implements OnInit {
         return throwError(() => res);
       }),
       finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel))
-    ).subscribe(url => {
+    ).subscribe(v => {
       this.store.emit<ToastData>(ToastEvent.Success, {message: this.ts.translate("xdb.export.success")});
-      if (url) {
-        // todo open archive if exists
-        alert(url);
+      if (v.file) {
+        window.open(`${environment.tmpUrl}/${v.file}`, "_blank");
       }
       this.ref.close();
     });

@@ -28,7 +28,7 @@
     "export": {
       "btn": "Export",
       "form.use.files": "Export files",
-      "properties.label": "List of fields to export",
+      "properties.label": "Exclude fields to export",
       "filter.hint": "Search",
       "depth": "Depth",
       "success": "Export completed"

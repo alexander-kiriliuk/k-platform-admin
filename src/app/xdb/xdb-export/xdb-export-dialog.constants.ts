@@ -25,7 +25,7 @@ export namespace XdbExportDialog {
       id: new FormControl<string>(null),
       depth: new FormControl<number>(null),
       useFiles: new FormControl<boolean>(null),
-      properties: new FormControl<string[]>(null),
+      excludeProperties: new FormControl<string[]>(null),
     });
   }
 

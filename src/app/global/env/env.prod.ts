@@ -22,4 +22,5 @@ export const environment: Env = {
 	apiUrl: "http://localhost:3001/api/v1",
 	mediaUrl: "http://localhost:3001/media",
 	fileUrl: "http://localhost:3001/file",
+  tmpUrl: "http://localhost:3001/tmp"
 };
