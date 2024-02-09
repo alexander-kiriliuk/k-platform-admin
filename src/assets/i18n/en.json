@@ -57,6 +57,34 @@
       "section.open": "From gallery"
     }
   },
+  "file": {
+    "delete.title": "Delete file?",
+    "cancel": "Cancel",
+    "size": "Size",
+    "url": "URL",
+    "accept": "Confirm",
+    "input": {
+      "choose": "Choose",
+      "upload": "Upload",
+      "cancel": "Cancel",
+      "label": {
+        "files": {
+          "success": "Files uploaded successfully"
+        }
+      },
+      "section.open": "From storage"
+    },
+    "label": {
+      "files": {
+        "success": "Files uploaded successfully"
+      }
+    },
+    "dialogue": {
+      "title": "Create file",
+      "choose.file": "File",
+      "public": "Public"
+    }
+  },
   "auth": {
     "login": "Login",
     "password": "Password",

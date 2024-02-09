@@ -134,7 +134,8 @@ export class ObjectDetailsComponent {
     this.explorerService.saveTarget(this.targetForm.getRawValue()).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {
-          title: this.ts.translate("object.details.error")
+          title: this.ts.translate("object.details.error"),
+          message: res.error.message
         });
         return throwError(res);
       }),

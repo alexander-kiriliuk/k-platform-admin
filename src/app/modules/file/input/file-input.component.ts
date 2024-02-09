@@ -21,83 +21,87 @@ import {
   EventEmitter,
   inject,
   Input,
-  Output
+  OnChanges,
+  Output,
+  SimpleChanges
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {FileUploadEvent, Media} from "../media.types";
-import {FileUploadErrorEvent, FileUploadModule} from "primeng/fileupload";
+import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/fileupload";
 import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {HttpResponse} from "@angular/common/http";
 import {FileSizePipe} from "../../../global/service/file-size.pipe";
-import {MediaComponent} from "../media.component";
 import {LocalizePipe} from "../../locale/localize.pipe";
-import {MediaTypeVariant} from "../media.constants";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
-import {DialogService} from "primeng/dynamicdialog";
-import {SectionDialogConfig} from "../../../explorer/explorer.types";
-import {ExplorerService} from "../../../explorer/explorer.service";
-import {finalize} from "rxjs";
 import {ToastData} from "../../../global/types";
 import {ToastEvent} from "../../../global/events";
 import {Store} from "../../store/store";
+import {File as KFile} from "../file.types";
+import {finalize} from "rxjs";
+import {SectionDialogConfig} from "../../../explorer/explorer.types";
+import {DialogService} from "primeng/dynamicdialog";
+import {ExplorerService} from "../../../explorer/explorer.service";
 
 @Component({
-  selector: "media-input",
+  selector: "file-input",
   standalone: true,
-  templateUrl: "./media-input.component.html",
-  styleUrls: ["./media-input.component.scss"],
+  templateUrl: "./file-input.component.html",
+  styleUrls: ["./file-input.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FileUploadModule,
     NgIf,
     NgForOf,
     FileSizePipe,
-    MediaComponent,
     LocalizePipe,
     TranslocoPipe,
     NgTemplateOutlet
   ],
   providers: [
-    ExplorerService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: MediaInputComponent
+      useExisting: FileInputComponent
     },
   ]
 })
-export class MediaInputComponent implements ControlValueAccessor {
+export class FileInputComponent implements ControlValueAccessor, OnChanges {
 
-  @Output() changeMedia = new EventEmitter<Media | Media[]>();
-  @Input({required: true}) mediaType: MediaTypeVariant;
+  @Output() changeFile = new EventEmitter<KFile | KFile[]>();
   @Input() mediaId: number;
   @Input() placeholder: string;
   @Input() multi: boolean;
   @Input() galleryEnabled = true;
-  disabled = false;
-  uploadedFiles: File[];
-  data: Media | Media[];
+  @Input() isPublic = true;
   targetLoadingState: boolean;
+  disabled = false;
+  data: KFile | KFile[];
+  uploadedFiles: File[];
   private readonly store = inject(Store);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly ts = inject(TranslocoService);
   private readonly dialogService = inject(DialogService);
   private readonly localizePipe = inject(LocalizePipe);
   private readonly explorerService = inject(ExplorerService);
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly ts = inject(TranslocoService);
 
   get uploadUrl() {
-    return `/media/upload/${this.mediaType}${!this.mediaId ? "" : `?id=${this.mediaId}`}`;
+    return `/file/upload?public=${this.isPublic}`;
   }
 
   get multiValue() {
-    return this.data as Media[];
+    return this.data as KFile[];
   }
 
   get singleValue() {
-    return this.data as Media;
+    return this.data as KFile;
   }
 
-  writeValue(res: Media | Media[]) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes.isPublic.firstChange && changes.isPublic.currentValue !== changes.isPublic.previousValue) {
+      this.cdr.detectChanges();
+    }
+  }
+
+  writeValue(res: KFile | KFile[]) {
     if (!res) {
       return;
     }
@@ -110,12 +114,12 @@ export class MediaInputComponent implements ControlValueAccessor {
     for (const file of event.files) {
       this.uploadedFiles.push(file);
     }
-    const res = (event.originalEvent as HttpResponse<Media>).body;
+    const res = (event.originalEvent as HttpResponse<KFile>).body;
     if (this.multi) {
       if (!this.data) {
         this.data = [];
       }
-      (this.data as Media[]).push(res);
+      (this.data as KFile[]).push(res);
     } else {
       this.data = res;
     }
@@ -133,9 +137,19 @@ export class MediaInputComponent implements ControlValueAccessor {
     });
   }
 
-  openMediaSection() {
+  removeUploadedMedia(idx: number) {
+    if (!this.multi) {
+      this.data = undefined;
+    } else {
+      (this.data as KFile[]).splice(idx, 1);
+    }
+    this.synchronize();
+    this.cdr.markForCheck();
+  }
+
+  openFilesSection() {
     this.targetLoadingState = true;
-    this.explorerService.getTarget("MediaEntity", "section").pipe(finalize(() => {
+    this.explorerService.getTarget("FileEntity", "section").pipe(finalize(() => {
       this.targetLoadingState = false;
       this.cdr.markForCheck();
     })).subscribe(payload => {
@@ -145,7 +159,7 @@ export class MediaInputComponent implements ControlValueAccessor {
           data: {target: payload, multi: this.multi} as SectionDialogConfig,
           modal: true,
           position: "top",
-        }).onClose.subscribe((res: Media | Media[]) => {
+        }).onClose.subscribe((res: KFile | KFile[]) => {
           if (!res) {
             return;
           }
@@ -153,7 +167,7 @@ export class MediaInputComponent implements ControlValueAccessor {
             if (!this.data) {
               this.data = [];
             }
-            this.data = (this.data as Media[]).concat(res);
+            this.data = (this.data as KFile[]).concat(res);
           } else {
             this.data = res;
           }
@@ -164,19 +178,9 @@ export class MediaInputComponent implements ControlValueAccessor {
     });
   }
 
-  removeUploadedMedia(idx: number) {
-    if (!this.multi) {
-      this.data = undefined;
-    } else {
-      (this.data as Media[]).splice(idx, 1);
-    }
-    this.synchronize();
-    this.cdr.markForCheck();
-  }
-
   synchronize() {
     this.onChange(this.data);
-    this.changeMedia.emit(this.data);
+    this.changeFile.emit(this.data);
   }
 
   registerOnChange(onChange: () => void) {
@@ -192,7 +196,7 @@ export class MediaInputComponent implements ControlValueAccessor {
     this.cdr.markForCheck();
   }
 
-  onChange = (res: Media | Media[]) => {
+  onChange = (res: KFile | KFile[]) => {
   };
 
   onTouched = () => {

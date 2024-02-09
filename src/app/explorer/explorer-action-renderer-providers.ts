@@ -54,6 +54,24 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
         load: import("./renderer/custom/action/update-media-file/update-media-file-action-renderer.component")
           .then(m => m.UpdateMediaFileActionRendererComponent)
       }
+    },
+    {
+      provide: EXPLORER_ACTION_RENDERER,
+      multi: true,
+      useValue: {
+        code: "create-file-section-action",
+        load: import("./renderer/custom/action/create-file/create-file-action-renderer.component")
+          .then(m => m.CreateFileActionRendererComponent)
+      }
+    },
+    {
+      provide: EXPLORER_ACTION_RENDERER,
+      multi: true,
+      useValue: {
+        code: "delete-file-object-action",
+        load: import("./renderer/custom/action/delete-file/delete-file-action-renderer.component")
+          .then(m => m.DeleteFileActionRendererComponent)
+      }
     }
   ];
 }

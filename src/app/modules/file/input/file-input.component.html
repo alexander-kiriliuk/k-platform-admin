@@ -1,0 +1,50 @@
+<p-fileUpload
+  name="file"
+  chooseIcon="pi pi-folder-open"
+  [disabled]="disabled"
+  [cancelLabel]="'file.input.cancel' | transloco"
+  [chooseLabel]="'file.input.choose' | transloco"
+  [uploadLabel]="'file.input.upload' | transloco"
+  [showCancelButton]="false"
+  [url]="uploadUrl"
+  [multiple]="false"
+  (onError)="onUploadError($event)"
+  (onUpload)="onUpload($event)">
+  <ng-template pTemplate="toolbar">
+    <button *ngIf="galleryEnabled" pButton class="p-button-success"
+            [disabled]="disabled"
+            [loading]="targetLoadingState"
+            (click)="openFilesSection()">
+      {{"file.input.section.open" | transloco}}
+    </button>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div *ngIf="uploadedFiles?.length" class="stats">
+      {{"file.input.label.files.success" | transloco}}
+      <ul>
+        <li *ngFor="let file of uploadedFiles">
+          {{ file.name }} - {{ file.size | fileSize }}
+        </li>
+      </ul>
+    </div>
+    <h4>{{placeholder}}</h4>
+    <div *ngIf="data" class="medias">
+      <div *ngIf="!multi && singleValue">
+        <ng-container *ngTemplateOutlet="fileItem; context: {media: singleValue}"/>
+      </div>
+      <ng-container *ngIf="multi && multiValue.length">
+        <div *ngFor="let media of multiValue; let i = index">
+          <ng-container *ngTemplateOutlet="fileItem; context: {media: media, idx: i}"/>
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+</p-fileUpload>
+<ng-template #fileItem let-file="file" let-idx="idx">
+  <p-button
+    icon="pi pi-times" severity="danger"
+    [rounded]="true"
+    [text]="true"
+    (click)="removeUploadedMedia(idx)"/>
+  {{file.name | localize: (file.code ?? 'id_' + file.id)}}
+</ng-template>

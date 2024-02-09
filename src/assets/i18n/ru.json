@@ -57,6 +57,34 @@
       "section.open": "Из галереи"
     }
   },
+  "file": {
+    "delete.title": "Удалить файл?",
+    "cancel": "Отмена",
+    "size": "Размер",
+    "url": "URL",
+    "accept": "Подтвердить",
+    "input": {
+      "choose": "Выбрать",
+      "upload": "Загрузить",
+      "cancel": "Отменить",
+      "label": {
+        "files": {
+          "success": "Файлы успешно загружены"
+        }
+      },
+      "section.open": "Из хранилища"
+    },
+    "label": {
+      "files": {
+        "success": "Файлы успешно загружены"
+      }
+    },
+    "dialog": {
+      "title": "Создать файл",
+      "choose.file": "Файл",
+      "public": "Публичный"
+    }
+  },
   "auth": {
     "login": "Логин",
     "password": "Пароль",
