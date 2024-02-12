@@ -63,6 +63,8 @@
     "size": "Size",
     "url": "URL",
     "accept": "Confirm",
+    "public": "Public",
+    "private": "Private",
     "input": {
       "choose": "Choose",
       "upload": "Upload",

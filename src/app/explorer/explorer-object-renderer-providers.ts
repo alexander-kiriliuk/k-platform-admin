@@ -95,7 +95,7 @@ export function provideExplorerObjectRenderers(): ExplorerRendererProvider[] {
       provide: EXPLORER_OBJECT_RENDERER,
       multi: true,
       useValue: {
-        code: "file-stat-media-object-renderer",
+        code: "file-stat-object-renderer",
         load: import("./renderer/custom/object/file-stat/file-stat-media-object-renderer.component")
           .then(m => m.FileStatMediaObjectRendererComponent)
       }

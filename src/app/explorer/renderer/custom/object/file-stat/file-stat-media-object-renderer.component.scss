@@ -1,3 +1,7 @@
 .label {
   @apply py-2 font-semibold;
 }
+
+span {
+  color: var(--accent-color);
+}
