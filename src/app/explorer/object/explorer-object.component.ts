@@ -67,7 +67,7 @@ import {XdbExportDialogParams} from "../../xdb/xdb.types";
     ConfirmDialogModule,
     InputTextModule,
     ReactiveFormsModule,
-    ExplorerActionRendererComponent
+    ExplorerActionRendererComponent,
   ],
 })
 export class ExplorerObjectComponent implements OnInit {
@@ -150,6 +150,10 @@ export class ExplorerObjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.initObject();
+  }
+
+  hasColumns(tab: ExplorerTab) {
+    return this.targetData.entity.columns.find(v => v.tab.id === tab.id);
   }
 
   saveObject() {

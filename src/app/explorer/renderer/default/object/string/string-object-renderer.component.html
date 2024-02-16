@@ -4,7 +4,7 @@
     type="text"
     [id]="id"
     [formControl]="ctrl"
-    [readonly]="rendererParams.readonly && data && (data[column.property]).toString()?.length"/>
+    [readonly]="rendererParams.readonly && data && (data[column.property]?.toString()?.length)"/>
   <label [for]="id">
     {{column.name | localize: column.property}}
   </label>

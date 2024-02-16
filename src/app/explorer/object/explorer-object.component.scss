@@ -4,6 +4,12 @@
     & > p-tabview > div > .p-tabview-panels {
       @apply p-0 #{!important};
     }
+
+    & > p-tabview.single {
+      & > div > .p-tabview-nav-container {
+        @apply hidden;
+      }
+    }
   }
 }
 

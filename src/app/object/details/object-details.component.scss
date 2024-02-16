@@ -32,6 +32,10 @@ p-confirmDialog {
   }
 }
 
+.transparent {
+  @apply invisible;
+}
+
 .cols-actions {
   @apply flex justify-between;
   & > div {

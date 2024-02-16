@@ -49,6 +49,7 @@
                     (click)="openTabFinder(colForm)"/>
           <p-button icon="pi pi-trash"
                     severity="danger"
+                    [ngClass]="{transparent: !colForm.controls.tab.value}"
                     [rounded]="true"
                     [text]="true"
                     (click)="clearColumnTab(colForm)"/>
