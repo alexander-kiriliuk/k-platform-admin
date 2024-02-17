@@ -93,3 +93,15 @@ export interface PageableData<T = unknown> {
 }
 
 export type SortOrder = "ASC" | "DESC";
+
+export type ProcessStatus = "execute" | "ready" | "crashed";
+
+export interface ProcessUnit {
+  code: string;
+  status: ProcessStatus;
+  enabled: boolean;
+  description: LocalizedString[];
+  cronTab: string;
+  execOnStart: boolean;
+  tsCreated: Date;
+}

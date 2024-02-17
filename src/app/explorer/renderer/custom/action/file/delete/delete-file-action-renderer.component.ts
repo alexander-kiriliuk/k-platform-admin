@@ -15,30 +15,32 @@
  */
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {AbstractExplorerActionRenderer} from "../../../default/abstract-explorer-action-renderer";
+import {
+AbstractExplorerActionRenderer
+} from "../../../../default/abstract-explorer-action-renderer";
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
-import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
 import {NgIf} from "@angular/common";
-import {DeleteMediaActionRendererService} from "./delete-media-action-renderer.service";
-import {Explorer} from "../../../../explorer.constants";
-import {PreloaderEvent} from "../../../../../modules/preloader/preloader.event";
-import {Store} from "../../../../../modules/store/store";
+import {DeleteFileActionRendererService} from "./delete-file-action-renderer.service";
+import {Explorer} from "../../../../../explorer.constants";
+import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.event";
+import {Store} from "../../../../../../modules/store/store";
 import {finalize, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {ConfirmationService} from "primeng/api";
 import {catchError} from "rxjs/operators";
-import {ToastData} from "../../../../../global/types";
-import {ToastEvent} from "../../../../../global/events";
+import {ToastData} from "../../../../../../global/types";
+import {ToastEvent} from "../../../../../../global/events";
 
 @Component({
-  selector: "delete-media-action-renderer",
+  selector: "delete-file-action-renderer",
   standalone: true,
-  templateUrl: "./delete-media-action-renderer.component.html",
+  templateUrl: "./delete-file-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DeleteMediaActionRendererService],
+  providers: [DeleteFileActionRendererService],
   imports: [
     RippleModule,
     ButtonModule,
@@ -48,11 +50,11 @@ import {ToastEvent} from "../../../../../global/events";
     TranslocoPipe
   ],
 })
-export class DeleteMediaActionRendererComponent extends AbstractExplorerActionRenderer {
+export class DeleteFileActionRendererComponent extends AbstractExplorerActionRenderer {
 
-  readonly dialogKey = "del-media-action-dialog";
+  readonly dialogKey = "del-file-action-dialog";
   private readonly confirmationService = inject(ConfirmationService);
-  private readonly service = inject(DeleteMediaActionRendererService);
+  private readonly service = inject(DeleteFileActionRendererService);
   private readonly store = inject(Store);
   private readonly router = inject(Router);
 
@@ -60,7 +62,7 @@ export class DeleteMediaActionRendererComponent extends AbstractExplorerActionRe
     return Explorer.ObjectPreloaderCn;
   }
 
-  deleteMedia() {
+  deleteFile() {
     this.confirmationService.confirm({
       key: this.dialogKey,
       accept: () => {
@@ -72,7 +74,7 @@ export class DeleteMediaActionRendererComponent extends AbstractExplorerActionRe
           }),finalize(() => {
           this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
         })).subscribe(() => {
-          this.router.navigate(["/section/media"], {replaceUrl: true});
+          this.router.navigate(["/section/files"], {replaceUrl: true});
         });
       }
     });

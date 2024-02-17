@@ -24,7 +24,7 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
       multi: true,
       useValue: {
         code: "create-media-files-section-action",
-        load: import("./renderer/custom/action/create-media/create-media-action-renderer.component")
+        load: import("./renderer/custom/action/media/create/create-media-action-renderer.component")
           .then(m => m.CreateMediaActionRendererComponent)
       }
     },
@@ -33,7 +33,7 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
       multi: true,
       useValue: {
         code: "recreate-media-files-object-action",
-        load: import("./renderer/custom/action/recreate-media/re-create-media-action-renderer.component")
+        load: import("./renderer/custom/action/media/recreate/re-create-media-action-renderer.component")
           .then(m => m.ReCreateMediaActionRendererComponent)
       }
     },
@@ -42,7 +42,7 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
       multi: true,
       useValue: {
         code: "delete-media-files-object-action",
-        load: import("./renderer/custom/action/delete-media/delete-media-action-renderer.component")
+        load: import("./renderer/custom/action/media/delete/delete-media-action-renderer.component")
           .then(m => m.DeleteMediaActionRendererComponent)
       }
     },
@@ -51,7 +51,7 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
       multi: true,
       useValue: {
         code: "update-media-file-object-action",
-        load: import("./renderer/custom/action/update-media-file/update-media-file-action-renderer.component")
+        load: import("./renderer/custom/action/media/update/update-media-file-action-renderer.component")
           .then(m => m.UpdateMediaFileActionRendererComponent)
       }
     },
@@ -60,7 +60,7 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
       multi: true,
       useValue: {
         code: "create-file-section-action",
-        load: import("./renderer/custom/action/create-file/create-file-action-renderer.component")
+        load: import("./renderer/custom/action/file/create/create-file-action-renderer.component")
           .then(m => m.CreateFileActionRendererComponent)
       }
     },
@@ -69,9 +69,27 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
       multi: true,
       useValue: {
         code: "delete-file-object-action",
-        load: import("./renderer/custom/action/delete-file/delete-file-action-renderer.component")
+        load: import("./renderer/custom/action/file/delete/delete-file-action-renderer.component")
           .then(m => m.DeleteFileActionRendererComponent)
       }
-    }
+    },
+    {
+      provide: EXPLORER_ACTION_RENDERER,
+      multi: true,
+      useValue: {
+        code: "start-process-object-action",
+        load: import("./renderer/custom/action/process/start/start-process-action-renderer.component")
+          .then(m => m.StartProcessActionRendererComponent)
+      }
+    },
+    {
+      provide: EXPLORER_ACTION_RENDERER,
+      multi: true,
+      useValue: {
+        code: "stop-process-object-action",
+        load: import("./renderer/custom/action/process/stop/stop-process-action-renderer.component")
+          .then(m => m.StopProcessActionRendererComponent)
+      }
+    },
   ];
 }

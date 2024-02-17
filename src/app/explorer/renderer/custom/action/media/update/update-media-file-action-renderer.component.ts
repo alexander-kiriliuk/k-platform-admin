@@ -15,20 +15,24 @@
  */
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {AbstractExplorerActionRenderer} from "../../../default/abstract-explorer-action-renderer";
+import {
+AbstractExplorerActionRenderer
+} from "../../../../default/abstract-explorer-action-renderer";
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
-import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
 import {NgIf} from "@angular/common";
 import {DialogService} from "primeng/dynamicdialog";
 import {TranslocoService} from "@ngneat/transloco";
-import {Router} from "@angular/router";
-import {Media} from "../../../../../modules/media/media.types";
+import {Media} from "../../../../../../modules/media/media.types";
+import {ExplorerObjectDto} from "../../../../../explorer.types";
+import {ExplorerEvent} from "../../../../../object/explorer.event";
+import {Store} from "../../../../../../modules/store/store";
 
 @Component({
-  selector: "create-media-action-renderer",
+  selector: "update-media-file-action-renderer",
   standalone: true,
-  templateUrl: "./create-media-action-renderer.component.html",
+  templateUrl: "./update-media-file-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RippleModule,
@@ -37,23 +41,24 @@ import {Media} from "../../../../../modules/media/media.types";
     NgIf
   ],
 })
-export class CreateMediaActionRendererComponent extends AbstractExplorerActionRenderer {
+export class UpdateMediaFileActionRendererComponent extends AbstractExplorerActionRenderer<Media> {
 
   private readonly dialogService = inject(DialogService);
   private readonly ts = inject(TranslocoService);
-  private readonly router = inject(Router);
+  private readonly store = inject(Store);
 
-  createMedia() {
-    import("./dialog/create-media-action-dialog.component").then(m => {
-      this.dialogService.open(m.CreateMediaActionDialogComponent, {
-        header: this.ts.translate("media.dialog.title"),
+  updateMedia() {
+    import("./dialog/update-media-file-action-dialog.component").then(m => {
+      this.dialogService.open(m.UpdateMediaFileActionDialogComponent, {
+        header: this.ts.translate("media.dialog.update"),
         modal: true,
+        data: this.data as Media,
         position: "top",
       }).onClose.subscribe((media: Media) => {
         if (!media) {
           return;
         }
-        this.router.navigate([`/object/media/${media.id}`]);
+        this.store.emit<ExplorerObjectDto>(ExplorerEvent.ReloadObject);
       });
     });
   }

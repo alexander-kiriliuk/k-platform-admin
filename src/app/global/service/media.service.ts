@@ -16,17 +16,21 @@
 
 import {inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {StringUtils} from "../../../../../global/util/string.utils";
-import {File} from "../../../../../modules/file/file.types";
+import {StringUtils} from "../util/string.utils";
+import {Media} from "../../modules/media/media.types";
 import fillParams = StringUtils.fillParams;
 
 @Injectable()
-export class DeleteFileActionRendererService {
+export class MediaService {
 
   private readonly http = inject(HttpClient);
 
+  reCreate(id: string) {
+    return this.http.post<Media>(fillParams("/media/recreate/:id", id), undefined);
+  }
+
   remove(id: string) {
-    return this.http.delete<File>(fillParams("/file/:id", id));
+    return this.http.delete<Media>(fillParams("/media/:id", id));
   }
 
 }

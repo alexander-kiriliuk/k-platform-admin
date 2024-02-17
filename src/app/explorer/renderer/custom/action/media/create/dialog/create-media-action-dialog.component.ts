@@ -15,20 +15,20 @@
  */
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {MediaInputComponent} from "../../../../../../modules/media/input/media-input.component";
-import {ExplorerService} from "../../../../../explorer.service";
-import {Media} from "../../../../../../modules/media/media.types";
-import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {RefInputComponent} from "../../../../../../modules/ref-input/ref-input.component";
+import {MediaInputComponent} from "../../../../../../../modules/media/input/media-input.component";
+import {ExplorerService} from "../../../../../../explorer.service";
+import {Media, MediaType} from "../../../../../../../modules/media/media.types";
+import {DynamicDialogRef} from "primeng/dynamicdialog";
+import {RefInputComponent} from "../../../../../../../modules/ref-input/ref-input.component";
 import {TranslocoPipe} from "@ngneat/transloco";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 
 @Component({
-  selector: "update-media-file-action-dialog",
+  selector: "create-media-action-dialog",
   standalone: true,
-  templateUrl: "./update-media-file-action-dialog.component.html",
-  styleUrls: ["./update-media-file-action-dialog.component.scss"],
+  templateUrl: "./create-media-action-dialog.component.html",
+  styleUrls: ["./create-media-action-dialog.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     ExplorerService
@@ -41,14 +41,10 @@ import {NgIf} from "@angular/common";
     NgIf
   ],
 })
-export class UpdateMediaFileActionDialogComponent {
+export class CreateMediaActionDialogComponent {
 
-  private readonly config = inject(DynamicDialogConfig);
+  readonly typeCtrl: FormControl<MediaType> = new FormControl();
   private readonly dialogRef = inject(DynamicDialogRef);
-
-  get data() {
-    return this.config.data as Media;
-  }
 
   onChange(media: Media | Media[]) {
     this.dialogRef.close(media);

@@ -15,67 +15,66 @@
  */
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {AbstractExplorerActionRenderer} from "../../../default/abstract-explorer-action-renderer";
+import {
+AbstractExplorerActionRenderer
+} from "../../../../default/abstract-explorer-action-renderer";
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
-import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
 import {NgIf} from "@angular/common";
-import {ReCreateMediaActionRendererService} from "./re-create-media-action-renderer.service";
+import {Explorer} from "../../../../../explorer.constants";
+import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.event";
+import {Store} from "../../../../../../modules/store/store";
+import {finalize, throwError} from "rxjs";
+import {Router} from "@angular/router";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
-import {PreloaderComponent} from "../../../../../modules/preloader/preloader.component";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {ConfirmationService} from "primeng/api";
-import {Store} from "../../../../../modules/store/store";
-import {PreloaderEvent} from "../../../../../modules/preloader/preloader.event";
-import {finalize, throwError} from "rxjs";
-import {Explorer} from "../../../../explorer.constants";
-import {ExplorerObjectDto} from "../../../../explorer.types";
-import {ExplorerEvent} from "../../../../object/explorer.event";
 import {catchError} from "rxjs/operators";
-import {ToastData} from "../../../../../global/types";
-import {ToastEvent} from "../../../../../global/events";
+import {ToastData} from "../../../../../../global/types";
+import {ToastEvent} from "../../../../../../global/events";
+import {MediaService} from "../../../../../../global/service/media.service";
 
 @Component({
-  selector: "re-create-media-action-renderer",
+  selector: "delete-media-action-renderer",
   standalone: true,
-  templateUrl: "./re-create-media-action-renderer.component.html",
+  templateUrl: "./delete-media-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ReCreateMediaActionRendererService],
+  providers: [MediaService],
   imports: [
     RippleModule,
     ButtonModule,
     LocalizePipe,
     NgIf,
     ConfirmDialogModule,
-    PreloaderComponent,
     TranslocoPipe
   ],
 })
-export class ReCreateMediaActionRendererComponent extends AbstractExplorerActionRenderer {
+export class DeleteMediaActionRendererComponent extends AbstractExplorerActionRenderer {
 
-  readonly dialogKey = "recreate-media-action-dialog";
+  readonly dialogKey = "del-media-action-dialog";
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly service = inject(MediaService);
   private readonly store = inject(Store);
-  private readonly service = inject(ReCreateMediaActionRendererService);
+  private readonly router = inject(Router);
 
   private get preloaderChannel() {
     return Explorer.ObjectPreloaderCn;
   }
 
-  reCreateMedia() {
+  deleteMedia() {
     this.confirmationService.confirm({
       key: this.dialogKey,
       accept: () => {
         this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
-        this.service.reCreate(this.entityForm.controls.id.value).pipe(
+        this.service.remove(this.entityForm.controls.id.value).pipe(
           catchError((res) => {
             this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
             return throwError(res);
-          }),
-          finalize(() => {
+          }), finalize(() => {
             this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
           })).subscribe(() => {
-          this.store.emit<ExplorerObjectDto>(ExplorerEvent.ReloadObject);
+          this.router.navigate(["/section/media"], {replaceUrl: true});
         });
       }
     });

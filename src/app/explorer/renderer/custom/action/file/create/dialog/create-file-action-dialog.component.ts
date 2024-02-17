@@ -15,14 +15,14 @@
  */
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
-import {ExplorerService} from "../../../../../explorer.service";
+import {ExplorerService} from "../../../../../../explorer.service";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
-import {RefInputComponent} from "../../../../../../modules/ref-input/ref-input.component";
+import {RefInputComponent} from "../../../../../../../modules/ref-input/ref-input.component";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
-import {FileInputComponent} from "../../../../../../modules/file/input/file-input.component";
-import {File} from "../../../../../../modules/file/file.types";
+import {FileInputComponent} from "../../../../../../../modules/file/input/file-input.component";
+import {File} from "../../../../../../../modules/file/file.types";
 import {CheckboxModule} from "primeng/checkbox";
 
 @Component({
