@@ -33,4 +33,8 @@ export class ProcessService {
     return this.http.get<File>(fillParams("/process/stop/:code", code));
   }
 
+  toggle(code: string) {
+    return this.http.get<File>(fillParams("/process/toggle/:code", code));
+  }
+
 }

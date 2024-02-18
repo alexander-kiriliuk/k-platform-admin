@@ -91,5 +91,14 @@ export function provideExplorerActionRenderers(): ExplorerActionRendererProvider
           .then(m => m.StopProcessActionRendererComponent)
       }
     },
+    {
+      provide: EXPLORER_ACTION_RENDERER,
+      multi: true,
+      useValue: {
+        code: "toggle-process-object-action",
+        load: import("./renderer/custom/action/process/toggle/toggle-process-action-renderer.component")
+          .then(m => m.ToggleProcessActionRendererComponent)
+      }
+    },
   ];
 }

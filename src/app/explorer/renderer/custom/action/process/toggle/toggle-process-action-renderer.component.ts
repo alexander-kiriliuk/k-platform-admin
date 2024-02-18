@@ -24,28 +24,34 @@ import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
 import {ProcessService} from "../../../../../../global/service/process.service";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {ProcessUnit} from "../../../../../../global/types";
+import {NgClass} from "@angular/common";
 
 @Component({
-  selector: "stop-process-action-renderer",
+  selector: "toggle-process-action-renderer",
   standalone: true,
-  templateUrl: "./stop-process-action-renderer.component.html",
+  templateUrl: "./toggle-process-action-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProcessService],
   imports: [
     RippleModule,
     ButtonModule,
     LocalizePipe,
-    TranslocoPipe
+    TranslocoPipe,
+    NgClass
   ],
 })
-export class StopProcessActionRendererComponent extends AbstractExplorerActionRenderer<ProcessUnit> {
+export class ToggleProcessActionRendererComponent extends AbstractExplorerActionRenderer<ProcessUnit> {
 
   private readonly service = inject(ProcessService);
 
-  stop() {
-    this.service.stop((this.data as ProcessUnit).code)
+  get processData() {
+    return this.data as ProcessUnit;
+  }
+
+  toggle() {
+    this.service.toggle((this.data as ProcessUnit).code)
       .subscribe(() => {
-        // todo show tooltip refresh status, start log reader
+        // todo show tooltip refresh status, refresh entity
       });
   }
 

@@ -45,7 +45,7 @@ export class StartProcessActionRendererComponent extends AbstractExplorerActionR
   start() {
     this.service.start((this.data as ProcessUnit).code)
       .subscribe(() => {
-
+        // todo show tooltip refresh status, start log reader
     });
   }
 
