@@ -15,15 +15,24 @@
  */
 
 import {
-ChangeDetectionStrategy,
-Component,
-inject,
-Input,
-OnInit,
-ViewContainerRef
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ComponentRef,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewContainerRef
 } from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {ExplorerAction, ExplorerActionRendererLoader, TargetData} from "../explorer.types";
+import {
+ExplorerAction,
+ExplorerActionRenderer,
+ExplorerActionRendererLoader,
+TargetData
+} from "../explorer.types";
 import {AbstractExplorerActionRenderer} from "./default/abstract-explorer-action-renderer";
 import {EXPLORER_ACTION_RENDERER} from "../explorer.constants";
 import {FormGroup} from "@angular/forms";
@@ -35,7 +44,7 @@ import {FormGroup} from "@angular/forms";
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorerActionRendererComponent extends AbstractExplorerActionRenderer implements OnInit {
+export class ExplorerActionRendererComponent extends AbstractExplorerActionRenderer implements OnInit, OnChanges {
 
   @Input({required: true}) actions: ExplorerAction[];
   @Input({required: true}) override target: TargetData;
@@ -43,6 +52,14 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
   @Input() override entityForm: FormGroup;
   protected viewContainer = inject(ViewContainerRef);
   protected readonly renderers = inject(EXPLORER_ACTION_RENDERER);
+  private refs: ComponentRef<ExplorerActionRenderer>[] = [];
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data.firstChange) {
+      return;
+    }
+    this.patchComponentData();
+  }
 
   ngOnInit(): void {
     for (const action of this.actions) {
@@ -59,12 +76,19 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
   private drawComponent(renderer: ExplorerActionRendererLoader, action: ExplorerAction) {
     renderer.load.then(component => {
       const ref = this.viewContainer.createComponent(component);
+      ref.instance.action = action;
+      this.refs.push(ref);
+      this.patchComponentData();
+    });
+  }
+
+  private patchComponentData() {
+    for (const ref of this.refs) {
       ref.instance.target = this.target;
       ref.instance.data = this.data;
       ref.instance.entityForm = this.entityForm;
-      ref.instance.action = action;
-      ref.changeDetectorRef.detectChanges();
-    });
+      ref.injector.get(ChangeDetectorRef).detectChanges();
+    }
   }
 
 }

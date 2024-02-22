@@ -15,12 +15,14 @@
  */
 
 import {
-ChangeDetectionStrategy,
-Component,
-inject,
-Input,
-OnInit,
-ViewContainerRef
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewContainerRef
 } from "@angular/core";
 import {EXPLORER_OBJECT_RENDERER} from "../explorer.constants";
 import {
@@ -38,7 +40,8 @@ import {FormGroup} from "@angular/forms";
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorerObjectRendererComponent extends AbstractExplorerRendererComponent implements OnInit {
+export class ExplorerObjectRendererComponent extends AbstractExplorerRendererComponent
+  implements OnInit, OnChanges {
 
   @Input({required: true}) target: TargetData;
   @Input({required: true}) column: ExplorerColumn;
@@ -46,6 +49,13 @@ export class ExplorerObjectRendererComponent extends AbstractExplorerRendererCom
   @Input({required: true}) override entityForm: FormGroup;
   protected viewContainer = inject(ViewContainerRef);
   protected readonly renderers = inject(EXPLORER_OBJECT_RENDERER);
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data.firstChange) {
+      return;
+    }
+    this.patchComponentData();
+  }
 
   ngOnInit(): void {
     let renderer: ExplorerRendererLoader;

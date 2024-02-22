@@ -275,6 +275,7 @@ export class ExplorerObjectComponent implements OnInit {
       this.targetData.entity.columns.forEach(col => this.entityForm.addControl(
         col.property, new FormControl(this.entityData ? this.entityData[col.property] : undefined))
       );
+      this.entityForm.patchValue(this.entityData);
       this.cdr.markForCheck();
     });
   }

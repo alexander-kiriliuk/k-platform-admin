@@ -1,3 +1,6 @@
-<button class="p-button-sm" pButton pRipple (click)="start()">
+<button
+  class="p-button-sm" pButton pRipple
+  [disabled]="!processData.enabled || processData.status === 'execute'"
+  (click)="start()">
   {{action.name | localize:action.code}}
 </button>

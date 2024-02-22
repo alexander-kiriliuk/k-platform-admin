@@ -23,8 +23,16 @@ import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
 import {ProcessService} from "../../../../../../global/service/process.service";
 import {TranslocoPipe} from "@ngneat/transloco";
-import {ProcessUnit} from "../../../../../../global/types";
+import {ProcessUnit, ToastData} from "../../../../../../global/types";
 import {NgClass} from "@angular/common";
+import {ExplorerObjectDto} from "../../../../../explorer.types";
+import {ExplorerEvent} from "../../../../../object/explorer.event";
+import {Store} from "../../../../../../modules/store/store";
+import {catchError} from "rxjs/operators";
+import {ToastEvent} from "../../../../../../global/events";
+import {finalize, throwError} from "rxjs";
+import {Explorer} from "../../../../../explorer.constants";
+import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.event";
 
 @Component({
   selector: "toggle-process-action-renderer",
@@ -43,16 +51,29 @@ import {NgClass} from "@angular/common";
 export class ToggleProcessActionRendererComponent extends AbstractExplorerActionRenderer<ProcessUnit> {
 
   private readonly service = inject(ProcessService);
+  private readonly store = inject(Store);
 
   get processData() {
     return this.data as ProcessUnit;
   }
 
+  get preloaderChannel() {
+    return Explorer.ObjectPreloaderCn;
+  }
+
   toggle() {
-    this.service.toggle((this.data as ProcessUnit).code)
-      .subscribe(() => {
-        // todo show tooltip refresh status, refresh entity
-      });
+    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.service.toggle((this.data as ProcessUnit).code).pipe(
+      catchError((res) => {
+        this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
+        return throwError(res);
+      }),
+      finalize(() => {
+        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+      }),
+    ).subscribe(() => {
+      this.store.emit<ExplorerObjectDto>(ExplorerEvent.ReloadObject);
+    });
   }
 
 }

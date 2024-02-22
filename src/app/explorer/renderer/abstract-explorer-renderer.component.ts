@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-import {ExplorerColumn, ExplorerRendererLoader, TargetData} from "../explorer.types";
-import {ViewContainerRef} from "@angular/core";
+import {
+ExplorerColumn,
+ExplorerRenderer,
+ExplorerRendererLoader,
+TargetData
+} from "../explorer.types";
+import {ChangeDetectorRef, ComponentRef, ViewContainerRef} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 
 export abstract class AbstractExplorerRendererComponent {
@@ -26,19 +31,24 @@ export abstract class AbstractExplorerRendererComponent {
   entityForm: FormGroup;
   protected abstract viewContainer: ViewContainerRef;
   protected abstract readonly renderers: ExplorerRendererLoader[];
+  private ref: ComponentRef<ExplorerRenderer>;
 
   protected mergeParamsAndDrawComponent(
     renderer: ExplorerRendererLoader, rendererParams: object, columnRendererParams: object) {
     Object.assign(rendererParams, columnRendererParams);
     renderer.load.then(component => {
-      const ref = this.viewContainer.createComponent(component);
-      ref.instance.column = this.column;
-      ref.instance.target = this.target;
-      ref.instance.data = this.data;
-      ref.instance.entityForm = this.entityForm;
-      ref.instance.params = rendererParams;
-      ref.changeDetectorRef.detectChanges();
+      this.ref = this.viewContainer.createComponent(component);
+      this.ref.instance.params = rendererParams;
+      this.patchComponentData();
     });
+  }
+
+  protected patchComponentData() {
+    this.ref.instance.column = this.column;
+    this.ref.instance.target = this.target;
+    this.ref.instance.data = this.data;
+    this.ref.instance.entityForm = this.entityForm;
+    this.ref.injector.get(ChangeDetectorRef).detectChanges();
   }
 
 }

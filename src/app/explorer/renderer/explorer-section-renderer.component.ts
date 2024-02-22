@@ -15,12 +15,14 @@
  */
 
 import {
-ChangeDetectionStrategy,
-Component,
-inject,
-Input,
-OnInit,
-ViewContainerRef
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewContainerRef
 } from "@angular/core";
 import {EXPLORER_SECTION_RENDERER} from "../explorer.constants";
 import {
@@ -37,13 +39,21 @@ import {AbstractExplorerRendererComponent} from "./abstract-explorer-renderer.co
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorerSectionRendererComponent extends AbstractExplorerRendererComponent implements OnInit {
+export class ExplorerSectionRendererComponent extends AbstractExplorerRendererComponent
+  implements OnInit, OnChanges {
 
   @Input({required: true}) target: TargetData;
   @Input({required: true}) column: ExplorerColumn;
   @Input({required: true}) data: { [k: string]: unknown };
   protected viewContainer = inject(ViewContainerRef);
   protected readonly renderers = inject(EXPLORER_SECTION_RENDERER);
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data.firstChange) {
+      return;
+    }
+    this.patchComponentData();
+  }
 
   ngOnInit(): void {
     let renderer: ExplorerRendererLoader;
@@ -59,7 +69,7 @@ export class ExplorerSectionRendererComponent extends AbstractExplorerRendererCo
     }
     const rendererParams = this.column?.sectionRenderer?.params ?? {};
     const columnRendererParams = this.column?.sectionRendererParams ?? {};
-    this.mergeParamsAndDrawComponent(renderer, rendererParams,columnRendererParams);
+    this.mergeParamsAndDrawComponent(renderer, rendererParams, columnRendererParams);
   }
 
   private getRendererByCode(code: string): ExplorerRendererLoader {
