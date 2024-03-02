@@ -37,10 +37,10 @@ import {TranslocoPipe} from "@ngneat/transloco";
     TranslocoPipe,
   ],
 })
-export class FileStatMediaObjectRendererComponent extends AbstractExplorerObjectRenderer {
+export class FileStatMediaObjectRendererComponent extends AbstractExplorerObjectRenderer<File> {
 
   get file() {
-    return this.data as unknown as File;
+    return this.data;
   }
 
   get url() {

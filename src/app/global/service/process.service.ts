@@ -17,7 +17,9 @@
 import {inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {StringUtils} from "../util/string.utils";
-import {File} from "../../modules/file/file.types";
+import {delay, EMPTY, expand, switchMap, timer} from "rxjs";
+import {ProcessLog, ProcessUnit} from "../types";
+import {catchError} from "rxjs/operators";
 import fillParams = StringUtils.fillParams;
 
 @Injectable()
@@ -26,15 +28,36 @@ export class ProcessService {
   private readonly http = inject(HttpClient);
 
   start(code: string) {
-    return this.http.get<File>(fillParams("/process/start/:code", code));
+    return this.http.get<void>(fillParams("/process/start/:code", code));
   }
 
   stop(code: string) {
-    return this.http.get<File>(fillParams("/process/stop/:code", code));
+    return this.http.get<void>(fillParams("/process/stop/:code", code));
   }
 
   toggle(code: string) {
-    return this.http.get<File>(fillParams("/process/toggle/:code", code));
+    return this.http.get<void>(fillParams("/process/toggle/:code", code));
+  }
+
+  stats(code: string) {
+    return this.http.get<ProcessUnit>(fillParams("/process/stats/:code", code));
+  }
+
+  logsPolling(id: number) {
+    return this.http.get<ProcessLog>(fillParams("/process/log/:id", id)).pipe(
+      catchError(error => {
+        console.error("Error during long polling:", error);
+        // В случае ошибки делаем паузу и повторяем запрос
+        return EMPTY;
+      }),
+      expand((response: ProcessLog) => {
+        // Дожидаемся ответа и отправляем следующий запрос
+        return timer(1000).pipe(
+          delay(1000), // Задержка перед отправкой следующего запроса
+          switchMap(() => this.http.get<ProcessLog>(`/process/log/${id}`))
+        );
+      })
+    );
   }
 
 }

@@ -21,7 +21,7 @@ export abstract class AbstractExplorerObjectRenderer<Data = unknown, Params = un
   implements ExplorerRenderer<Data, Params> {
   column: ExplorerColumn;
   params: Params;
-  data: { [p: string]: Data };
+  data: Data;
   target: TargetData;
   entityForm: FormGroup;
 

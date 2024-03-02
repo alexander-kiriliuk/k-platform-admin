@@ -102,6 +102,14 @@ export interface ProcessUnit {
   enabled: boolean;
   description: LocalizedString[];
   cronTab: string;
-  execOnStart: boolean;
+  logs: ProcessLog[];
   tsCreated: Date;
+}
+
+export class ProcessLog {
+  id: number;
+  content: string;
+  tsCreated: Date;
+  tsUpdated: Date;
+  process: ProcessUnit;
 }

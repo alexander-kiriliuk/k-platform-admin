@@ -135,7 +135,7 @@ export interface ExplorerRenderer<Data = unknown, Params = unknown> {
   target: TargetData;
   column: ExplorerColumn;
   params: Params;
-  data: { [k: string]: Data };
+  data: Data;
   entityForm?: FormGroup;
 }
 

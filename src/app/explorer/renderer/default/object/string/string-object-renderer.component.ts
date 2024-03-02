@@ -35,13 +35,18 @@ import {StringObjectRendererParams} from "./string-object-renderer.types";
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StringObjectRendererComponent extends AbstractExplorerObjectRenderer implements OnInit {
+export class StringObjectRendererComponent extends AbstractExplorerObjectRenderer<{ [k: string]: unknown }>
+  implements OnInit {
 
   readonly id = NumberUtils.getRandomInt();
   rendererParams: StringObjectRendererParams = {
     readonly: false,
     disabled: false
   };
+
+  get isReadonly() {
+    return this.rendererParams.readonly && this.data && this.data[this.column.property]?.toString()?.length;
+  }
 
   ngOnInit(): void {
     if (this.ctrl.value && typeof this.ctrl.value === "object") {

@@ -53,7 +53,7 @@ export class ExplorerService {
   }
 
   removeEntity<T = unknown>(target: string, id: number) {
-    return this.http.delete<T>(fillParams("/explorer/entity/:target/:id", target, id));
+    return this.http.delete<T>(fillParams("/explorer/entity/:target", target), {params: {id}});
   }
 
   saveEntity<T = unknown>(entity: T, target: string, id?: number) {
