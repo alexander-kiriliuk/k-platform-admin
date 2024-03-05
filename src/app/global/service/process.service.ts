@@ -43,18 +43,33 @@ export class ProcessService {
     return this.http.get<ProcessUnit>(fillParams("/process/stats/:code", code));
   }
 
+  log(id: number) {
+    return this.http.get<ProcessLog>(fillParams("/process/log/:id", id));
+  }
+
   logsPolling(id: number) {
-    return this.http.get<ProcessLog>(fillParams("/process/log/:id", id)).pipe(
-      catchError(error => {
-        console.error("Error during long polling:", error);
-        // В случае ошибки делаем паузу и повторяем запрос
+    return this.log(id).pipe(
+      catchError(() => {
         return EMPTY;
       }),
-      expand((response: ProcessLog) => {
-        // Дожидаемся ответа и отправляем следующий запрос
+      expand(() => {
         return timer(1000).pipe(
-          delay(1000), // Задержка перед отправкой следующего запроса
-          switchMap(() => this.http.get<ProcessLog>(`/process/log/${id}`))
+          delay(1000),
+          switchMap(() => this.log(id))
+        );
+      })
+    );
+  }
+
+  statsPolling(code: string) {
+    return this.stats(code).pipe(
+      catchError(() => {
+        return EMPTY;
+      }),
+      expand(() => {
+        return timer(1000).pipe(
+          delay(1000),
+          switchMap(() => this.stats(code))
         );
       })
     );

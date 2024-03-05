@@ -109,6 +109,15 @@ export function provideExplorerObjectRenderers(): ExplorerRendererProvider[] {
           .then(m => m.NewPasswordObjectRendererComponent)
       }
     },
+    {
+      provide: EXPLORER_OBJECT_RENDERER,
+      multi: true,
+      useValue: {
+        code: "process-stats-object-renderer",
+        load: import("./renderer/custom/object/process/stats/process-stats-object-renderer.component")
+          .then(m => m.ProcessStatsObjectRendererComponent)
+      }
+    },
   ];
 }
 

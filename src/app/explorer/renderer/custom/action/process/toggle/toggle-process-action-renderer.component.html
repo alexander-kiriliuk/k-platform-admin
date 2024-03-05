@@ -1,6 +1,6 @@
 <button class="p-button-sm" pButton pRipple
-        [ngClass]="{'p-button-danger': processData.enabled, 'p-button-success': !processData.enabled}"
+        [ngClass]="{'p-button-danger': enabledCtrlValue, 'p-button-success': !enabledCtrlValue}"
         (click)="toggle()">
   <i class="pi pi-power-off"></i>&nbsp;
-  {{action.name | localize:action.code}}
+  {{(enabledCtrlValue ? "msg.off" : "msg.on") | transloco}}
 </button>

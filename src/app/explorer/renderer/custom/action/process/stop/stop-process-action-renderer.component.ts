@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {
 AbstractExplorerActionRenderer
 } from "../../../../default/abstract-explorer-action-renderer";
@@ -23,8 +23,7 @@ import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
 import {ProcessService} from "../../../../../../global/service/process.service";
 import {TranslocoPipe} from "@ngneat/transloco";
-import {ProcessUnit, ToastData} from "../../../../../../global/types";
-import {ExplorerObjectDto} from "../../../../../explorer.types";
+import {ProcessStatus, ProcessUnit, ToastData} from "../../../../../../global/types";
 import {ExplorerEvent} from "../../../../../object/explorer.event";
 import {Store} from "../../../../../../modules/store/store";
 import {catchError} from "rxjs/operators";
@@ -32,7 +31,9 @@ import {ToastEvent} from "../../../../../../global/events";
 import {finalize, throwError} from "rxjs";
 import {Explorer} from "../../../../../explorer.constants";
 import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.event";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: "stop-process-action-renderer",
   standalone: true,
@@ -46,17 +47,31 @@ import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.even
     TranslocoPipe
   ],
 })
-export class StopProcessActionRendererComponent extends AbstractExplorerActionRenderer<ProcessUnit> {
+export class StopProcessActionRendererComponent extends AbstractExplorerActionRenderer<ProcessUnit>
+  implements OnInit {
 
   private readonly service = inject(ProcessService);
   private readonly store = inject(Store);
+  private readonly cdr = inject(ChangeDetectorRef);
 
-  get processData() {
-    return this.data as ProcessUnit;
+  get enabledCtrlValue() {
+    return this.entityForm.controls.enabled.value as boolean;
+  }
+
+  get statusControlValue() {
+    return this.entityForm.controls.status.value as ProcessStatus;
   }
 
   get preloaderChannel() {
     return Explorer.ObjectPreloaderCn;
+  }
+
+  ngOnInit() {
+    this.entityForm.controls.status.valueChanges
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
   }
 
   stop() {
@@ -70,7 +85,7 @@ export class StopProcessActionRendererComponent extends AbstractExplorerActionRe
         this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
       }),
     ).subscribe(() => {
-      this.store.emit<ExplorerObjectDto>(ExplorerEvent.ReloadObject);
+      this.store.emit(ExplorerEvent.ReloadObject);
     });
   }
 

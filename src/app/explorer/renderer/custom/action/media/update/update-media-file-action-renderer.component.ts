@@ -58,7 +58,7 @@ export class UpdateMediaFileActionRendererComponent extends AbstractExplorerActi
         if (!media) {
           return;
         }
-        this.store.emit<ExplorerObjectDto>(ExplorerEvent.ReloadObject);
+        this.store.emit(ExplorerEvent.ReloadObject);
       });
     });
   }

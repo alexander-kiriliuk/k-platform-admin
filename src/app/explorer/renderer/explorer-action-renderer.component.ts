@@ -86,7 +86,11 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
     for (const ref of this.refs) {
       ref.instance.target = this.target;
       ref.instance.data = this.data;
-      ref.instance.entityForm = this.entityForm;
+      if (!ref.instance.entityForm) {
+        ref.instance.entityForm = this.entityForm;
+      } else {
+        ref.instance.entityForm.patchValue(this.entityForm.getRawValue());
+      }
       ref.injector.get(ChangeDetectorRef).detectChanges();
     }
   }

@@ -1,9 +1,14 @@
 {
   "msg": {
+    "on": "On",
+    "off": "Off",
     "error": "Error",
     "warn": "Warning",
     "cancel": "Cancel",
-    "accept": "Accept"
+    "accept": "Accept",
+    "status": "Status",
+    "enabled": "Enabled",
+    "disabled": "Disabled"
   },
   "config": {
     "key": "Key",

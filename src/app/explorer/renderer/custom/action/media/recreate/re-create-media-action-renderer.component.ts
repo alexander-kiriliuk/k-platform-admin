@@ -77,7 +77,7 @@ export class ReCreateMediaActionRendererComponent extends AbstractExplorerAction
           finalize(() => {
             this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
           })).subscribe(() => {
-          this.store.emit<ExplorerObjectDto>(ExplorerEvent.ReloadObject);
+          this.store.emit(ExplorerEvent.ReloadObject);
         });
       }
     });
