@@ -78,13 +78,13 @@ export class XdbExportDialogComponent implements OnInit {
   }
 
   export() {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.xdbService.exportData(this.form.getRawValue()).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
         return throwError(() => res);
       }),
-      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel))
+      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel))
     ).subscribe(v => {
       this.store.emit<ToastData>(ToastEvent.Success, {message: this.ts.translate("xdb.export.success")});
       if (v.file) {

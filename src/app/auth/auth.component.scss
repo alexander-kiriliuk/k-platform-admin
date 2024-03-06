@@ -18,16 +18,23 @@
 }
 
 form {
-  @apply px-6 py-2 flex flex-col gap-6 items-center;
+  @apply relative px-6 py-2 flex flex-col gap-6 items-center;
 }
 
 img {
   max-width: 240px;
-  @apply mb-8 w-full;
+  @apply w-full;
 }
 
 button {
   @apply mt-4;
+}
+
+.captcha {
+  @apply mt-2 flex flex-col gap-y-2;
+  & > div {
+    @apply flex gap-x-4;
+  }
 }
 
 .logo {

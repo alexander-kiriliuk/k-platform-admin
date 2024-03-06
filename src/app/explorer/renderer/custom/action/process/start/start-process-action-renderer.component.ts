@@ -75,14 +75,14 @@ export class StartProcessActionRendererComponent extends AbstractExplorerActionR
   }
 
   start() {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.service.start((this.data as ProcessUnit).code).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
         return throwError(res);
       }),
       finalize(() => {
-        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
       }),
     ).subscribe(() => {
       this.store.emit(ExplorerEvent.ReloadObject);

@@ -97,6 +97,9 @@
     "password": "Password",
     "sign": {
       "in": "Sign in"
+    },
+    "captcha": {
+      "value": "Code from image"
     }
   },
   "dashboard": {

@@ -97,6 +97,9 @@
     "password": "Пароль",
     "sign": {
       "in": "Войти"
+    },
+    "captcha": {
+      "value": "Код с картинки"
     }
   },
   "dashboard": {

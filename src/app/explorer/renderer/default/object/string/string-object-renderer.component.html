@@ -1,11 +1,21 @@
 <div class="p-float-label">
-  <input
-    pInputText
-    type="text"
-    [id]="id"
-    [formControl]="ctrl"
-    [readonly]="isReadonly"/>
-  <label [for]="id">
-    {{column.name | localize: column.property}}
-  </label>
+  <ng-container *ngIf="!isTextArea; else textArea">
+    <input
+      pInputText
+      type="text"
+      [id]="id"
+      [formControl]="ctrl"
+      [readonly]="isReadonly"
+    />
+  </ng-container>
+  <ng-template #textArea>
+    <textarea
+      pInputTextarea
+      [id]="id"
+      [autoResize]="rendererParams.textareaAutoResize"
+      [formControl]="ctrl"
+      [readonly]="isReadonly"
+    ></textarea>
+  </ng-template>
+  <label [for]="id">{{ column.name | localize: column.property }}</label>
 </div>

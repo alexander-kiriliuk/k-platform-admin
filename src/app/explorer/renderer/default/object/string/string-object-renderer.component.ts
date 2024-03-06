@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
 import {NumberUtils} from "../../../../../global/util/number.utils";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {StringObjectRendererParams} from "./string-object-renderer.types";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: "string-object-renderer",
@@ -31,7 +33,9 @@ import {StringObjectRendererParams} from "./string-object-renderer.types";
     FormsModule,
     InputTextModule,
     ReactiveFormsModule,
-    LocalizePipe
+    LocalizePipe,
+    InputTextareaModule,
+    NgIf
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -41,11 +45,18 @@ export class StringObjectRendererComponent extends AbstractExplorerObjectRendere
   readonly id = NumberUtils.getRandomInt();
   rendererParams: StringObjectRendererParams = {
     readonly: false,
-    disabled: false
+    disabled: false,
+    textarea: false,
+    textareaAutoResize: true
   };
+  private readonly cdr = inject(ChangeDetectorRef);
 
   get isReadonly() {
     return this.rendererParams.readonly && this.data && this.data[this.column.property]?.toString()?.length;
+  }
+
+  get isTextArea() {
+    return this.rendererParams.textarea || this.ctrl.value?.length > 50;
   }
 
   ngOnInit(): void {
@@ -61,6 +72,7 @@ export class StringObjectRendererComponent extends AbstractExplorerObjectRendere
     if (this.rendererParams.disabled) {
       this.ctrl.disable();
     }
+    this.cdr.markForCheck();
   }
 
 }

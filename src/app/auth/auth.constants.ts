@@ -17,9 +17,17 @@
 import {LoginForm} from "./auth.types";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
-export function createLoginForm(): FormGroup<LoginForm> {
-	return new FormGroup<LoginForm>({
-		login: new FormControl<string>("", [Validators.required]),
-		password: new FormControl<string>("", [Validators.required])
-	});
+export namespace Auth {
+
+  export const PreloaderCn = "auth-cn";
+
+  export function createLoginForm(): FormGroup<LoginForm> {
+    return new FormGroup<LoginForm>({
+      login: new FormControl<string>("", [Validators.required]),
+      password: new FormControl<string>("", [Validators.required]),
+      captchaId: new FormControl<string>(undefined),
+      captchaPayload: new FormControl<string>(undefined),
+    });
+  }
+
 }

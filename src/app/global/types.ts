@@ -113,3 +113,10 @@ export class ProcessLog {
   tsUpdated: Date;
   process: ProcessUnit;
 }
+
+export type CaptchaResponse = {
+  id?: string;
+  type?: string;
+  image?: string;
+  enabled?: boolean;
+}

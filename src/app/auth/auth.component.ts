@@ -14,23 +14,29 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {CardModule} from "primeng/card";
 import {ImageModule} from "primeng/image";
-import {createLoginForm} from "./auth.constants";
+import {Auth} from "./auth.constants";
 import {ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Store} from "../modules/store/store";
 import {AuthEvent} from "./auth.event";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
+import {finalize, throwError} from "rxjs";
 import {ToastEvent} from "../global/events";
-import {ToastData} from "../global/types";
+import {CaptchaResponse, ToastData} from "../global/types";
+import {CaptchaService} from "../global/service/captcha.service";
+import {NgIf} from "@angular/common";
+import {LoginPayload} from "./auth.types";
+import {PreloaderComponent} from "../modules/preloader/preloader.component";
+import {PreloaderDirective} from "../modules/preloader/preloader.directive";
+import {PreloaderEvent} from "../modules/preloader/preloader.event";
 
 @Component({
   selector: "auth",
@@ -38,6 +44,9 @@ import {ToastData} from "../global/types";
   templateUrl: "./auth.component.html",
   styleUrls: ["./auth.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    CaptchaService
+  ],
   imports: [
     InputTextModule,
     PasswordModule,
@@ -46,22 +55,49 @@ import {ToastData} from "../global/types";
     CardModule,
     ImageModule,
     ReactiveFormsModule,
-    TranslocoPipe
+    TranslocoPipe,
+    NgIf,
+    PreloaderComponent,
+    PreloaderDirective
   ]
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
 
-  readonly form = createLoginForm();
+  readonly form = Auth.createLoginForm();
   private readonly store = inject(Store);
   private readonly authService = inject(AuthService);
+  private readonly captchaService = inject(CaptchaService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  captchaConfig: CaptchaResponse;
+
+  get preloaderChannel() {
+    return Auth.PreloaderCn;
+  }
+
+  ngOnInit(): void {
+    this.getCaptcha();
+  }
+
+  getCaptcha() {
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
+    this.captchaService.getCaptcha().pipe(
+      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel))
+    ).subscribe(payload => {
+      this.captchaConfig = payload;
+      if (payload.enabled) {
+        this.form.controls.captchaPayload.reset();
+        this.form.controls.captchaId.setValue(payload.id);
+      }
+      this.cdr.markForCheck();
+    });
+  }
 
   onSubmit() {
     const data = this.form.value;
-    this.authService.login({
-      login: data.login,
-      password: data.password
-    }).pipe(catchError((res) => {
+    this.authService.login(data as LoginPayload).pipe(catchError((res) => {
       this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
+      this.getCaptcha();
       return throwError(res);
     })).subscribe(v => {
       this.store.emit(AuthEvent.Success, v);

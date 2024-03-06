@@ -111,13 +111,13 @@ export class ObjectDetailsComponent {
 
   constructor() {
     this.target$ = this.explorerService.getTarget(this.target).pipe(
-      tap(() => this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel)),
+      tap(() => this.store.emit(PreloaderEvent.Show, this.preloaderChannel)),
       map(target => {
         this.targetForm.patchValue(target.entity);
         target.entity.columns.forEach(col => this.targetForm.controls.columns.push(createColumnForm(col)));
         return target;
       }),
-      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),
+      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel)),
     );
   }
 
@@ -130,7 +130,7 @@ export class ObjectDetailsComponent {
   }
 
   saveObject() {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.explorerService.saveTarget(this.targetForm.getRawValue()).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {
@@ -139,7 +139,7 @@ export class ObjectDetailsComponent {
         });
         return throwError(res);
       }),
-      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel))
+      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel))
     ).subscribe(v => {
       this.targetForm.patchValue(v);
       v.columns.forEach(col => this.targetForm.controls.columns.push(createColumnForm(col)));
@@ -205,8 +205,8 @@ export class ObjectDetailsComponent {
 
   openTabFinder(colForm: FormGroup<ColumnForm>) {
     this.explorerService.getTarget("ExplorerTabEntity").pipe(
-      tap(() => this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel)),
-      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),
+      tap(() => this.store.emit(PreloaderEvent.Show, this.preloaderChannel)),
+      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel)),
     ).subscribe(targetData => {
       import("../../explorer/section/section.component").then(m => {
         this.dialogService.open(m.SectionComponent, {
@@ -234,7 +234,7 @@ export class ObjectDetailsComponent {
     this.confirmationService.confirm({
       key: this.newTabDialogKey,
       accept: () => {
-        this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
         const payload = this.tabForm.getRawValue();
         this.explorerService.saveEntity(payload, "ExplorerTabEntity")
           .pipe(
@@ -244,7 +244,7 @@ export class ObjectDetailsComponent {
               });
               return throwError(res);
             }),
-            finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel))
+            finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel))
           )
           .subscribe(() => {
             this.tabForm.reset();

@@ -278,11 +278,11 @@ export class SectionComponent implements AfterViewInit {
   }
 
   private getSection(params?: PageableParams) {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.sectionSub?.unsubscribe();
     this.sectionSub = this.explorerService.getSectionList(this.target, params).pipe(
       finalize(() => {
-        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
         if (this.dialogMode) {
           return;
         }
@@ -306,7 +306,7 @@ export class SectionComponent implements AfterViewInit {
   private getTarget() {
     this.explorerService.getTarget(this.target, "section").pipe(
       finalize(() => {
-        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
       }),
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {

@@ -88,10 +88,10 @@ export class ConfigComponent implements OnInit {
       params.page = e.first / e.rows + 1;
       params.limit = e.rows;
     }
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.configService.pageableData(params).pipe(
       finalize(() => {
-        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
       })).subscribe(payload => {
       this.data = payload;
       this.cdr.markForCheck();
@@ -124,13 +124,13 @@ export class ConfigComponent implements OnInit {
   }
 
   private deleteProperty(data: ConfigItem) {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.configService.removeProperty(data.key).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
         return throwError(res);
       }),
-      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)))
+      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel)))
       .subscribe(() => {
         const idx = this.data.items.findIndex(v => v.key === data.key);
         this.data.items.splice(idx, 1);
@@ -140,13 +140,13 @@ export class ConfigComponent implements OnInit {
   }
 
   private saveProperty(data: ConfigItem) {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.configService.setProperty(data).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
         return throwError(res);
       }),
-      finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)))
+      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel)))
       .subscribe(() => {
         const idx = this.data.items.findIndex(v => v.key === data.key);
         if (idx !== -1) {

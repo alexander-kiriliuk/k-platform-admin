@@ -68,14 +68,14 @@ export class ReCreateMediaActionRendererComponent extends AbstractExplorerAction
     this.confirmationService.confirm({
       key: this.dialogKey,
       accept: () => {
-        this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
         this.service.reCreate(this.entityForm.controls.id.value).pipe(
           catchError((res) => {
             this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
             return throwError(res);
           }),
           finalize(() => {
-            this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+            this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
           })).subscribe(() => {
           this.store.emit(ExplorerEvent.ReloadObject);
         });

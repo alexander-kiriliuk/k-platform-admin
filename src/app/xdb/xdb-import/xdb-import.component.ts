@@ -73,28 +73,28 @@ export class XdbImportComponent implements OnInit {
   }
 
   onBeforeUploadFile() {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
   }
 
   onUploadFile(payload: FileUploadEvent) {
-    this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
     this.store.emit<ToastData>(ToastEvent.Success, {
       title: this.ts.translate("xdb.success.upload"), message: payload.files[0].name
     });
   }
 
   onErrorFileUpload(payload: FileUploadErrorEvent) {
-    this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
     this.store.emit<ToastData>(ToastEvent.Error, {
       title: payload.error.error.message, message: payload.error.error.statusCode
     });
   }
 
   doImport() {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.xdbService.importData(this.ctrl.value).pipe(
       finalize(() => {
-        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
       }),
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {

@@ -189,10 +189,10 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   private handleSaveEvent(data: StoreMessage<ExplorerObjectDto>) {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.explorerService.saveEntity(data.payload.entity, data.payload.target, data.payload.id).pipe(
       finalize(() => {
-        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
       }),
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {
@@ -214,10 +214,10 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   private handleDeleteEvent(data: StoreMessage<ExplorerObjectDto>) {
-    this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.explorerService.removeEntity(data.payload.target, data.payload.id).pipe(
       finalize(() => {
-        this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel);
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
       }),
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {

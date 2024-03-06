@@ -17,4 +17,6 @@
 export interface StringObjectRendererParams {
   readonly: boolean;
   disabled: boolean;
+  textarea: boolean;
+  textareaAutoResize: boolean;
 }

@@ -82,9 +82,9 @@ export class ObjectComponent {
         return this.explorerService.getTargetList().pipe(
           tap(targets => {
             this.targetsCache = targets;
-            this.store.emit<string>(PreloaderEvent.Show, this.preloaderChannel);
+            this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
           }),
-          finalize(() => this.store.emit<string>(PreloaderEvent.Hide, this.preloaderChannel)),
+          finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel)),
           map(targetList => this.findTarget(targetList, filterValue))
         );
       } else {
