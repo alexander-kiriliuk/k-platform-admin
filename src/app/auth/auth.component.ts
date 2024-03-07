@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
+import {
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+inject,
+OnInit,
+ViewChild
+} from "@angular/core";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
@@ -37,6 +44,9 @@ import {LoginPayload} from "./auth.types";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 import {PreloaderEvent} from "../modules/preloader/preloader.event";
+import {RecaptchaComponent, RecaptchaModule} from "ng-recaptcha";
+import {ThemeUtils} from "../global/util/theme.utils";
+import getCurrentTheme = ThemeUtils.getCurrentTheme;
 
 @Component({
   selector: "auth",
@@ -58,21 +68,32 @@ import {PreloaderEvent} from "../modules/preloader/preloader.event";
     TranslocoPipe,
     NgIf,
     PreloaderComponent,
-    PreloaderDirective
+    PreloaderDirective,
+    RecaptchaModule
   ]
 })
 export class AuthComponent implements OnInit {
 
+  @ViewChild(RecaptchaComponent) recaptcha: RecaptchaComponent;
   readonly form = Auth.createLoginForm();
   private readonly store = inject(Store);
   private readonly authService = inject(AuthService);
   private readonly captchaService = inject(CaptchaService);
   private readonly cdr = inject(ChangeDetectorRef);
 
+  reCaptchaResolved: boolean;
   captchaConfig: CaptchaResponse;
 
   get preloaderChannel() {
     return Auth.PreloaderCn;
+  }
+
+  get theme() {
+    return getCurrentTheme();
+  }
+
+  get isReCaptcha() {
+    return this.captchaConfig.type === "google";
   }
 
   ngOnInit(): void {
@@ -93,11 +114,24 @@ export class AuthComponent implements OnInit {
     });
   }
 
+  onCaptchaResolved(payload: string) {
+    this.form.controls.captchaPayload.setValue(payload);
+    this.reCaptchaResolved = true;
+    this.cdr.markForCheck();
+  }
+
   onSubmit() {
     const data = this.form.value;
     this.authService.login(data as LoginPayload).pipe(catchError((res) => {
       this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
-      this.getCaptcha();
+      if (this.isReCaptcha) {
+        this.reCaptchaResolved = false;
+        this.form.controls.captchaPayload.reset();
+        this.recaptcha.reset();
+        this.cdr.markForCheck();
+      } else {
+        this.getCaptcha();
+      }
       return throwError(res);
     })).subscribe(v => {
       this.store.emit(AuthEvent.Success, v);
