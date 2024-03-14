@@ -40,8 +40,8 @@ import {MediaObjectRendererParams} from "./media-object-renderer.types";
     LocalizePipe,
   ],
 })
-export class MediaObjectRendererComponent extends AbstractExplorerObjectRenderer
-  <Media | Media[], MediaObjectRendererParams> implements OnInit {
+export class MediaObjectRendererComponent
+  extends AbstractExplorerObjectRenderer<Media | Media[], unknown, MediaObjectRendererParams> implements OnInit {
 
   mediaType = "default";
 

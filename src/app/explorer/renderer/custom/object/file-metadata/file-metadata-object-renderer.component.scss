@@ -1,0 +1,15 @@
+.label {
+  @apply py-2 font-semibold;
+}
+
+table {
+  @apply text-xs;
+  td {
+    @apply py-1 px-2;
+  }
+}
+
+.subtitle {
+  @apply text-sm py-1 px-2;
+  color: var(--accent-color);
+}

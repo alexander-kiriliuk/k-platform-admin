@@ -67,10 +67,6 @@ export class ProcessStatsObjectRendererComponent extends AbstractExplorerObjectR
   activeTabIndex = 0;
   logsList: ProcessLog[] = [];
 
-  get processData() {
-    return this.data as ProcessUnit;
-  }
-
   get statusControlValue() {
     return this.entityForm.controls.status.value as ProcessStatus;
   }
@@ -84,14 +80,14 @@ export class ProcessStatsObjectRendererComponent extends AbstractExplorerObjectR
   }
 
   private getStats() {
-    this.service.stats(this.processData.code)
+    this.service.stats(this.data.code)
       .subscribe(payload => {
         this.onStatsReceived(payload);
       });
   }
 
   private subscribeToPoller() {
-    this.statsSub = this.service.statsPolling(this.processData.code)
+    this.statsSub = this.service.statsPolling(this.data.code)
       .pipe(untilDestroyed(this))
       .subscribe(payload => {
         this.onStatsReceived(payload);

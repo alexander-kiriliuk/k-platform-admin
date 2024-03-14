@@ -39,8 +39,9 @@ import {LocalizedMediaObjectRendererTypes} from "./localized-media-object-render
     LocalizeMediaInputComponent
   ]
 })
-export class LocalizedMediaObjectRendererComponent extends AbstractExplorerObjectRenderer
-  <LocalizedMedia, LocalizedMediaObjectRendererTypes> implements OnInit {
+export class LocalizedMediaObjectRendererComponent
+  extends AbstractExplorerObjectRenderer <LocalizedMedia, unknown, LocalizedMediaObjectRendererTypes>
+  implements OnInit {
 
   mediaType = "default";
 

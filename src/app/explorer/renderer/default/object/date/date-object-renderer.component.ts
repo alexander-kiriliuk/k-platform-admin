@@ -40,8 +40,8 @@ import {NumberUtils} from "../../../../../global/util/number.utils";
     NgClass
   ]
 })
-export class DateObjectRendererComponent extends AbstractExplorerObjectRenderer<string, DateObjectRendererParams>
-  implements OnInit {
+export class DateObjectRendererComponent
+  extends AbstractExplorerObjectRenderer<string, unknown, DateObjectRendererParams> implements OnInit {
 
   readonly id = NumberUtils.getRandomInt().toString();
   rendererParams: DateObjectRendererParams = {

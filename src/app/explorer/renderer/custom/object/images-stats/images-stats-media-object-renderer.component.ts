@@ -42,7 +42,7 @@ import {AbstractExplorerObjectRenderer} from "../../../default/abstract-explorer
     NgTemplateOutlet
   ],
 })
-export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerObjectRenderer<Media> {
+export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerObjectRenderer {
 
   private readonly mediaUrlPipe = inject(MediaUrlPipe);
 
@@ -55,7 +55,7 @@ export class ImagesStatsMediaObjectRendererComponent extends AbstractExplorerObj
   }
 
   get media() {
-    return this.data;
+    return this.data as unknown as Media;
   }
 
   get files() {

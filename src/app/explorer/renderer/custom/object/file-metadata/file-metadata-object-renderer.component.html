@@ -1,0 +1,52 @@
+<div class="label">{{column.name | localize: column.property}}</div>
+TODO <!--TODO create and localize-->
+<p-tabView [scrollable]="true">
+  <p-tabPanel
+    [header]="'metadata.common.header' | transloco">
+    <table>
+      <tr>
+        <td>Хеш</td>
+        <td>{{propertyData.hash}}</td>
+      </tr>
+      <tr>
+        <td>MIME</td>
+        <td>{{propertyData.mime}}</td>
+      </tr>
+      <tr>
+        <td>Расширение</td>
+        <td>{{propertyData.ext}}</td>
+      </tr>
+    </table>
+    <ng-container *ngIf="propertyData.gps">
+      <div class="subtitle">
+        Гео-данные
+      </div>
+      <table>
+        <tr>
+          <td>Широта</td>
+          <td>{{propertyData.gps.latitude}}</td>
+        </tr>
+        <tr>
+          <td>Долгота</td>
+          <td>{{propertyData.gps.longitude}}</td>
+        </tr>
+        <tr>
+          <td>Высота</td>
+          <td>{{propertyData.gps.altitude}}</td>
+        </tr>
+      </table>
+    </ng-container>
+  </p-tabPanel>
+  <p-tabPanel
+    [header]="'metadata.image.header' | transloco">
+    image
+  </p-tabPanel>
+  <p-tabPanel
+    [header]="'metadata.video.header' | transloco">
+    video
+  </p-tabPanel>
+  <p-tabPanel
+    [header]="'metadata.audio.header' | transloco">
+    audio
+  </p-tabPanel>
+</p-tabView>

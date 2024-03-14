@@ -39,7 +39,7 @@ import {createNewPasswordObjectRendererForm} from "./new-password-object-rendere
   ],
 })
 export class NewPasswordObjectRendererComponent
-  extends AbstractExplorerObjectRenderer<string, NewPasswordObjectRendererParams> implements OnInit {
+  extends AbstractExplorerObjectRenderer<string, unknown, NewPasswordObjectRendererParams> implements OnInit {
 
   readonly form = createNewPasswordObjectRendererForm();
   rendererParams: NewPasswordObjectRendererParams = {

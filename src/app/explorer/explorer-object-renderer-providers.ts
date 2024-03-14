@@ -118,6 +118,15 @@ export function provideExplorerObjectRenderers(): ExplorerRendererProvider[] {
           .then(m => m.ProcessStatsObjectRendererComponent)
       }
     },
+    {
+      provide: EXPLORER_OBJECT_RENDERER,
+      multi: true,
+      useValue: {
+        code: "file-metadata-object-renderer",
+        load: import("./renderer/custom/object/file-metadata/file-metadata-object-renderer.component")
+          .then(m => m.FileMetadataObjectRendererComponent)
+      }
+    },
   ];
 }
 

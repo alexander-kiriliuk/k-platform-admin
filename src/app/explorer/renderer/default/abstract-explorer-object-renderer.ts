@@ -16,8 +16,9 @@
 
 import {ExplorerColumn, ExplorerRenderer, TargetData} from "../../explorer.types";
 import {FormControl, FormGroup} from "@angular/forms";
+import {PlainObject} from "../../../global/types";
 
-export abstract class AbstractExplorerObjectRenderer<Data = unknown, Params = unknown>
+export abstract class AbstractExplorerObjectRenderer<Data = unknown, Property = unknown, Params = unknown>
   implements ExplorerRenderer<Data, Params> {
   column: ExplorerColumn;
   params: Params;
@@ -27,6 +28,10 @@ export abstract class AbstractExplorerObjectRenderer<Data = unknown, Params = un
 
   get ctrl() {
     return this.entityForm.controls[this.column.property] as FormControl;
+  }
+
+  get propertyData() {
+    return (this.data as PlainObject)[this.column.property] as Property;
   }
 
 }

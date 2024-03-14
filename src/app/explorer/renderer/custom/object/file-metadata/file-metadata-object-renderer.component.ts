@@ -15,35 +15,28 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
-import {NgForOf, NgIf} from "@angular/common";
-import {environment} from "../../../../../global/env/env";
-import {FileSizePipe} from "../../../../../global/service/file-size.pipe";
 import {AbstractExplorerObjectRenderer} from "../../../default/abstract-explorer-object-renderer";
-import {File} from "../../../../../modules/file/file.types";
+import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
+import {FileMetadata} from "../../../../../modules/file/file.types";
+import {ExplorerObjectRendererComponent} from "../../../explorer-object-renderer.component";
+import {NgForOf, NgIf} from "@angular/common";
+import {TabViewModule} from "primeng/tabview";
 import {TranslocoPipe} from "@ngneat/transloco";
 
 @Component({
-  selector: "file-stat-media-object-renderer",
+  selector: "file-metadata-object-renderer",
   standalone: true,
-  templateUrl: "./file-stat-media-object-renderer.component.html",
-  styleUrls: ["./file-stat-media-object-renderer.component.scss"],
+  templateUrl: "./file-metadata-object-renderer.component.html",
+  styleUrls: ["./file-metadata-object-renderer.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizePipe,
+    ExplorerObjectRendererComponent,
     NgForOf,
-    FileSizePipe,
     NgIf,
+    TabViewModule,
     TranslocoPipe,
   ],
 })
-export class FileStatMediaObjectRendererComponent extends AbstractExplorerObjectRenderer<File> {
-
-  get url() {
-    if (this.data.public) {
-      return `${environment.fileUrl}/${this.data.id}/${this.data.path}`;
-    }
-    return `${environment.apiUrl}/file/private/${this.data.id}`;
-  }
-
+export class FileMetadataObjectRendererComponent extends AbstractExplorerObjectRenderer<unknown, FileMetadata> {
 }
