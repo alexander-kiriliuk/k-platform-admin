@@ -55,6 +55,10 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
   private refs: ComponentRef<ExplorerActionRenderer>[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.target && !changes.target.firstChange &&
+      (changes.target.previousValue.entity.target != changes.target.currentValue.entity.target)) {
+      this.performActions();
+    }
     if (changes.data.firstChange) {
       return;
     }
@@ -62,6 +66,14 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
   }
 
   ngOnInit(): void {
+    this.performActions();
+  }
+
+  private performActions() {
+    for (const ref of this.refs) {
+      ref.destroy();
+    }
+    this.refs = [];
     for (const action of this.actions) {
       const code = action.code;
       const renderer = this.renderers.find(v => v.code === code);
