@@ -19,7 +19,7 @@ import {AbstractExplorerObjectRenderer} from "../../../default/abstract-explorer
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {FileMetadata} from "../../../../../modules/file/file.types";
 import {ExplorerObjectRendererComponent} from "../../../explorer-object-renderer.component";
-import {NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {TabViewModule} from "primeng/tabview";
 import {TranslocoPipe} from "@ngneat/transloco";
 
@@ -36,6 +36,7 @@ import {TranslocoPipe} from "@ngneat/transloco";
     NgIf,
     TabViewModule,
     TranslocoPipe,
+    DatePipe,
   ],
 })
 export class FileMetadataObjectRendererComponent extends AbstractExplorerObjectRenderer<unknown, FileMetadata> {

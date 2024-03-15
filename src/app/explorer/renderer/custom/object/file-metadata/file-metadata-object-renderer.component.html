@@ -1,52 +1,437 @@
 <div class="label">{{column.name | localize: column.property}}</div>
-TODO <!--TODO create and localize-->
 <p-tabView [scrollable]="true">
-  <p-tabPanel
-    [header]="'metadata.common.header' | transloco">
+  <p-tabPanel *ngIf="propertyData.hash || propertyData.mime || propertyData.ext || propertyData.gps"
+              [header]="'metadata.common.header' | transloco">
     <table>
-      <tr>
-        <td>Хеш</td>
+      <tr *ngIf="propertyData.hash">
+        <td>{{"metadata.common.hash" | transloco}}</td>
         <td>{{propertyData.hash}}</td>
       </tr>
-      <tr>
-        <td>MIME</td>
+      <tr *ngIf="propertyData.mime">
+        <td>{{"metadata.common.mime" | transloco}}</td>
         <td>{{propertyData.mime}}</td>
       </tr>
-      <tr>
-        <td>Расширение</td>
+      <tr *ngIf="propertyData.ext">
+        <td>{{"metadata.common.ext" | transloco}}</td>
         <td>{{propertyData.ext}}</td>
       </tr>
-    </table>
-    <ng-container *ngIf="propertyData.gps">
-      <div class="subtitle">
-        Гео-данные
-      </div>
-      <table>
-        <tr>
-          <td>Широта</td>
+      <ng-container *ngIf="propertyData.gps">
+        <tr class="subtitle">
+          <td colspan="2">{{"metadata.gps.header" | transloco}}</td>
+        </tr>
+        <tr *ngIf="propertyData.gps.latitude">
+          <td>{{"metadata.gps.latitude" | transloco}}</td>
           <td>{{propertyData.gps.latitude}}</td>
         </tr>
-        <tr>
-          <td>Долгота</td>
+        <tr *ngIf="propertyData.gps.longitude">
+          <td>{{"metadata.gps.longitude" | transloco}}</td>
           <td>{{propertyData.gps.longitude}}</td>
         </tr>
-        <tr>
-          <td>Высота</td>
+        <tr *ngIf="propertyData.gps.altitude">
+          <td>{{"metadata.gps.altitude" | transloco}}</td>
           <td>{{propertyData.gps.altitude}}</td>
         </tr>
-      </table>
-    </ng-container>
+      </ng-container>
+    </table>
   </p-tabPanel>
-  <p-tabPanel
-    [header]="'metadata.image.header' | transloco">
-    image
+  <p-tabPanel *ngIf="propertyData.image || propertyData.icc || propertyData.exif"
+              [header]="'metadata.image.header' | transloco">
+    <table>
+      <tr *ngIf="propertyData.image.dateTime">
+        <td>{{"metadata.image.date" | transloco}}</td>
+        <td>{{propertyData.image.dateTime | date: "medium"}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.bps">
+        <td>{{"metadata.image.bps" | transloco}}</td>
+        <td>{{propertyData.image.bps}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.height">
+        <td>{{"metadata.image.height" | transloco}}</td>
+        <td>{{propertyData.image.height}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.width">
+        <td>{{"metadata.image.width" | transloco}}</td>
+        <td>{{propertyData.image.width}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.colorComponents">
+        <td>{{"metadata.image.color.components" | transloco}}</td>
+        <td>{{propertyData.image.colorComponents}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.subsampling">
+        <td>{{"metadata.image.subsampling" | transloco}}</td>
+        <td>{{propertyData.image.subsampling}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.bitDepth">
+        <td>{{"metadata.image.bit.depth" | transloco}}</td>
+        <td>{{propertyData.image.bitDepth}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.colorType">
+        <td>{{"metadata.image.color.type" | transloco}}</td>
+        <td>{{propertyData.image.colorType}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.compression">
+        <td>{{"metadata.image.compression" | transloco}}</td>
+        <td>{{propertyData.image.compression}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.filter">
+        <td>{{"metadata.image.filter" | transloco}}</td>
+        <td>{{propertyData.image.filter}}</td>
+      </tr>
+      <tr *ngIf="propertyData.image.interlace">
+        <td>{{"metadata.image.interlace" | transloco}}</td>
+        <td>{{propertyData.image.interlace}}</td>
+      </tr>
+      <ng-container *ngIf="propertyData.icc">
+        <tr class="subtitle">
+          <td colspan="2">{{"metadata.icc.header" | transloco}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.profileVersion">
+          <td>{{"metadata.icc.profile.version" | transloco}}</td>
+          <td>{{propertyData.icc.profileVersion}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.profileClassName && propertyData.icc.profileClassValue">
+          <td>{{"metadata.icc.profile.class" | transloco}}</td>
+          <td>{{propertyData.icc.profileClassName}} ({{propertyData.icc.profileClassValue}})</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.connectionSpace">
+          <td>{{"metadata.icc.connection.space" | transloco}}</td>
+          <td>{{propertyData.icc.connectionSpace}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.iccSignature">
+          <td>{{"metadata.icc.signature" | transloco}}</td>
+          <td>{{propertyData.icc.iccSignature}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.primaryPlatform">
+          <td>{{"metadata.icc.primary.platform" | transloco}}</td>
+          <td>{{propertyData.icc.primaryPlatform}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.deviceManufacturer">
+          <td>{{"metadata.icc.device.manufacturer" | transloco}}</td>
+          <td>{{propertyData.icc.deviceManufacturer}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.deviceModelNumber">
+          <td>{{"metadata.icc.device.model.number" | transloco}}</td>
+          <td>{{propertyData.icc.deviceModelNumber}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.renderingIntentName && propertyData.icc.renderingIntentValue">
+          <td>{{"metadata.icc.rendering.intent" | transloco}}</td>
+          <td>{{propertyData.icc.renderingIntentName}} ({{propertyData.icc.renderingIntentValue}})</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.profileCreator">
+          <td>{{"metadata.icc.profile.creator" | transloco}}</td>
+          <td>{{propertyData.icc.profileCreator}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.iccDescription">
+          <td>{{"metadata.icc.description" | transloco}}</td>
+          <td>{{propertyData.icc.iccDescription}}</td>
+        </tr>
+        <tr *ngIf="propertyData.icc.iccCopyright">
+          <td>{{"metadata.icc.copyright" | transloco}}</td>
+          <td>{{propertyData.icc.iccCopyright}}</td>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="propertyData.exif">
+        <tr class="subtitle">
+          <td colspan="2">{{"metadata.exif.header" | transloco}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.make">
+          <td>{{"metadata.exif.make" | transloco}}</td>
+          <td>{{propertyData.exif.make}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.model">
+          <td>{{"metadata.exif.model" | transloco}}</td>
+          <td>{{propertyData.exif.model}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.orientation">
+          <td>{{"metadata.exif.orientation" | transloco}}</td>
+          <td>{{propertyData.exif.orientation}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.resolutionX">
+          <td>{{"metadata.exif.resolution.x" | transloco}}</td>
+          <td>{{propertyData.exif.resolutionX}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.resolutionY">
+          <td>{{"metadata.exif.resolution.y" | transloco}}</td>
+          <td>{{propertyData.exif.resolutionY}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.resolutionUnit">
+          <td>{{"metadata.exif.resolution.unit" | transloco}}</td>
+          <td>{{propertyData.exif.resolutionUnit}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.software">
+          <td>{{"metadata.exif.software" | transloco}}</td>
+          <td>{{propertyData.exif.software}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.ycbCrPositioning">
+          <td>{{"metadata.exif.ycb.cr.positioning" | transloco}}</td>
+          <td>{{propertyData.exif.ycbCrPositioning}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.exifIfdPointer">
+          <td>{{"metadata.exif.ifd.pointer" | transloco}}</td>
+          <td>{{propertyData.exif.exifIfdPointer}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.gpsInfoIfdPointer">
+          <td>{{"metadata.exif.gps.info.ifd.pointer" | transloco}}</td>
+          <td>{{propertyData.exif.gpsInfoIfdPointer}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.exposureTime">
+          <td>{{"metadata.exif.exposure.time" | transloco}}</td>
+          <td>{{propertyData.exif.exposureTime}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.exposureProgram">
+          <td>{{"metadata.exif.exposure.program" | transloco}}</td>
+          <td>{{propertyData.exif.exposureProgram}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.exposureBias">
+          <td>{{"metadata.exif.exposure.bias" | transloco}}</td>
+          <td>{{propertyData.exif.exposureBias}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.exposureMode">
+          <td>{{"metadata.exif.exposure.mode" | transloco}}</td>
+          <td>{{propertyData.exif.exposureMode}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.fNumber">
+          <td>{{"metadata.exif.f.number" | transloco}}</td>
+          <td>{{propertyData.exif.fNumber}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.isoSpeedRatings">
+          <td>{{"metadata.exif.iso.speed.ratings" | transloco}}</td>
+          <td>{{propertyData.exif.isoSpeedRatings}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.exifVersion">
+          <td>{{"metadata.exif.version" | transloco}}</td>
+          <td>{{propertyData.exif.exifVersion}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.offsetTime">
+          <td>{{"metadata.exif.offset.time" | transloco}}</td>
+          <td>{{propertyData.exif.offsetTime}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.shutterSpeedValue">
+          <td>{{"metadata.exif.shutter.speed.value" | transloco}}</td>
+          <td>{{propertyData.exif.shutterSpeedValue}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.aperture">
+          <td>{{"metadata.exif.aperture" | transloco}}</td>
+          <td>{{propertyData.exif.aperture}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.brightness">
+          <td>{{"metadata.exif.brightness" | transloco}}</td>
+          <td>{{propertyData.exif.brightness}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.maxAperture">
+          <td>{{"metadata.exif.max.aperture" | transloco}}</td>
+          <td>{{propertyData.exif.maxAperture}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.subjectDistance">
+          <td>{{"metadata.exif.subject.distance" | transloco}}</td>
+          <td>{{propertyData.exif.subjectDistance}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.subjectDistanceRange">
+          <td>{{"metadata.exif.subject.distance.range" | transloco}}</td>
+          <td>{{propertyData.exif.subjectDistanceRange}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.meteringMode">
+          <td>{{"metadata.exif.metering.mode" | transloco}}</td>
+          <td>{{propertyData.exif.meteringMode}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.flash">
+          <td>{{"metadata.exif.flash" | transloco}}</td>
+          <td>{{propertyData.exif.flash}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.focalLength">
+          <td>{{"metadata.exif.focal.length" | transloco}}</td>
+          <td>{{propertyData.exif.focalLength}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.flashpixVersion">
+          <td>{{"metadata.exif.flashpix.version" | transloco}}</td>
+          <td>{{propertyData.exif.flashpixVersion}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.colorSpace">
+          <td>{{"metadata.exif.color.space" | transloco}}</td>
+          <td>{{propertyData.exif.colorSpace}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.pixelXDimension">
+          <td>{{"metadata.exif.pixel.x.dimension" | transloco}}</td>
+          <td>{{propertyData.exif.pixelXDimension}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.pixelYDimension">
+          <td>{{"metadata.exif.pixel.y.dimension" | transloco}}</td>
+          <td>{{propertyData.exif.pixelYDimension}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.interoperabilityIfdPointer">
+          <td>{{"metadata.exif.interoperability.ifd.pointer" | transloco}}</td>
+          <td>{{propertyData.exif.interoperabilityIfdPointer}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.sensingMethod">
+          <td>{{"metadata.exif.sensing.method" | transloco}}</td>
+          <td>{{propertyData.exif.sensingMethod}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.sceneType">
+          <td>{{"metadata.exif.scene.type" | transloco}}</td>
+          <td>{{propertyData.exif.sceneType}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.customRendered">
+          <td>{{"metadata.exif.custom.rendered" | transloco}}</td>
+          <td>{{propertyData.exif.customRendered}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.whiteBalance">
+          <td>{{"metadata.exif.white.balance" | transloco}}</td>
+          <td>{{propertyData.exif.whiteBalance}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.digitalZoomRatio">
+          <td>{{"metadata.exif.digital.zoom.ratio" | transloco}}</td>
+          <td>{{propertyData.exif.digitalZoomRatio}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.sceneCaptureType">
+          <td>{{"metadata.exif.scene.capture.type" | transloco}}</td>
+          <td>{{propertyData.exif.sceneCaptureType}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.contrast">
+          <td>{{"metadata.exif.contrast" | transloco}}</td>
+          <td>{{propertyData.exif.contrast}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.saturation">
+          <td>{{"metadata.exif.saturation" | transloco}}</td>
+          <td>{{propertyData.exif.saturation}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.sharpness">
+          <td>{{"metadata.exif.sharpness" | transloco}}</td>
+          <td>{{propertyData.exif.sharpness}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.lensMake">
+          <td>{{"metadata.exif.lens.make" | transloco}}</td>
+          <td>{{propertyData.exif.lensMake}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.lensModel">
+          <td>{{"metadata.exif.lens.model" | transloco}}</td>
+          <td>{{propertyData.exif.lensModel}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.compositeImage">
+          <td>{{"metadata.exif.composite.image" | transloco}}</td>
+          <td>{{propertyData.exif.compositeImage}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.interoperabilityIndex">
+          <td>{{"metadata.exif.interoperability.index" | transloco}}</td>
+          <td>{{propertyData.exif.interoperabilityIndex}}</td>
+        </tr>
+        <tr *ngIf="propertyData.exif.interoperabilityVersion">
+          <td>{{"metadata.exif.interoperability.version" | transloco}}</td>
+          <td>{{propertyData.exif.interoperabilityVersion}}</td>
+        </tr>
+      </ng-container>
+    </table>
   </p-tabPanel>
-  <p-tabPanel
-    [header]="'metadata.video.header' | transloco">
-    video
+  <p-tabPanel *ngIf="propertyData.video"
+              [header]="'metadata.video.header' | transloco">
+    <table>
+      <tr *ngIf="propertyData.video.codec">
+        <td>{{"metadata.video.codec" | transloco}}</td>
+        <td>{{propertyData.video.codec}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.container">
+        <td>{{"metadata.video.container" | transloco}}</td>
+        <td>{{propertyData.video.container}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.width">
+        <td>{{"metadata.video.width" | transloco}}</td>
+        <td>{{propertyData.video.width}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.height">
+        <td>{{"metadata.video.height" | transloco}}</td>
+        <td>{{propertyData.video.height}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.bitrate">
+        <td>{{"metadata.video.bitrate" | transloco}}</td>
+        <td>{{propertyData.video.bitrate}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.duration">
+        <td>{{"metadata.video.duration" | transloco}}</td>
+        <td>{{propertyData.video.duration}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.sampleAspectRatio">
+        <td>{{"metadata.video.sample.aspect.ratio" | transloco}}</td>
+        <td>{{propertyData.video.sampleAspectRatio}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.displayAspectRatio">
+        <td>{{"metadata.video.display.aspect.ratio" | transloco}}</td>
+        <td>{{propertyData.video.displayAspectRatio}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.colorRange">
+        <td>{{"metadata.video.color.range" | transloco}}</td>
+        <td>{{propertyData.video.colorRange}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.colorSpace">
+        <td>{{"metadata.video.color.space" | transloco}}</td>
+        <td>{{propertyData.video.colorSpace}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.frameRate">
+        <td>{{"metadata.video.frame.rate" | transloco}}</td>
+        <td>{{propertyData.video.frameRate}}</td>
+      </tr>
+      <tr *ngIf="propertyData.video.rotate">
+        <td>{{"metadata.video.rotate" | transloco}}</td>
+        <td>{{propertyData.video.rotate}}</td>
+      </tr>
+    </table>
   </p-tabPanel>
-  <p-tabPanel
-    [header]="'metadata.audio.header' | transloco">
-    audio
+  <p-tabPanel *ngIf="propertyData.audio"
+              [header]="'metadata.audio.header' | transloco">
+    <table>
+      <tr *ngIf="propertyData.audio.container">
+        <td>{{"metadata.audio.container" | transloco}}</td>
+        <td>{{propertyData.audio.container}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.codec">
+        <td>{{"metadata.audio.codec" | transloco}}</td>
+        <td>{{propertyData.audio.codec}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.sampleRate">
+        <td>{{"metadata.audio.sample.rate" | transloco}}</td>
+        <td>{{propertyData.audio.sampleRate}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.numberOfChannels">
+        <td>{{"metadata.audio.number.of.channels" | transloco}}</td>
+        <td>{{propertyData.audio.numberOfChannels}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.bitrate">
+        <td>{{"metadata.audio.bitrate" | transloco}}</td>
+        <td>{{propertyData.audio.bitrate}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.codecProfile">
+        <td>{{"metadata.audio.codec.profile" | transloco}}</td>
+        <td>{{propertyData.audio.codecProfile}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.tool">
+        <td>{{"metadata.audio.tool" | transloco}}</td>
+        <td>{{propertyData.audio.tool}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.duration">
+        <td>{{"metadata.audio.duration" | transloco}}</td>
+        <td>{{propertyData.audio.duration}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.title">
+        <td>{{"metadata.audio.title" | transloco}}</td>
+        <td>{{propertyData.audio.title}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.album">
+        <td>{{"metadata.audio.album" | transloco}}</td>
+        <td>{{propertyData.audio.album}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.artist">
+        <td>{{"metadata.audio.artist" | transloco}}</td>
+        <td>{{propertyData.audio.artist}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.year">
+        <td>{{"metadata.audio.year" | transloco}}</td>
+        <td>{{propertyData.audio.year}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.genre">
+        <td>{{"metadata.audio.genre" | transloco}}</td>
+        <td>{{propertyData.audio.genre}}</td>
+      </tr>
+      <tr *ngIf="propertyData.audio.label">
+        <td>{{"metadata.audio.label" | transloco}}</td>
+        <td>{{propertyData.audio.label}}</td>
+    </table>
   </p-tabPanel>
 </p-tabView>

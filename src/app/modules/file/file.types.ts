@@ -60,7 +60,6 @@ export interface ImageFileMetadata {
 
 export interface IccFileMetadata {
   id: number;
-  preferredCmmType: string;
   profileVersion: string;
   profileClassValue: string;
   profileClassName: string;
@@ -104,7 +103,6 @@ export interface ExifFileMetadata {
   meteringMode: string;
   flash: string;
   focalLength: string;
-  subSecTime: string;
   flashpixVersion: string;
   colorSpace: string;
   pixelXDimension: string;

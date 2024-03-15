@@ -38,6 +38,8 @@ export abstract class AbstractExplorerRendererComponent {
     Object.assign(rendererParams, columnRendererParams);
     renderer.load.then(component => {
       this.ref = this.viewContainer.createComponent(component);
+      const containerEl = this.viewContainer.element.nativeElement;
+      containerEl.appendChild(this.ref.location.nativeElement);
       this.ref.instance.params = rendererParams;
       this.patchComponentData();
     });

@@ -17,13 +17,10 @@
   @apply p-4 flex justify-between sticky bottom-0 z-50;
   background: var(--neutral-a);
 
-  & > div {
+  explorer-action-renderer, & > div {
     @apply flex items-center justify-end gap-x-4;
   }
 
-  explorer-action-renderer {
-    @apply hidden;
-  }
 }
 
 .box {

@@ -88,6 +88,8 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
   private drawComponent(renderer: ExplorerActionRendererLoader, action: ExplorerAction) {
     renderer.load.then(component => {
       const ref = this.viewContainer.createComponent(component);
+      const containerEl = this.viewContainer.element.nativeElement;
+      containerEl.appendChild(ref.location.nativeElement);
       ref.instance.action = action;
       this.refs.push(ref);
       this.patchComponentData();

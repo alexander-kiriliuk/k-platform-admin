@@ -5,7 +5,7 @@
       [header]="tab.id === restTab.id ? ('explorer.tab.rest' | transloco) : (tab.name | localize: tab.id).toString()">
       <div *ngIf="targetData?.entity?.columns" [ngClass]="tabClassName">
         <ng-container *ngFor="let col of targetData.entity.columns">
-          <div *ngIf="col.tab?.id === tab.id" class="box">
+          <div *ngIf="col.tab?.id === tab.id && col.objectVisibility" class="box">
             <explorer-object-renderer
               *ngIf="col.objectVisibility"
               [target]="targetData"
