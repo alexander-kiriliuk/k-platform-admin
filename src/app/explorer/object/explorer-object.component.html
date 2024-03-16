@@ -27,6 +27,11 @@
                               [actions]="targetData.entity.actions"/>
   </div>
   <div>
+    <button *ngIf="canDuplicate" class="p-button-sm" pButton pRipple
+            (click)="duplicateObject()">
+      <i class="pi pi-copy"></i>&nbsp;
+      {{"explorer.duplicate" | transloco}}
+    </button>
     <button *ngIf="canExport" class="p-button-sm p-button-secondary" pButton pRipple
             (click)="exportObject()">
       <i class="pi pi-file-export"></i>&nbsp;

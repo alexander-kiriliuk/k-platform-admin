@@ -57,6 +57,7 @@ export namespace ObjectDetails {
       defaultActionCreate: new FormControl<boolean>(undefined),
       defaultActionSave: new FormControl<boolean>(undefined),
       defaultActionDelete: new FormControl<boolean>(undefined),
+      defaultActionDuplicate: new FormControl<boolean>(undefined),
       canRead: new FormControl<UserRole[]>(undefined),
       canWrite: new FormControl<UserRole[]>(undefined),
       columns: new FormArray<FormGroup<ColumnForm>>([]),

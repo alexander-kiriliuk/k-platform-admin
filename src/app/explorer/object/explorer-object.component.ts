@@ -39,6 +39,8 @@ import {ExplorerActionRendererComponent} from "../renderer/explorer-action-rende
 import {CurrentUser} from "../../global/service/current-user";
 import {Roles} from "../../global/constants";
 import {XdbExportDialogParams} from "../../xdb/xdb.types";
+import NewItemToken = Explorer.NewItemToken;
+import DuplicateItemToken = Explorer.DuplicateItemToken;
 
 @UntilDestroy()
 @Component({
@@ -117,6 +119,10 @@ export class ExplorerObjectComponent implements OnInit {
     return this.dialogMode ? this.data.id : this.ar.snapshot.params.id;
   }
 
+  get duplicateId() {
+    return this.dialogMode ? undefined : this.ar.snapshot.queryParams[DuplicateItemToken];
+  }
+
   get target() {
     return this.dialogMode ? this.data.target : this.ar.snapshot.params.target;
   }
@@ -148,12 +154,23 @@ export class ExplorerObjectComponent implements OnInit {
     return this.currentUser.hasSomeRole(Roles.ADMIN);
   }
 
+  get canDuplicate() {
+    return !this.duplicateId && this.targetData.entity.defaultActionDuplicate;
+  }
+
   ngOnInit(): void {
     this.initObject();
   }
 
   hasColumns(tab: ExplorerTab) {
     return this.targetData.entity.columns.find(v => v.tab.id === tab.id);
+  }
+
+  duplicateObject() {
+    const p1 = this.getEntityTargetOrAlias();
+    const prop = this.targetData.primaryColumn.property;
+    const url = `/object/${p1}/${NewItemToken}?${DuplicateItemToken}=${this.entityData[prop]}`;
+    window.open(url, "_blank");
   }
 
   saveObject() {
@@ -241,8 +258,13 @@ export class ExplorerObjectComponent implements OnInit {
 
   private initObject() {
     const targetObs = this.explorerService.getTarget(this.target, "object");
-    const entityObs = this.explorerService.getEntity<{ [k: string]: unknown }>(this.target, this.id);
-    forkJoin({target: targetObs, entity: this.id === Explorer.NewItemToken ? of(null) : entityObs}).pipe(
+    const entityObs = this.explorerService.getEntity<{ [k: string]: unknown }>(
+      this.target, this.duplicateId ?? this.id
+    );
+    forkJoin({
+      target: targetObs,
+      entity: this.id === Explorer.NewItemToken && !this.duplicateId ? of(null) : entityObs
+    }).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {
           title: res.error.message, message: res.error.statusCode
@@ -250,12 +272,15 @@ export class ExplorerObjectComponent implements OnInit {
         return throwError(() => res);
       })
     ).subscribe((payload) => {
+      if (payload?.entity && this.duplicateId) {
+        delete payload.entity[payload.target.primaryColumn.property];
+      }
       this.targetData = payload.target;
       this.entityData = payload.entity;
       let title = this.localizePipe.transform(
         this.targetData.entity.name, this.targetData.entity.target
       ) as string;
-      if (this.entityData) {
+      if (this.entityData && !this.duplicateId) {
         title += ` #${this.entityData[this.targetData.primaryColumn.property]}`;
       } else {
         title += " #new";

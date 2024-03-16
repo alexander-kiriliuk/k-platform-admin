@@ -27,6 +27,8 @@ export namespace Explorer {
 
   export const NewItemToken = "create-new-item";
 
+  export const DuplicateItemToken = "duplicate";
+
 }
 
 export const EXPLORER_SECTION_RENDERER = new InjectionToken<ExplorerRendererLoader[]>(

@@ -31,6 +31,9 @@ export abstract class AbstractExplorerObjectRenderer<Data = unknown, Property = 
   }
 
   get propertyData() {
+    if (!this.data) {
+      return undefined;
+    }
     return (this.data as PlainObject)[this.column.property] as Property;
   }
 

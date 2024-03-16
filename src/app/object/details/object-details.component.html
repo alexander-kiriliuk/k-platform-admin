@@ -101,22 +101,28 @@
           [placeholder]="'object.details.object.icon' | transloco"/>
       </div>
       <div class="cbx-container">
-        <p-checkbox inputId="colSecEnabled"
+        <p-checkbox inputId="dac"
                     [formControl]="targetForm.controls.defaultActionCreate"
                     [binary]="true"
                     [label]="'object.details.action.create' | transloco"/>
       </div>
       <div class="cbx-container">
-        <p-checkbox inputId="colSecEnabled"
+        <p-checkbox inputId="dad"
                     [formControl]="targetForm.controls.defaultActionDelete"
                     [binary]="true"
                     [label]="'object.details.action.delete' | transloco"/>
       </div>
       <div class="cbx-container">
-        <p-checkbox inputId="colSecEnabled"
+        <p-checkbox inputId="das"
                     [formControl]="targetForm.controls.defaultActionSave"
                     [binary]="true"
                     [label]="'object.details.action.save' | transloco"/>
+      </div>
+      <div class="cbx-container">
+        <p-checkbox inputId="daDup"
+                    [formControl]="targetForm.controls.defaultActionDuplicate"
+                    [binary]="true"
+                    [label]="'object.details.action.duplicate' | transloco"/>
       </div>
       <div>
         <ref-input target="UserRoleEntity"

@@ -30,12 +30,17 @@ import {SharedModule} from "primeng/api";
 import {TableModule, TablePageEvent} from "primeng/table";
 import {ConfigItem, ConfigPropertyEditorResult} from "./config.types";
 import {PageableData, PageableParams, ToastData} from "../global/types";
-import {finalize, throwError} from "rxjs";
+import {debounceTime, distinctUntilChanged, finalize, throwError} from "rxjs";
 import {PreloaderEvent} from "../modules/preloader/preloader.event";
 import {DialogService} from "primeng/dynamicdialog";
 import {catchError} from "rxjs/operators";
 import {ToastEvent} from "../global/events";
+import {InputTextModule} from "primeng/inputtext";
+import {PaginatorModule} from "primeng/paginator";
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: "config",
   standalone: true,
@@ -53,7 +58,10 @@ import {ToastEvent} from "../global/events";
     RippleModule,
     SharedModule,
     TableModule,
-    TranslocoPipe
+    TranslocoPipe,
+    InputTextModule,
+    PaginatorModule,
+    ReactiveFormsModule
   ]
 })
 export class ConfigComponent implements OnInit {
@@ -64,6 +72,7 @@ export class ConfigComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dialogService = inject(DialogService);
   data: PageableData<ConfigItem>;
+  searchCtrl: FormControl<string> = new FormControl();
 
   get scrollHeight() {
     return "calc(100vh - var(--header-bar-h) - var(--paginator-h))";
@@ -78,12 +87,22 @@ export class ConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.searchCtrl.valueChanges.pipe(
+      untilDestroyed(this),
+      debounceTime(300),
+      distinctUntilChanged(),
+    ).subscribe(() => {
+      this.getData();
+    });
     this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("config.title"));
     this.getData();
   }
 
   getData(e?: TablePageEvent) {
     const params = {} as PageableParams;
+    if (this.searchCtrl.value) {
+      params.filter = this.searchCtrl.value;
+    }
     if (e) {
       params.page = e.first / e.rows + 1;
       params.limit = e.rows;

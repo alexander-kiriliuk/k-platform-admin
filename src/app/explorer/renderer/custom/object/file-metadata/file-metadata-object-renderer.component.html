@@ -1,5 +1,5 @@
 <div class="label">{{column.name | localize: column.property}}</div>
-<p-tabView [scrollable]="true">
+<p-tabView *ngIf="propertyData" [scrollable]="true">
   <p-tabPanel *ngIf="propertyData.hash || propertyData.mime || propertyData.ext || propertyData.gps"
               [header]="'metadata.common.header' | transloco">
     <table>

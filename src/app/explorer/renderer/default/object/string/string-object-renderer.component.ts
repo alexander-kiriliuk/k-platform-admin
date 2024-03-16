@@ -23,6 +23,9 @@ import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {StringObjectRendererParams} from "./string-object-renderer.types";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {NgIf} from "@angular/common";
+import {Explorer} from "../../../../explorer.constants";
+import DuplicateItemToken = Explorer.DuplicateItemToken;
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: "string-object-renderer",
@@ -49,10 +52,12 @@ export class StringObjectRendererComponent extends AbstractExplorerObjectRendere
     textarea: false,
     textareaAutoResize: true
   };
+  private readonly ar = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
 
   get isReadonly() {
-    return this.rendererParams.readonly && this.data && this.data[this.column.property]?.toString()?.length;
+    return !this.ar.snapshot.queryParams[DuplicateItemToken] && this.rendererParams.readonly
+      && this.data && this.data[this.column.property]?.toString()?.length;
   }
 
   get isTextArea() {

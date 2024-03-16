@@ -39,3 +39,7 @@ tr {
     background: var(--highlight-bg);
   }
 }
+
+#c-search + i {
+  @apply -mt-1.5;
+}

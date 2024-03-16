@@ -41,6 +41,7 @@ export interface ExplorerTarget {
   defaultActionCreate: boolean;
   defaultActionSave: boolean;
   defaultActionDelete: boolean;
+  defaultActionDuplicate: boolean;
   canRead: UserRole[];
   canWrite: UserRole[];
   size?: number;

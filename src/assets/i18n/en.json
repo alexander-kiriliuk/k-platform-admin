@@ -244,6 +244,7 @@
     "create": "Create",
     "save": "Save",
     "delete": "Delete",
+    "duplicate": "Duplicate",
     "select": "Set {{v}}",
     "sort": "Sorting",
     "asc": "Ascending order",
@@ -295,7 +296,8 @@
       "action": {
         "create": "Create (default action)",
         "delete": "Delete (default action)",
-        "save": "Save (default action)"
+        "save": "Save (default action)",
+        "duplicate": "Duplicate (default action)"
       },
       "error": "Error saving object",
       "success": "Object saved successfully",

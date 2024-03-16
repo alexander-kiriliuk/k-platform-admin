@@ -13,8 +13,13 @@
     <tr>
       <th>
         <div class="action">
-          <p-button size="small" severity="info" icon="pi pi-plus" (click)="openPropertyEditor()" />
-          {{"config.key" | transloco}}
+          <p-button size="small" severity="info" icon="pi pi-plus" (click)="openPropertyEditor()"/>
+          <div class="p-float-label p-input-icon-right">
+            <input id="c-search" pInputText class="p-inputtext-xs"
+                   [formControl]="searchCtrl"/>
+            <i class="pi pi-search"></i>
+            <label for="c-search">{{'config.key' | transloco}}</label>
+          </div>
         </div>
       </th>
       <th>
