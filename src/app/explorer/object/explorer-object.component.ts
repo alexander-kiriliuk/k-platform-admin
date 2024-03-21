@@ -151,6 +151,9 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   get canExport() {
+    if (!this.canDeleteObject) {
+      return false;
+    }
     return this.currentUser.hasSomeRole(Roles.ADMIN);
   }
 

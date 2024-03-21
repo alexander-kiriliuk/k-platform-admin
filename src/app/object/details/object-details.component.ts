@@ -191,6 +191,8 @@ export class ObjectDetailsComponent {
         draggable: true,
         modal: true,
         position: "center"
+      }).onClose.subscribe(() => {
+        this.cdr.markForCheck();
       });
     });
   }

@@ -166,7 +166,7 @@ export class MediaInputComponent implements ControlValueAccessor {
 
   removeUploadedMedia(idx: number) {
     if (!this.multi) {
-      this.data = undefined;
+      this.data = null;
     } else {
       (this.data as Media[]).splice(idx, 1);
     }
