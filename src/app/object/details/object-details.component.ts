@@ -185,7 +185,7 @@ export class ObjectDetailsComponent {
   openColumnEditor(colForm: FormGroup<ColumnForm>) {
     import("./column-editor/object-details-column-editor.component").then(c => {
       this.dialogService.open(c.ObjectDetailsColumnEditorComponent, {
-        header: this.localizePipe.transform(colForm.controls.name.value, colForm.controls.id.value).toString(),
+        header: this.localizePipe.transform(colForm.controls.name.value, colForm.controls.id.value)?.toString(),
         data: colForm,
         resizable: true,
         draggable: true,
