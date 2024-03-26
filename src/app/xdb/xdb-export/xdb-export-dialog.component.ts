@@ -31,7 +31,8 @@ import {environment} from "../../global/env/env";
   styleUrls: ["./xdb-export-dialog.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    XdbService, LocalizePipe
+    XdbService,
+    LocalizePipe
   ],
   imports: [
     ButtonModule,
