@@ -19,6 +19,14 @@ p-badge {
   @apply absolute right-6 top-6;
 }
 
+media-res {
+  ::ng-deep {
+    img {
+      max-width: 40px;
+    }
+  }
+}
+
 p-card {
   @apply cursor-pointer relative overflow-hidden;
   &:hover {
