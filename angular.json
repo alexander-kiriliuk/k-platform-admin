@@ -72,12 +72,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "k-platform-admin:build:production"
+              "buildTarget": "k-platform-admin:build:production"
             },
             "development": {
               "open": true,
               "port": 3002,
-              "browserTarget": "k-platform-admin:build:development"
+              "buildTarget": "k-platform-admin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -85,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "k-platform-admin:build"
+            "buildTarget": "k-platform-admin:build"
           }
         },
         "test": {
