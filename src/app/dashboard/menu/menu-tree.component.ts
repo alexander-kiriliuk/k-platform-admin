@@ -22,7 +22,6 @@ Component,
 inject
 } from "@angular/core";
 import {Router} from "@angular/router";
-import {UntilDestroy} from "@ngneat/until-destroy";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MENU_STORE_KEY} from "./menu-tree.constants";
 import {Category} from "../../global/types";
@@ -36,7 +35,6 @@ import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {StopPropagationDirective} from "../../modules/events/stop-propagation.directive";
 
 
-@UntilDestroy()
 @Component({
   selector: "menu-tree",
   templateUrl: "./menu-tree.component.html",
@@ -68,10 +66,6 @@ export class MenuTreeComponent implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly appService = inject(AppService);
   private readonly store = inject(Store);
-
-  get currentUrl() {
-    return decodeURIComponent(this.router.url);
-  }
 
   ngAfterViewInit(): void {
     this.appService.getMenu().pipe(finalize(() => {

@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Injector,
+  OnInit,
+  runInInjectionContext
+} from "@angular/core";
 import {DashboardEvent} from "../dashboard/dashboard.event";
 import {Config} from "./config.constants";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
@@ -38,9 +46,8 @@ import {ToastEvent} from "../global/events";
 import {InputTextModule} from "primeng/inputtext";
 import {PaginatorModule} from "primeng/paginator";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
-@UntilDestroy()
 @Component({
   selector: "config",
   standalone: true,
@@ -71,6 +78,7 @@ export class ConfigComponent implements OnInit {
   private readonly configService = inject(ConfigService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dialogService = inject(DialogService);
+  private readonly injector = inject(Injector);
   data: PageableData<ConfigItem>;
   searchCtrl: FormControl<string> = new FormControl();
 
@@ -87,15 +95,17 @@ export class ConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.searchCtrl.valueChanges.pipe(
-      untilDestroyed(this),
-      debounceTime(300),
-      distinctUntilChanged(),
-    ).subscribe(() => {
+    runInInjectionContext(this.injector, () => {
+      this.searchCtrl.valueChanges.pipe(
+        takeUntilDestroyed(),
+        debounceTime(300),
+        distinctUntilChanged(),
+      ).subscribe(() => {
+        this.getData();
+      });
+      this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("config.title"));
       this.getData();
     });
-    this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("config.title"));
-    this.getData();
   }
 
   getData(e?: TablePageEvent) {

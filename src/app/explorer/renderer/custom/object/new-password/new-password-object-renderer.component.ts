@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
+import {
+ChangeDetectionStrategy,
+Component,
+inject,
+Injector,
+OnInit,
+runInInjectionContext
+} from "@angular/core";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {AbstractExplorerObjectRenderer} from "../../../default/abstract-explorer-object-renderer";
 import {NewPasswordObjectRendererParams} from "./new-password-object-renderer.types";
 import {ReactiveFormsModule, Validators} from "@angular/forms";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {PasswordModule} from "primeng/password";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {createNewPasswordObjectRendererForm} from "./new-password-object-renderer.constants";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
-@UntilDestroy()
 @Component({
   selector: "new-password-object-renderer",
   standalone: true,
@@ -45,6 +51,7 @@ export class NewPasswordObjectRendererComponent
   rendererParams: NewPasswordObjectRendererParams = {
     minLength: 4
   };
+  private readonly injector = inject(Injector);
 
   ngOnInit(): void {
     if (this.params) {
@@ -53,13 +60,15 @@ export class NewPasswordObjectRendererComponent
     this.form.controls.newPassword.setValidators(Validators.minLength(this.rendererParams.minLength));
     this.form.controls.repeatPassword.setValidators(Validators.minLength(this.rendererParams.minLength));
     this.form.updateValueAndValidity();
-    this.form.statusChanges.pipe(untilDestroyed(this)).subscribe(() => {
-      if (!this.form.valid) {
-        this.ctrl.setErrors({pwdError: true});
-      }else {
-        this.ctrl.setErrors(undefined);
-        this.ctrl.setValue(this.form.controls.newPassword.value);
-      }
+    runInInjectionContext(this.injector, () => {
+      this.form.statusChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+        if (!this.form.valid) {
+          this.ctrl.setErrors({pwdError: true});
+        } else {
+          this.ctrl.setErrors(undefined);
+          this.ctrl.setValue(this.form.controls.newPassword.value);
+        }
+      });
     });
   }
 

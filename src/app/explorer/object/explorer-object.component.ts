@@ -26,7 +26,6 @@ import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dyna
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {ExplorerEvent} from "./explorer.event";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {Explorer} from "../explorer.constants";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../../modules/preloader/preloader.directive";
@@ -39,10 +38,10 @@ import {ExplorerActionRendererComponent} from "../renderer/explorer-action-rende
 import {CurrentUser} from "../../global/service/current-user";
 import {Roles} from "../../global/constants";
 import {XdbExportDialogParams} from "../../xdb/xdb.types";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import NewItemToken = Explorer.NewItemToken;
 import DuplicateItemToken = Explorer.DuplicateItemToken;
 
-@UntilDestroy()
 @Component({
   selector: "explorer-object",
   standalone: true,
@@ -96,11 +95,11 @@ export class ExplorerObjectComponent implements OnInit {
   activeTabIndex = 0;
 
   constructor() {
-    this.store.on<ExplorerObjectDto>(ExplorerEvent.SaveObject).pipe(untilDestroyed(this))
+    this.store.on<ExplorerObjectDto>(ExplorerEvent.SaveObject).pipe(takeUntilDestroyed())
       .subscribe(data => this.handleSaveEvent(data));
-    this.store.on<ExplorerObjectDto>(ExplorerEvent.DeleteObject).pipe(untilDestroyed(this))
+    this.store.on<ExplorerObjectDto>(ExplorerEvent.DeleteObject).pipe(takeUntilDestroyed())
       .subscribe(data => this.handleDeleteEvent(data));
-    this.store.on<void>(ExplorerEvent.ReloadObject).pipe(untilDestroyed(this))
+    this.store.on<void>(ExplorerEvent.ReloadObject).pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.tabs = [];
         this.initObject();

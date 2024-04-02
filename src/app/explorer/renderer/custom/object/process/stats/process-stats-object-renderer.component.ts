@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Injector,
+  OnInit,
+  runInInjectionContext
+} from "@angular/core";
 import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
 import {
 AbstractExplorerObjectRenderer
@@ -30,9 +38,8 @@ import {ButtonModule} from "primeng/button";
 import {Subscription} from "rxjs";
 import {ExplorerEvent} from "../../../../../object/explorer.event";
 import {Store} from "../../../../../../modules/store/store";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
-@UntilDestroy()
 @Component({
   selector: "process-stats-media-object-renderer",
   standalone: true,
@@ -61,6 +68,7 @@ export class ProcessStatsObjectRendererComponent extends AbstractExplorerObjectR
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly service = inject(ProcessService);
   private readonly store = inject(Store);
+  private readonly injector = inject(Injector);
   private logsSub: Subscription;
   private statsSub: Subscription;
   private lastStatusValue: ProcessStatus;
@@ -87,11 +95,13 @@ export class ProcessStatsObjectRendererComponent extends AbstractExplorerObjectR
   }
 
   private subscribeToPoller() {
-    this.statsSub = this.service.statsPolling(this.data.code)
-      .pipe(untilDestroyed(this))
-      .subscribe(payload => {
-        this.onStatsReceived(payload);
-      });
+    runInInjectionContext(this.injector, () => {
+      this.statsSub = this.service.statsPolling(this.data.code)
+        .pipe(takeUntilDestroyed())
+        .subscribe(payload => {
+          this.onStatsReceived(payload);
+        });
+    });
   }
 
   private onStatsReceived(payload: ProcessUnit) {
@@ -116,21 +126,23 @@ export class ProcessStatsObjectRendererComponent extends AbstractExplorerObjectR
     if (!this.logsList.length) {
       return;
     }
-    this.logsSub = this.service.logsPolling(this.logsList[0].id)
-      .pipe(untilDestroyed(this))
-      .subscribe(v => {
-        if (!v?.content) {
-          this.logsSub?.unsubscribe();
-          this.store.emit(ExplorerEvent.ReloadObject);
-          return;
-        }
-        const founded = this.logsList.find(v => v.id === v.id);
-        if (!founded?.content) {
-          return;
-        }
-        founded.content = v.content;
-        this.cdr.markForCheck();
-      });
+    runInInjectionContext(this.injector, () => {
+      this.logsSub = this.service.logsPolling(this.logsList[0].id)
+        .pipe(takeUntilDestroyed())
+        .subscribe(v => {
+          if (!v?.content) {
+            this.logsSub?.unsubscribe();
+            this.store.emit(ExplorerEvent.ReloadObject);
+            return;
+          }
+          const founded = this.logsList.find(v => v.id === v.id);
+          if (!founded?.content) {
+            return;
+          }
+          founded.content = v.content;
+          this.cdr.markForCheck();
+        });
+    });
   }
 
 }

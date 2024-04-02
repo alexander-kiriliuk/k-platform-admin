@@ -27,7 +27,6 @@ import {MediaComponent} from "../modules/media/media.component";
 import {BadgeModule} from "primeng/badge";
 import {InputTextModule} from "primeng/inputtext";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 import {Object} from "./object.constants";
@@ -35,8 +34,8 @@ import {PreloaderEvent} from "../modules/preloader/preloader.event";
 import {map} from "rxjs/operators";
 import {ExplorerTarget} from "../explorer/explorer.types";
 import {DialogService} from "primeng/dynamicdialog";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
-@UntilDestroy()
 @Component({
   selector: "object",
   standalone: true,
@@ -76,7 +75,7 @@ export class ObjectComponent {
     map(value => value.trim().toLowerCase()),
     debounceTime(300),
     distinctUntilChanged(),
-    untilDestroyed(this),
+    takeUntilDestroyed(),
     switchMap(filterValue => {
       if (this.targetsCache.length === 0) {
         return this.explorerService.getTargetList().pipe(

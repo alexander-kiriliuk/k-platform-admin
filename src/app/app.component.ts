@@ -22,7 +22,6 @@ import {Router, RouterOutlet} from "@angular/router";
 import {catchError} from "rxjs/operators";
 import {Store} from "./modules/store/store";
 import {JwtDto} from "./auth/auth.types";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {AuthEvent} from "./auth/auth.event";
 import {AuthService} from "./auth/auth.service";
 import {TranslocoService} from "@ngneat/transloco";
@@ -33,8 +32,8 @@ import {ToastData, User} from "./global/types";
 import {StoreMessage} from "./modules/store/store-message";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ToastModule} from "primeng/toast";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
-@UntilDestroy()
 @Component({
   selector: "app-root",
   standalone: true,
@@ -63,12 +62,12 @@ export class AppComponent implements OnInit {
 
   constructor() {
     this.store.on<JwtDto>(AuthEvent.Success)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => this.checkProfile());
     this.store.on<JwtDto>(AuthEvent.Logout)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => this.logout());
-    this.store.on<ToastData>(ToastEvent.All).pipe(untilDestroyed(this))
+    this.store.on<ToastData>(ToastEvent.All).pipe(takeUntilDestroyed())
       .subscribe(v => this.handleGlobalMessage(v));
   }
 

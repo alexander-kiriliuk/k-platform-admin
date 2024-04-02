@@ -15,12 +15,14 @@
  */
 
 import {
-AfterViewInit,
-ChangeDetectionStrategy,
-ChangeDetectorRef,
-Component,
-HostBinding,
-inject
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  inject,
+  Injector,
+  runInInjectionContext
 } from "@angular/core";
 import {PreloaderComponent} from "../../modules/preloader/preloader.component";
 import {ExplorerService} from "../explorer.service";
@@ -33,7 +35,6 @@ import {ActivatedRoute, Params, QueryParamsHandling, Router} from "@angular/rout
 import {catchError} from "rxjs/operators";
 import {PageableData, PageableParams, PlainObject, ToastData} from "../../global/types";
 import {ToastEvent} from "../../global/events";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
 import {TableModule, TablePageEvent} from "primeng/table";
 import {
 ExplorerColumn,
@@ -50,11 +51,11 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {ButtonModule} from "primeng/button";
 import {ExplorerSectionRendererComponent} from "../renderer/explorer-section-renderer.component";
-import { ExplorerActionRendererComponent } from "../renderer/explorer-action-renderer.component";
+import {ExplorerActionRendererComponent} from "../renderer/explorer-action-renderer.component";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import parseParamsString = StringUtils.parseParamsString;
 import stringifyParamsObject = StringUtils.stringifyParamsObject;
 
-@UntilDestroy()
 @Component({
   selector: "section",
   standalone: true,
@@ -94,6 +95,7 @@ export class SectionComponent implements AfterViewInit {
   private readonly dialogService = inject(DialogService);
   private readonly localizePipe = inject(LocalizePipe);
   private readonly ts = inject(TranslocoService);
+  private readonly injector = inject(Injector);
   private target: string;
   private sectionSub: Subscription;
   private paramsSub = new BehaviorSubject<Params>({});
@@ -147,16 +149,18 @@ export class SectionComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.dialogMode) {
-      this.ar.params.pipe(untilDestroyed(this)).subscribe(v => {
-        this.target = v.target;
-        this.getTarget();
+    runInInjectionContext(this.injector, () => {
+      if (!this.dialogMode) {
+        this.ar.params.pipe(takeUntilDestroyed()).subscribe(v => {
+          this.target = v.target;
+          this.getTarget();
+        });
+      } else {
+        this.getSection(this.data?.initialPageableParams);
+      }
+      this.queryParams$.pipe(skip(1), takeUntilDestroyed()).subscribe(v => {
+        this.getSection(v as PageableParams);
       });
-    } else {
-      this.getSection(this.data?.initialPageableParams);
-    }
-    this.queryParams$.pipe(skip(1), untilDestroyed(this)).subscribe(v => {
-      this.getSection(v as PageableParams);
     });
   }
 

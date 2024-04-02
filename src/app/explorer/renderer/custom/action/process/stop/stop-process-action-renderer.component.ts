@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Injector,
+  OnInit,
+  runInInjectionContext
+} from "@angular/core";
 import {
 AbstractExplorerActionRenderer
 } from "../../../../default/abstract-explorer-action-renderer";
@@ -31,9 +39,8 @@ import {ToastEvent} from "../../../../../../global/events";
 import {finalize, throwError} from "rxjs";
 import {Explorer} from "../../../../../explorer.constants";
 import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.event";
-import {UntilDestroy, untilDestroyed} from "@ngneat/until-destroy";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
-@UntilDestroy()
 @Component({
   selector: "stop-process-action-renderer",
   standalone: true,
@@ -53,6 +60,7 @@ export class StopProcessActionRendererComponent extends AbstractExplorerActionRe
   private readonly service = inject(ProcessService);
   private readonly store = inject(Store);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly injector = inject(Injector);
 
   get enabledCtrlValue() {
     return this.entityForm.controls.enabled.value as boolean;
@@ -67,11 +75,13 @@ export class StopProcessActionRendererComponent extends AbstractExplorerActionRe
   }
 
   ngOnInit() {
-    this.entityForm.controls.status.valueChanges
-      .pipe(untilDestroyed(this))
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+    runInInjectionContext(this.injector, () => {
+      this.entityForm.controls.status.valueChanges
+        .pipe(takeUntilDestroyed())
+        .subscribe(() => {
+          this.cdr.markForCheck();
+        });
+    });
   }
 
   stop() {
