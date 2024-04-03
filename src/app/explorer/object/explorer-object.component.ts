@@ -16,7 +16,7 @@ ObjectDialogConfig,
 TargetData
 } from "../explorer.types";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {NgClass} from "@angular/common";
 import {FormBuilder, FormControl, ReactiveFormsModule} from "@angular/forms";
 import {TabViewModule} from "primeng/tabview";
 import {ExplorerObject} from "./explorer-object.constants";
@@ -55,8 +55,6 @@ import DuplicateItemToken = Explorer.DuplicateItemToken;
   ],
   imports: [
     ExplorerObjectRendererComponent,
-    NgForOf,
-    NgIf,
     TabViewModule,
     TranslocoPipe,
     NgClass,

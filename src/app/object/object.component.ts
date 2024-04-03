@@ -19,7 +19,7 @@ import {DashboardEvent} from "../dashboard/dashboard.event";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {Store} from "../modules/store/store";
 import {ExplorerService} from "../explorer/explorer.service";
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe} from "@angular/common";
 import {debounceTime, distinctUntilChanged, finalize, of, startWith, switchMap, tap} from "rxjs";
 import {CardModule} from "primeng/card";
 import {LocalizePipe} from "../modules/locale/localize.pipe";
@@ -43,10 +43,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
   styleUrls: ["./object.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgForOf,
     AsyncPipe,
     CardModule,
-    NgIf,
     LocalizePipe,
     MediaComponent,
     BadgeModule,

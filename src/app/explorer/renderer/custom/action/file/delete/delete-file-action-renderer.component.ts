@@ -21,7 +21,6 @@ AbstractExplorerActionRenderer
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
-import {NgIf} from "@angular/common";
 import {DeleteFileActionRendererService} from "./delete-file-action-renderer.service";
 import {Explorer} from "../../../../../explorer.constants";
 import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.event";
@@ -45,7 +44,6 @@ import {ToastEvent} from "../../../../../../global/events";
     RippleModule,
     ButtonModule,
     LocalizePipe,
-    NgIf,
     ConfirmDialogModule,
     TranslocoPipe
   ],

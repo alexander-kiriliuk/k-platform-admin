@@ -22,7 +22,6 @@ import {NumberUtils} from "../../../../../global/util/number.utils";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {StringObjectRendererParams} from "./string-object-renderer.types";
 import {InputTextareaModule} from "primeng/inputtextarea";
-import {NgIf} from "@angular/common";
 import {Explorer} from "../../../../explorer.constants";
 import DuplicateItemToken = Explorer.DuplicateItemToken;
 import {ActivatedRoute} from "@angular/router";
@@ -38,7 +37,6 @@ import {ActivatedRoute} from "@angular/router";
     ReactiveFormsModule,
     LocalizePipe,
     InputTextareaModule,
-    NgIf
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

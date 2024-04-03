@@ -34,7 +34,7 @@ import {RippleModule} from "primeng/ripple";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {PageableParams, PlainObject} from "../../global/types";
 import {CachedExplorerService} from "../../explorer/cached-explorer.service";
-import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
+import {NgTemplateOutlet} from "@angular/common";
 import {RefNamePipe} from "./ref-name.pipe";
 
 @Component({
@@ -47,10 +47,8 @@ import {RefNamePipe} from "./ref-name.pipe";
     ButtonModule,
     RippleModule,
     TranslocoPipe,
-    NgIf,
     RefNamePipe,
     NgTemplateOutlet,
-    NgForOf
   ],
   providers: [
     CachedExplorerService,

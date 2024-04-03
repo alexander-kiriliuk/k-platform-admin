@@ -1,56 +1,64 @@
 <ul>
-  <li *ngIf="!isReference">
+  @if (!isReference) {
+    <li>
     <span>
       <i class="pi pi-sort-alt"></i>
-      {{"explorer.sort" | transloco}}
+      {{ "explorer.sort" | transloco }}
     </span>
-    <ul>
-      <li>
-        <a (click)="setOrder('ASC')">
-          <i class="pi pi-sort-amount-up" [ngClass]="{active: isSortAscActive}"></i>
-          {{"explorer.asc" | transloco}}
-        </a>
-      </li>
-      <li>
-        <a (click)="setOrder('DESC')">
-          <i class="pi pi-sort-amount-down" [ngClass]="{active: isSortDescActive}"></i>
-          {{"explorer.desc" | transloco}}
-        </a>
-      </li>
-    </ul>
-  </li>
+      <ul>
+        <li>
+          <a (click)="setOrder('ASC')">
+            <i class="pi pi-sort-amount-up" [ngClass]="{active: isSortAscActive}"></i>
+            {{ "explorer.asc" | transloco }}
+          </a>
+        </li>
+        <li>
+          <a (click)="setOrder('DESC')">
+            <i class="pi pi-sort-amount-down" [ngClass]="{active: isSortDescActive}"></i>
+            {{ "explorer.desc" | transloco }}
+          </a>
+        </li>
+      </ul>
+    </li>
+  }
   <li>
     <span>
       <i class="pi pi-sliders-h"></i>
-      {{column.type !== 'date' ? ("explorer.filter.label" | transloco) : ("explorer.filter.date" | transloco) }}
+      {{ column.type !== 'date' ? ("explorer.filter.label" | transloco) : ("explorer.filter.date" | transloco) }}
     </span>
     <ul>
-      <li *ngIf="isReference" class="reference">
-        <a class="select-field" (click)="showRefTargetDialog()">
-          <i class="pi pi-window-maximize"></i>
-          <span [ngClass]="{orange: referenceField?.ref}">
-            {{referenceField?.ref ? referenceField.ref : ("explorer.filter.select" | transloco)}}
+      @if (isReference) {
+        <li class="reference">
+          <a class="select-field" (click)="showRefTargetDialog()">
+            <i class="pi pi-window-maximize"></i>
+            <span [ngClass]="{orange: referenceField?.ref}">
+            {{ referenceField?.ref ? referenceField.ref : ("explorer.filter.select" | transloco) }}
           </span>
-        </a>
-        <a *ngIf="referenceField?.ref && referencedColumn?.type !== 'date'" class="red" (click)="openSectionDialog()">
-          <i class="pi pi-arrow-up-right"></i>
-        </a>
-      </li>
-      <li *ngIf="!isReference || (isReference && referenceField?.ref)">
-        <ng-container *ngIf="form.controls.name.value.length">
-          <ng-container *ngIf="column.type !== 'reference'">
-            <ng-container *ngTemplateOutlet="editorCtrl; context: {type: column.type}"/>
-          </ng-container>
-          <ng-container *ngIf="column.type === 'reference' && referencedColumn">
-            <ng-container *ngTemplateOutlet="editorCtrl; context: {type: referencedColumn.type}"/>
-          </ng-container>
-          <div class="actions">
-            <button class="p-button-sm" pButton [disabled]="!applyButtonEnabled" (click)="applyFilter()">
-              {{"explorer.apply" | transloco}}
-            </button>
-          </div>
-        </ng-container>
-      </li>
+          </a>
+          @if (referenceField?.ref && referencedColumn?.type !== "date") {
+            <a class="red" (click)="openSectionDialog()">
+              <i class="pi pi-arrow-up-right"></i>
+            </a>
+          }
+        </li>
+      }
+      @if (!isReference || (isReference && referenceField?.ref)) {
+        <li>
+          @if (form.controls.name.value.length) {
+            @if (column.type !== "reference") {
+              <ng-container *ngTemplateOutlet="editorCtrl; context: {type: column.type}"/>
+            }
+            @if (column.type === "reference" && referencedColumn) {
+              <ng-container *ngTemplateOutlet="editorCtrl; context: {type: referencedColumn.type}"/>
+            }
+            <div class="actions">
+              <button class="p-button-sm" pButton [disabled]="!applyButtonEnabled" (click)="applyFilter()">
+                {{ "explorer.apply" | transloco }}
+              </button>
+            </div>
+          }
+        </li>
+      }
     </ul>
   </li>
 </ul>
@@ -58,31 +66,43 @@
 <preloader *preloading="{state: false, channel: preloaderChannel}"/>
 
 <ng-template #editorCtrl let-type="type">
-  <ng-container [formGroup]="form" [ngSwitch]="type">
-    <div *ngSwitchDefault class="p-input-icon-left">
-      <i class="pi pi-search"></i>
-      <input formControlName="value" class="p-inputtext-xs" type="text" pInputText
-             [placeholder]="'explorer.filter.value' | transloco"/>
-    </div>
-    <p-inputNumber *ngSwitchCase="'number'" styleClass="p-inputtext-xs" formControlName="value"/>
-    <div *ngSwitchCase="'boolean'" class="ctrl-wrapper">
-      <p-checkbox inputId="es" formControlName="value" [binary]="true"/>
-      <label for="es">{{"explorer.sate" | transloco}}</label>
-    </div>
-    <div *ngSwitchCase="'date'">
-      <p class="orange">{{currentDataValue}}</p>
-      <p-calendar
-        formControlName="value"
-        selectionMode="range"
-        [firstDayOfWeek]="1"
-        [showTime]="true"
-        [showSeconds]="true"
-        [readonlyInput]="true"
-        [inline]="true"/>
-    </div>
-    <div *ngIf="type !== 'boolean' && type !== 'date'" class="ctrl-wrapper">
-      <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch"/>
-      <label for="em">{{"explorer.exact" | transloco}}</label>
-    </div>
+  <ng-container [formGroup]="form">
+    @switch (type) {
+      @default {
+        <div class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input formControlName="value" class="p-inputtext-xs" type="text" pInputText
+                 [placeholder]="'explorer.filter.value' | transloco"/>
+        </div>
+      }
+      @case ("number") {
+        <p-inputNumber styleClass="p-inputtext-xs" formControlName="value"/>
+      }
+      @case ("boolean") {
+        <div class="ctrl-wrapper">
+          <p-checkbox inputId="es" formControlName="value" [binary]="true"/>
+          <label for="es">{{ "explorer.sate" | transloco }}</label>
+        </div>
+      }
+      @case ("date") {
+        <div>
+          <p class="orange">{{ currentDataValue }}</p>
+          <p-calendar
+            formControlName="value"
+            selectionMode="range"
+            [firstDayOfWeek]="1"
+            [showTime]="true"
+            [showSeconds]="true"
+            [readonlyInput]="true"
+            [inline]="true"/>
+        </div>
+      }
+    }
+    @if (type !== "boolean" && type !== "date") {
+      <div class="ctrl-wrapper">
+        <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch"/>
+        <label for="em">{{ "explorer.exact" | transloco }}</label>
+      </div>
+    }
   </ng-container>
 </ng-template>

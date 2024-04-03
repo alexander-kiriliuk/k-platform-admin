@@ -28,23 +28,28 @@
     <div class="head-bar">
       <div>
         <i class="menu-ctrl pi pi-bars" (click)="toggleSideBarMode()"></i>
-        <h1 *ngIf="title?.length" class="heading-2xl" [innerHTML]="title"></h1>
+        @if (title?.length) {
+          <h1 class="heading-2xl" [innerHTML]="title"></h1>
+        }
       </div>
       <div>
         <p-menu #menu [model]="menuModel" [popup]="true"/>
-        <a *ngIf="(currentUser.asObservable | async) as user" (click)="menu.toggle($event)">
-          <p-avatar shape="circle" [label]="currentUser.data.avatar ? '' : currentUser.initials">
-            <media-res
-              *ngIf="currentUser.data.avatar"
-              format="thumb"
-              [src]="currentUser.data.avatar"
-              [background]="true"/>
-          </p-avatar>
-          <span class="user-login">{{currentUser.fullName}}</span>
-        </a>
-        <ng-container *ngIf="!currentUser.data">
-          {{"dashboard.loading.profile" | transloco}}
-        </ng-container>
+        @if (currentUser.asObservable | async; as user) {
+          <a (click)="menu.toggle($event)">
+            <p-avatar shape="circle" [label]="currentUser.data.avatar ? '' : currentUser.initials">
+              @if (currentUser.data.avatar) {
+                <media-res
+                  format="thumb"
+                  [src]="currentUser.data.avatar"
+                  [background]="true"/>
+              }
+            </p-avatar>
+            <span class="user-login">{{ currentUser.fullName }}</span>
+          </a>
+        }
+        @if (!currentUser.data) {
+          {{ "dashboard.loading.profile" | transloco }}
+        }
       </div>
     </div>
     <div class="content-block">

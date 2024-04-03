@@ -39,7 +39,6 @@ import {finalize, throwError} from "rxjs";
 import {ToastEvent} from "../global/events";
 import {CaptchaResponse, ToastData} from "../global/types";
 import {CaptchaService} from "../global/service/captcha.service";
-import {NgIf} from "@angular/common";
 import {LoginPayload} from "./auth.types";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
@@ -66,7 +65,6 @@ import getCurrentTheme = ThemeUtils.getCurrentTheme;
     ImageModule,
     ReactiveFormsModule,
     TranslocoPipe,
-    NgIf,
     PreloaderComponent,
     PreloaderDirective,
     RecaptchaModule

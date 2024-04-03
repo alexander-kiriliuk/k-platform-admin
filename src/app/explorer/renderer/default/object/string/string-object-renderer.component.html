@@ -1,5 +1,5 @@
 <div class="p-float-label">
-  <ng-container *ngIf="!isTextArea; else textArea">
+  @if (!isTextArea) {
     <input
       pInputText
       type="text"
@@ -7,8 +7,7 @@
       [formControl]="ctrl"
       [readonly]="isReadonly"
     />
-  </ng-container>
-  <ng-template #textArea>
+  } @else {
     <textarea
       pInputTextarea
       [id]="id"
@@ -16,6 +15,6 @@
       [formControl]="ctrl"
       [readonly]="isReadonly"
     ></textarea>
-  </ng-template>
+  }
   <label [for]="id">{{ column.name | localize: column.property }}</label>
 </div>

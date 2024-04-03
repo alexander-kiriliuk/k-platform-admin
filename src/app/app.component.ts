@@ -15,7 +15,7 @@
  */
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
-import {DOCUMENT, NgIf} from "@angular/common";
+import {DOCUMENT} from "@angular/common";
 import {ProfileService} from "./profile/profile.service";
 import {finalize, throwError} from "rxjs";
 import {Router, RouterOutlet} from "@angular/router";
@@ -43,8 +43,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
   imports: [
     ProgressSpinnerModule,
     ToastModule,
-    RouterOutlet,
-    NgIf
+    RouterOutlet
   ],
 })
 export class AppComponent implements OnInit {

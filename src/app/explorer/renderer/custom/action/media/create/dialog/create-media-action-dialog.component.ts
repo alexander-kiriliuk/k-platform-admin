@@ -22,7 +22,6 @@ import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {RefInputComponent} from "../../../../../../../modules/ref-input/ref-input.component";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: "create-media-action-dialog",
@@ -38,7 +37,6 @@ import {NgIf} from "@angular/common";
     RefInputComponent,
     TranslocoPipe,
     ReactiveFormsModule,
-    NgIf
   ],
 })
 export class CreateMediaActionDialogComponent {

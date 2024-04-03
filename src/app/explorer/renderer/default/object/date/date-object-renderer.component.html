@@ -1,17 +1,19 @@
 <label [for]="id">
   <span>
-    {{column.name | localize: column.property}}
+    {{ column.name | localize: column.property }}
   </span>
   <span [ngClass]="{'string-value': !rendererParams.showCalendar}">
-    {{ctrl.value | date: rendererParams.dateFormat}}
+    {{ ctrl.value | date: rendererParams.dateFormat }}
   </span>
 </label>
-<p-calendar *ngIf="rendererParams.showCalendar"
-  [inputId]="id"
-  [formControl]="ctrl"
-  [placeholder]="(column.name | localize: column.property).toString()"
-  [firstDayOfWeek]="rendererParams.firstDayOfWeek"
-  [showTime]="rendererParams.showTime"
-  [showSeconds]="rendererParams.showSeconds"
-  [readonlyInput]="rendererParams.readonlyInput"
-  [inline]="rendererParams.inline"/>
+@if (rendererParams.showCalendar) {
+  <p-calendar
+    [inputId]="id"
+    [formControl]="ctrl"
+    [placeholder]="(column.name | localize: column.property).toString()"
+    [firstDayOfWeek]="rendererParams.firstDayOfWeek"
+    [showTime]="rendererParams.showTime"
+    [showSeconds]="rendererParams.showSeconds"
+    [readonlyInput]="rendererParams.readonlyInput"
+    [inline]="rendererParams.inline"/>
+}

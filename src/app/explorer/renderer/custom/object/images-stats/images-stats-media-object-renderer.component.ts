@@ -17,7 +17,7 @@
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {Media} from "../../../../../modules/media/media.types";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
-import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
+import {NgTemplateOutlet} from "@angular/common";
 import {environment} from "../../../../../global/env/env";
 import {FileSizePipe} from "../../../../../global/service/file-size.pipe";
 import {ImageModule} from "primeng/image";
@@ -35,10 +35,8 @@ import {AbstractExplorerObjectRenderer} from "../../../default/abstract-explorer
   providers: [MediaUrlPipe],
   imports: [
     LocalizePipe,
-    NgForOf,
     FileSizePipe,
     ImageModule,
-    NgIf,
     NgTemplateOutlet
   ],
 })

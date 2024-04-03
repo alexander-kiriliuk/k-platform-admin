@@ -29,7 +29,6 @@ import {ImageModule} from "primeng/image";
 import {LocalizePipe} from "../locale/localize.pipe";
 import {MediaUrlPipe} from "./media-url.pipe";
 import {DomSanitizer} from "@angular/platform-browser";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: "media-res",
@@ -37,7 +36,10 @@ import {NgIf} from "@angular/common";
   templateUrl: "./media.component.html",
   styleUrls: ["./media.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ImageModule, LocalizePipe, NgIf],
+  imports: [
+    ImageModule,
+    LocalizePipe
+  ],
   providers: [MediaUrlPipe]
 })
 export class MediaComponent implements OnChanges {

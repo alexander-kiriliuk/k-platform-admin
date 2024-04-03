@@ -30,7 +30,7 @@ AbstractExplorerObjectRenderer
 import {ProcessService} from "../../../../../../global/service/process.service";
 import {ProcessLog, ProcessStatus, ProcessUnit} from "../../../../../../global/types";
 import {ExplorerObjectRendererComponent} from "../../../../explorer-object-renderer.component";
-import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgClass} from "@angular/common";
 import {TabViewModule} from "primeng/tabview";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {ProcessLogPipe} from "../../../../../../modules/process/process-log.pipe";
@@ -49,8 +49,6 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
   imports: [
     LocalizePipe,
     ExplorerObjectRendererComponent,
-    NgForOf,
-    NgIf,
     TabViewModule,
     TranslocoPipe,
     DatePipe,

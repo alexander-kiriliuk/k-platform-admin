@@ -30,7 +30,7 @@ import {
   SectionDialogConfig,
   TargetData
 } from "../../explorer/explorer.types";
-import {AsyncPipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, NgClass} from "@angular/common";
 import {LocalizePipe} from "../../modules/locale/localize.pipe";
 import {InputTextModule} from "primeng/inputtext";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -67,9 +67,7 @@ import createTabForm = ObjectDetails.createTabForm;
     PreloaderComponent,
     PreloaderDirective,
     AsyncPipe,
-    NgIf,
     LocalizePipe,
-    NgForOf,
     InputTextModule,
     ReactiveFormsModule,
     TranslocoPipe,

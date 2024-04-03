@@ -16,7 +16,7 @@
 
 import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
-import {DatePipe, NgClass, NgIf} from "@angular/common";
+import {DatePipe, NgClass } from "@angular/common";
 import {CalendarModule} from "primeng/calendar";
 import {PaginatorModule} from "primeng/paginator";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -36,7 +36,6 @@ import {NumberUtils} from "../../../../../global/util/number.utils";
     PaginatorModule,
     ReactiveFormsModule,
     LocalizePipe,
-    NgIf,
     NgClass
   ]
 })

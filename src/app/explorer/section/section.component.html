@@ -1,68 +1,85 @@
-<p-table *ngIf="targetData?.entity?.columns"
-         [scrollHeight]="scrollHeight"
-         [value]="pageableData?.items"
-         [scrollable]="true"
-         [paginator]="true"
-         [first]="currentPos"
-         [lazy]="true"
-         [rowsPerPageOptions]="[20, 50, 100, 500, 1000]"
-         [rows]="pageableData?.pageSize"
-         [totalRecords]="pageableData?.totalCount"
-         (onPage)="getItems($event)">
-  <ng-template pTemplate="header">
-    <tr *ngIf="!dialogMode">
-      <th [colSpan]="targetData.entity.columns.length">
-        <button *ngIf="targetData.entity.defaultActionCreate"
-                class="default-action p-button-sm p-button-success" pButton pRipple
-                (click)="navToCreateNewItemUi()">
-          <i class="pi pi-plus"></i>&nbsp;
-          {{"explorer.create" | transloco}}
-        </button>
-        <div *ngIf="targetData.entity?.actions?.length"
-             class="section-actions">
-          <explorer-action-renderer
-            [target]="targetData"
-            [data]="pageableData?.items"
-            [actions]="targetData.entity.actions"/>
-        </div>
-      </th>
-    </tr>
-    <tr>
-      <th *ngIf="dialogMode">
-        <p-button *ngIf="multiselect" [disabled]="!selectedRowsCount" (click)="applySelectedRows()">
-          {{"explorer.select" | transloco: {v: selectedRowsCount} }}
-        </p-button>
-      </th>
-      <ng-container *ngFor="let item of targetData.entity.columns">
-        <th *ngIf="item.sectionVisibility">
-          <ng-container *ngIf="queryParamsSnapshot['sort'] === item.property">
-            <i class="indicator pi" [ngClass]="{
-              'pi-sort-amount-down': queryParamsSnapshot['order'] === 'DESC',
-              'pi-sort-amount-up': queryParamsSnapshot['order'] === 'ASC'
-             }"
-               (click)="removeSorting()"></i>
-          </ng-container>
-          <ng-container *ngIf="propertyFilter(item.property)">
-            <i class="indicator pi pi-filter" (click)="removeFilter(item.property)"></i>
-          </ng-container>
-          {{item.name | localize:item.property}}
-          <i *ngIf="!item.virtual" class="ctrl pi pi-window-maximize" pRipple (click)="showFilterDialog(item)"></i>
-        </th>
-      </ng-container>
-    </tr>
-  </ng-template>
-  <ng-template let-item pTemplate="body">
-    <tr [ngClass]="{selected: isSelected(item)}" (dblclick)="openObjectUi(item)">
-      <td *ngIf="dialogMode" class="set-btn" (click)="selectEntityAndCloseDialog(item)">
-        <i class="pi pi-arrow-down-left"></i>
-      </td>
-      <ng-container *ngFor="let col of targetData.entity.columns">
-        <td *ngIf="col.sectionVisibility">
-          <explorer-section-renderer [target]="targetData" [column]="col" [data]="item"/>
-        </td>
-      </ng-container>
-    </tr>
-  </ng-template>
-</p-table>
+@if (targetData?.entity?.columns) {
+  <p-table
+    [scrollHeight]="scrollHeight"
+    [value]="pageableData?.items"
+    [scrollable]="true"
+    [paginator]="true"
+    [first]="currentPos"
+    [lazy]="true"
+    [rowsPerPageOptions]="[20, 50, 100, 500, 1000]"
+    [rows]="pageableData?.pageSize"
+    [totalRecords]="pageableData?.totalCount"
+    (onPage)="getItems($event)">
+    <ng-template pTemplate="header">
+      @if (!dialogMode) {
+        <tr>
+          <th [colSpan]="targetData.entity.columns.length">
+            @if (targetData.entity.defaultActionCreate) {
+              <button class="default-action p-button-sm p-button-success" pButton pRipple
+                      (click)="navToCreateNewItemUi()">
+                <i class="pi pi-plus"></i>&nbsp;
+                {{ "explorer.create" | transloco }}
+              </button>
+            }
+            @if (targetData.entity?.actions?.length) {
+              <div class="section-actions">
+                <explorer-action-renderer
+                  [target]="targetData"
+                  [data]="pageableData?.items"
+                  [actions]="targetData.entity.actions"/>
+              </div>
+            }
+          </th>
+        </tr>
+      }
+      <tr>
+        @if (dialogMode) {
+          <th>
+            @if (multiselect) {
+              <p-button [disabled]="!selectedRowsCount" (click)="applySelectedRows()">
+                {{ "explorer.select" | transloco: {v: selectedRowsCount} }}
+              </p-button>
+            }
+          </th>
+        }
+        @for (item of targetData.entity.columns; track item.id) {
+          @if (item.sectionVisibility) {
+            <th>
+              @if (queryParamsSnapshot['sort'] === item.property) {
+                <i class="indicator pi" [ngClass]="{
+                  'pi-sort-amount-down': queryParamsSnapshot['order'] === 'DESC',
+                  'pi-sort-amount-up': queryParamsSnapshot['order'] === 'ASC'
+                 }" (click)="removeSorting()"></i>
+              }
+              @if (propertyFilter(item.property)) {
+                <i class="indicator pi pi-filter" (click)="removeFilter(item.property)"></i>
+              }
+              {{ item.name | localize:item.property }}
+              @if (!item.virtual) {
+                <i class="ctrl pi pi-window-maximize" pRipple (click)="showFilterDialog(item)"></i>
+              }
+            </th>
+          }
+        }
+      </tr>
+    </ng-template>
+    <ng-template let-item pTemplate="body">
+      <tr [ngClass]="{selected: isSelected(item)}" (dblclick)="openObjectUi(item)">
+        @if (dialogMode) {
+          <td class="set-btn" (click)="selectEntityAndCloseDialog(item)">
+            <i class="pi pi-arrow-down-left"></i>
+          </td>
+        }
+        @for (col of targetData.entity.columns; track col.id) {
+          @if (col.sectionVisibility) {
+            <td>
+              <explorer-section-renderer [target]="targetData" [column]="col" [data]="item"/>
+            </td>
+          }
+        }
+      </tr>
+    </ng-template>
+  </p-table>
+}
 
 <preloader *preloading="{state: true, channel: preloaderChannel}"/>

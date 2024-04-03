@@ -16,7 +16,6 @@
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
-import {NgForOf, NgIf} from "@angular/common";
 import {environment} from "../../../../../global/env/env";
 import {FileSizePipe} from "../../../../../global/service/file-size.pipe";
 import {AbstractExplorerObjectRenderer} from "../../../default/abstract-explorer-object-renderer";
@@ -31,9 +30,7 @@ import {TranslocoPipe} from "@ngneat/transloco";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LocalizePipe,
-    NgForOf,
     FileSizePipe,
-    NgIf,
     TranslocoPipe,
   ],
 })

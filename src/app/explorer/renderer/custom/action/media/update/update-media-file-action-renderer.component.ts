@@ -21,11 +21,9 @@ AbstractExplorerActionRenderer
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
-import {NgIf} from "@angular/common";
 import {DialogService} from "primeng/dynamicdialog";
 import {TranslocoService} from "@ngneat/transloco";
 import {Media} from "../../../../../../modules/media/media.types";
-import {ExplorerObjectDto} from "../../../../../explorer.types";
 import {ExplorerEvent} from "../../../../../object/explorer.event";
 import {Store} from "../../../../../../modules/store/store";
 
@@ -38,7 +36,6 @@ import {Store} from "../../../../../../modules/store/store";
     RippleModule,
     ButtonModule,
     LocalizePipe,
-    NgIf
   ],
 })
 export class UpdateMediaFileActionRendererComponent extends AbstractExplorerActionRenderer<Media> {

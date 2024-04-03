@@ -1,6 +1,7 @@
-<ng-template #emptyUI>
-  &lt;null&gt;
-</ng-template>
-<ng-container *ngFor="let item of dataSet" >
-  <media-res *ngIf="item else emptyUI" format="thumb" [src]="item" />
-</ng-container>
+@for (item of dataSet; track item.id) {
+  @if (item) {
+    <media-res format="thumb" [src]="item"/>
+  } @else {
+    &lt;null&gt;
+  }
+}

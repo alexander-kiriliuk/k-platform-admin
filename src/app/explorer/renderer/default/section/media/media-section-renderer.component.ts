@@ -17,7 +17,6 @@
 import {ChangeDetectionStrategy, Component} from "@angular/core";
 import {Media} from "../../../../../modules/media/media.types";
 import {MediaComponent} from "../../../../../modules/media/media.component";
-import {NgForOf, NgIf} from "@angular/common";
 import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-renderer";
 
 @Component({
@@ -27,8 +26,6 @@ import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-r
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MediaComponent,
-    NgForOf,
-    NgIf,
   ],
 })
 export class MediaSectionRendererComponent extends AbstractExplorerSectionRenderer<Media | Media[]> {

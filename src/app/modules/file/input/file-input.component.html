@@ -11,33 +11,45 @@
   (onError)="onUploadError($event)"
   (onUpload)="onUpload($event)">
   <ng-template pTemplate="toolbar">
-    <button *ngIf="galleryEnabled" pButton class="p-button-success"
-            [disabled]="disabled"
-            [loading]="targetLoadingState"
-            (click)="openFilesSection()">
-      {{"file.input.section.open" | transloco}}
-    </button>
+    @if (galleryEnabled) {
+      <button pButton class="p-button-success"
+              [disabled]="disabled"
+              [loading]="targetLoadingState"
+              (click)="openFilesSection()">
+        {{ "file.input.section.open" | transloco }}
+      </button>
+    }
   </ng-template>
   <ng-template pTemplate="content">
-    <div *ngIf="uploadedFiles?.length" class="stats">
-      {{"file.input.label.files.success" | transloco}}
-      <ul>
-        <li *ngFor="let file of uploadedFiles">
-          {{ file.name }} - {{ file.size | fileSize }}
-        </li>
-      </ul>
-    </div>
-    <h4>{{placeholder}}</h4>
-    <div *ngIf="data" class="medias">
-      <div *ngIf="!multi && singleValue">
-        <ng-container *ngTemplateOutlet="fileItem; context: {media: singleValue}"/>
+    @if (uploadedFiles?.length) {
+      <div class="stats">
+        {{ "file.input.label.files.success" | transloco }}
+        <ul>
+          @for (file of uploadedFiles; track file.name) {
+            <li>
+              {{ file.name }} - {{ file.size | fileSize }}
+            </li>
+          }
+        </ul>
       </div>
-      <ng-container *ngIf="multi && multiValue.length">
-        <div *ngFor="let media of multiValue; let i = index">
-          <ng-container *ngTemplateOutlet="fileItem; context: {media: media, idx: i}"/>
-        </div>
-      </ng-container>
-    </div>
+    }
+    <h4>{{ placeholder }}</h4>
+    @if (data) {
+      <div class="medias">
+        @if (!multi && singleValue) {
+          <div>
+            <ng-container *ngTemplateOutlet="fileItem; context: {media: singleValue}"/>
+          </div>
+        }
+        @if (multi && multiValue.length) {
+          @for (media of multiValue; track media.id; let i = $index) {
+            <div>
+              <ng-container *ngTemplateOutlet="fileItem; context: {media: media, idx: i}"/>
+            </div>
+          }
+        }
+      </div>
+    }
   </ng-template>
 </p-fileUpload>
 <ng-template #fileItem let-file="file" let-idx="idx">
@@ -46,5 +58,5 @@
     [rounded]="true"
     [text]="true"
     (click)="removeUploadedMedia(idx)"/>
-  {{file.name | localize: (file.code ?? 'id_' + file.id)}}
+  {{ file.name | localize: (file.code ?? 'id_' + file.id) }}
 </ng-template>

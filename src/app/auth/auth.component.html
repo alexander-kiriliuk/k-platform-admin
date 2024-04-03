@@ -16,25 +16,26 @@
           [toggleMask]="true"
           [feedback]="false"/>
       </div>
-      <div *ngIf="captchaConfig?.enabled" class="captcha">
-        <ng-container *ngIf="!isReCaptcha else recaptchaTpl">
-          <div>
-            <img alt="captcha" [src]="captchaConfig.image"/>
-            <p-button icon="pi pi-replay"
-                      [rounded]="true"
-                      (click)="getCaptcha()"/>
-          </div>
-          <input pInputText
-                 [placeholder]="'auth.captcha.value' | transloco"
-                 [formControl]="form.controls.captchaPayload"/>
-        </ng-container>
-        <ng-template #recaptchaTpl>
-          <re-captcha [siteKey]="captchaConfig.id"
-                      [theme]="theme"
-                      (resolved)="onCaptchaResolved($event)"
-          />
-        </ng-template>
-      </div>
+      @if (captchaConfig?.enabled) {
+        <div class="captcha">
+          @if (!isReCaptcha) {
+            <div>
+              <img alt="captcha" [src]="captchaConfig.image"/>
+              <p-button icon="pi pi-replay"
+                        [rounded]="true"
+                        (click)="getCaptcha()"/>
+            </div>
+            <input pInputText
+                   [placeholder]="'auth.captcha.value' | transloco"
+                   [formControl]="form.controls.captchaPayload"/>
+          } @else {
+            <re-captcha [siteKey]="captchaConfig.id"
+                        [theme]="theme"
+                        (resolved)="onCaptchaResolved($event)"
+            />
+          }
+        </div>
+      }
       <button pButton pRipple
               icon="pi pi-sign-in"
               iconPos="right"

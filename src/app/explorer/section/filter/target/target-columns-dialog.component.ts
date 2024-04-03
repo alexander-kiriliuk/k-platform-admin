@@ -18,7 +18,7 @@ import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ExplorerColumn, TargetData} from "../../../explorer.types";
 import {LocalizePipe} from "../../../../modules/locale/localize.pipe";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: "target-columns-dialog",
@@ -26,7 +26,10 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
   templateUrl: "./target-columns-dialog.component.html",
   styleUrls: ["./target-columns-dialog.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LocalizePipe, NgForOf, NgIf, NgClass]
+  imports: [
+    LocalizePipe,
+    NgClass
+  ]
 })
 export class TargetColumnsDialogComponent {
 

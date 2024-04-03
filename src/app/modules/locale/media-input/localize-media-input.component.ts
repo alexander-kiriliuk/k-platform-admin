@@ -27,7 +27,6 @@ ReactiveFormsModule
 } from "@angular/forms";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {MediaComponent} from "../../media/media.component";
-import {NgForOf} from "@angular/common";
 import {SharedModule} from "primeng/api";
 import {TabViewModule} from "primeng/tabview";
 import {MediaInputComponent} from "../../media/input/media-input.component";
@@ -42,7 +41,6 @@ import {MediaTypeVariant} from "../../media/media.constants";
   imports: [
     InputTextareaModule,
     MediaComponent,
-    NgForOf,
     ReactiveFormsModule,
     SharedModule,
     TabViewModule,

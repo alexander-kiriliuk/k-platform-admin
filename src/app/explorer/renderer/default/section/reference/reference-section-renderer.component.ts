@@ -16,7 +16,6 @@
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {TargetData} from "../../../../explorer.types";
-import {NgIf} from "@angular/common";
 import {CachedExplorerService} from "../../../../cached-explorer.service";
 import {LocalizePipe} from "../../../../../modules/locale/localize.pipe";
 import {LocalizedString} from "../../../../../modules/locale/locale.types";
@@ -28,9 +27,6 @@ import {AbstractExplorerSectionRenderer} from "../../abstract-explorer-section-r
   templateUrl: "./reference-section-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [CachedExplorerService],
-  imports: [
-    NgIf
-  ],
 })
 export class ReferenceSectionRendererComponent extends AbstractExplorerSectionRenderer implements OnInit {
 

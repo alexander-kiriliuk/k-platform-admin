@@ -1,7 +1,6 @@
-<ng-template #progress>
-  <p-progressSpinner />
-</ng-template>
-<ng-container *ngIf="ready; else progress">
-  <router-outlet></router-outlet>
-</ng-container>
+@if (ready) {
+  <router-outlet/>
+} @else {
+  <p-progressSpinner/>
+}
 <p-toast [key]="toastKey"></p-toast>

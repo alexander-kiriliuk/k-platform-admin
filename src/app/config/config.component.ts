@@ -30,7 +30,6 @@ import {Store} from "../modules/store/store";
 import {ConfigService} from "./config.service";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../modules/locale/localize.pipe";
-import {NgForOf, NgIf} from "@angular/common";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 import {RippleModule} from "primeng/ripple";
@@ -58,8 +57,6 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
   imports: [
     ButtonModule,
     LocalizePipe,
-    NgForOf,
-    NgIf,
     PreloaderComponent,
     PreloaderDirective,
     RippleModule,

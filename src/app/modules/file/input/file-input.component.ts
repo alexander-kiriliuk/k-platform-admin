@@ -27,7 +27,7 @@ import {
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/fileupload";
-import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
+import {NgTemplateOutlet} from "@angular/common";
 import {HttpResponse} from "@angular/common/http";
 import {FileSizePipe} from "../../../global/service/file-size.pipe";
 import {LocalizePipe} from "../../locale/localize.pipe";
@@ -49,8 +49,6 @@ import {ExplorerService} from "../../../explorer/explorer.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FileUploadModule,
-    NgIf,
-    NgForOf,
     FileSizePipe,
     LocalizePipe,
     TranslocoPipe,

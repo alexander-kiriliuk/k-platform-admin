@@ -19,7 +19,6 @@ import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/for
 import {Language, LocalizedString} from "../locale.types";
 import {AVAIL_LANGS} from "../locale.constants";
 import {TabViewModule} from "primeng/tabview";
-import {NgForOf} from "@angular/common";
 import {MediaComponent} from "../../media/media.component";
 import {TranslocoService} from "@ngneat/transloco";
 import {InputTextareaModule} from "primeng/inputtextarea";
@@ -33,7 +32,6 @@ import {NumberUtils} from "../../../global/util/number.utils";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     TabViewModule,
-    NgForOf,
     MediaComponent,
     InputTextareaModule,
     FormsModule,

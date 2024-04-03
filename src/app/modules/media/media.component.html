@@ -1,7 +1,9 @@
-<p-image *ngIf="!background"
-  [width]="width"
-  [height]="height"
-  [alt]="alt"
-  [src]="url"
-  [previewImageSrc]="originalUrl"
-  [preview]="zoom"/>
+@if (!background) {
+  <p-image
+    [width]="width"
+    [height]="height"
+    [alt]="alt"
+    [src]="url"
+    [previewImageSrc]="originalUrl"
+    [preview]="zoom"/>
+}

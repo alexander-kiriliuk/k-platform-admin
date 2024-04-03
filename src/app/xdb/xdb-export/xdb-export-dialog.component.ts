@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ButtonModule} from "primeng/button";
-import {NgIf, NgSwitchCase} from "@angular/common";
 import {RippleModule} from "primeng/ripple";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {XdbService} from "../xdb.service";
@@ -36,7 +35,6 @@ import {environment} from "../../global/env/env";
   ],
   imports: [
     ButtonModule,
-    NgIf,
     RippleModule,
     TranslocoPipe,
     PreloaderComponent,
@@ -45,7 +43,6 @@ import {environment} from "../../global/env/env";
     ListboxModule,
     ReactiveFormsModule,
     InputNumberModule,
-    NgSwitchCase,
   ]
 })
 export class XdbExportDialogComponent implements OnInit {

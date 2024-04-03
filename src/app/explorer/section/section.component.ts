@@ -47,7 +47,7 @@ import {RippleModule} from "primeng/ripple";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {StringUtils} from "../../global/util/string.utils";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {NgClass} from "@angular/common";
 import {DashboardEvent} from "../../dashboard/dashboard.event";
 import {ButtonModule} from "primeng/button";
 import {ExplorerSectionRendererComponent} from "../renderer/explorer-section-renderer.component";
@@ -69,8 +69,6 @@ import stringifyParamsObject = StringUtils.stringifyParamsObject;
     LocalizePipe,
     RippleModule,
     NgClass,
-    NgIf,
-    NgForOf,
     TranslocoPipe,
     ButtonModule,
     ExplorerSectionRendererComponent,

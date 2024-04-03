@@ -21,7 +21,6 @@ AbstractExplorerActionRenderer
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
-import {NgIf} from "@angular/common";
 import {Explorer} from "../../../../../explorer.constants";
 import {PreloaderEvent} from "../../../../../../modules/preloader/preloader.event";
 import {Store} from "../../../../../../modules/store/store";
@@ -45,7 +44,6 @@ import {MediaService} from "../../../../../../global/service/media.service";
     RippleModule,
     ButtonModule,
     LocalizePipe,
-    NgIf,
     ConfirmDialogModule,
     TranslocoPipe
   ],

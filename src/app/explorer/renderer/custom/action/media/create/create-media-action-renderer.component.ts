@@ -21,7 +21,6 @@ AbstractExplorerActionRenderer
 import {RippleModule} from "primeng/ripple";
 import {ButtonModule} from "primeng/button";
 import {LocalizePipe} from "../../../../../../modules/locale/localize.pipe";
-import {NgIf} from "@angular/common";
 import {DialogService} from "primeng/dynamicdialog";
 import {TranslocoService} from "@ngneat/transloco";
 import {Router} from "@angular/router";
@@ -36,7 +35,6 @@ import {Media} from "../../../../../../modules/media/media.types";
     RippleModule,
     ButtonModule,
     LocalizePipe,
-    NgIf
   ],
 })
 export class CreateMediaActionRendererComponent extends AbstractExplorerActionRenderer {

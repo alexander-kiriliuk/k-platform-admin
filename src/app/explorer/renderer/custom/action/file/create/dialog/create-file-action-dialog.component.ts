@@ -20,7 +20,6 @@ import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {RefInputComponent} from "../../../../../../../modules/ref-input/ref-input.component";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
 import {FileInputComponent} from "../../../../../../../modules/file/input/file-input.component";
 import {File} from "../../../../../../../modules/file/file.types";
 import {CheckboxModule} from "primeng/checkbox";
@@ -38,7 +37,6 @@ import {CheckboxModule} from "primeng/checkbox";
     RefInputComponent,
     TranslocoPipe,
     ReactiveFormsModule,
-    NgIf,
     FileInputComponent,
     CheckboxModule
   ],

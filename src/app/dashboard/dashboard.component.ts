@@ -22,7 +22,7 @@ import {AuthEvent} from "../auth/auth.event";
 import {Dashboard} from "./dashboard.constants";
 import {CurrentUser} from "../global/service/current-user";
 import {DialogService} from "primeng/dynamicdialog";
-import {AsyncPipe, NgClass, NgIf} from "@angular/common";
+import {AsyncPipe, NgClass} from "@angular/common";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {MenuTreeComponent} from "./menu/menu-tree.component";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
@@ -49,7 +49,6 @@ import {CurrentUserEvent} from "../global/events";
     MenuModule,
     AvatarModule,
     MediaComponent,
-    NgIf,
     AsyncPipe,
     TranslocoPipe,
     PreloaderDirective

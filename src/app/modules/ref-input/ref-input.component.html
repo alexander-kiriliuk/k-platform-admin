@@ -1,12 +1,14 @@
-<div *ngIf="placeholder" class="label">
-  {{placeholder}}
-  <p-button
-    icon="pi pi-folder-open" severity="info"
-    [disabled]="disabled"
-    [rounded]="true"
-    [text]="true"
-    (click)="openSection()"/>
-</div>
+@if (placeholder) {
+  <div class="label">
+    {{ placeholder }}
+    <p-button
+      icon="pi pi-folder-open" severity="info"
+      [disabled]="disabled"
+      [rounded]="true"
+      [text]="true"
+      (click)="openSection()"/>
+  </div>
+}
 <ng-template #itemUI let-entity="entity">
   <div>
     <p-button
@@ -14,16 +16,17 @@
       severity="danger" [rounded]="true"
       [text]="true"
       (click)="removeItem(entity)"/>
-    {{entity | refName:targetData}}
+    {{ entity | refName:targetData }}
   </div>
 </ng-template>
-<div *ngIf="entity" class="content-wrapper">
-  <ng-container *ngIf="!multi">
-    <ng-container *ngTemplateOutlet="itemUI; context: {entity}"/>
-  </ng-container>
-  <ng-container *ngIf="multi">
-    <ng-container *ngFor="let item of entities">
-      <ng-container *ngTemplateOutlet="itemUI; context: {entity: item}"/>
-    </ng-container>
-  </ng-container>
-</div>
+@if (entity) {
+  <div class="content-wrapper">
+    @if (!multi) {
+      <ng-container *ngTemplateOutlet="itemUI; context: {entity}"/>
+    } @else {
+      @for (item of entities; track item) {
+        <ng-container *ngTemplateOutlet="itemUI; context: {entity: item}"/>
+      }
+    }
+  </div>
+}

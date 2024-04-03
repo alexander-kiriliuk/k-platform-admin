@@ -35,10 +35,6 @@ import {Params, QueryParamsHandling} from "@angular/router";
 import {
   DatePipe,
   NgClass,
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
   NgTemplateOutlet
 } from "@angular/common";
 import {ButtonModule} from "primeng/button";
@@ -70,15 +66,11 @@ import createFieldFilterForm = SectionFilter.createFieldFilterForm;
     TranslocoPipe,
     InputTextModule,
     NgClass,
-    NgIf,
     ButtonModule,
     ReactiveFormsModule,
     CheckboxModule,
     PreloaderComponent,
     PreloaderDirective,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     InputNumberModule,
     CalendarModule,
     NgTemplateOutlet,

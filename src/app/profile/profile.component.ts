@@ -29,7 +29,6 @@ import {ProfileService} from "./profile.service";
 import {ToastData, User} from "../global/types";
 import {LocalizePipe} from "../modules/locale/localize.pipe";
 import {MediaInputComponent} from "../modules/media/input/media-input.component";
-import {NgForOf, NgIf} from "@angular/common";
 import {PreloaderComponent} from "../modules/preloader/preloader.component";
 import {PreloaderDirective} from "../modules/preloader/preloader.directive";
 import {PreloaderEvent} from "../modules/preloader/preloader.event";
@@ -57,8 +56,6 @@ import {ToastEvent} from "../global/events";
     CheckboxModule,
     LocalizePipe,
     MediaInputComponent,
-    NgIf,
-    NgForOf,
     PreloaderComponent,
     PreloaderDirective,
   ]

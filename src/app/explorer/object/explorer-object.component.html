@@ -1,68 +1,86 @@
 <p-tabView [scrollable]="true" [ngClass]="{single: tabs.length < 2}" [(activeIndex)]="activeTabIndex">
-  <ng-container *ngFor="let tab of tabs">
-    <p-tabPanel
-      *ngIf="hasColumns(tab)"
-      [header]="tab.id === restTab.id ? ('explorer.tab.rest' | transloco) : (tab.name | localize: tab.id).toString()">
-      <div *ngIf="targetData?.entity?.columns" [ngClass]="tabClassName">
-        <ng-container *ngFor="let col of targetData.entity.columns">
-          <div *ngIf="col.tab?.id === tab.id && col.objectVisibility" class="box">
-            <explorer-object-renderer
-              *ngIf="col.objectVisibility"
-              [target]="targetData"
-              [column]="col"
-              [data]="entityData"
-              [entityForm]="entityForm"/>
+  @for (tab of tabs; track tab.id) {
+    @if (hasColumns(tab)) {
+      <p-tabPanel
+        [header]="tab.id === restTab.id ? ('explorer.tab.rest' | transloco) : (tab.name | localize: tab.id).toString()">
+        @if (targetData?.entity?.columns) {
+          <div [ngClass]="tabClassName">
+            @for (col of targetData.entity.columns; track col.id) {
+              @if (col.tab?.id === tab.id && col.objectVisibility) {
+                <div class="box">
+                  @if (col.objectVisibility) {
+                    <explorer-object-renderer
+                      [target]="targetData"
+                      [column]="col"
+                      [data]="entityData"
+                      [entityForm]="entityForm"/>
+                  }
+                </div>
+              }
+            }
           </div>
-        </ng-container>
-      </div>
-    </p-tabPanel>
-  </ng-container>
+        }
+      </p-tabPanel>
+    }
+  }
 </p-tabView>
-<div *ngIf="targetData?.entity" class="actions">
-  <div>
-    <explorer-action-renderer *ngIf="targetData.entity.actions?.length"
-                              [entityForm]="entityForm"
-                              [target]="targetData"
-                              [data]="entityData"
-                              [actions]="targetData.entity.actions"/>
+@if (targetData?.entity) {
+  <div class="actions">
+    <div>
+      @if (targetData.entity.actions?.length) {
+        <explorer-action-renderer
+          [entityForm]="entityForm"
+          [target]="targetData"
+          [data]="entityData"
+          [actions]="targetData.entity.actions"/>
+      }
+    </div>
+    <div>
+      @if (canDuplicate) {
+        <button class="p-button-sm" pButton pRipple
+                (click)="duplicateObject()">
+          <i class="pi pi-copy"></i>&nbsp;
+          {{ "explorer.duplicate" | transloco }}
+        </button>
+      }
+      @if (canExport) {
+        <button class="p-button-sm p-button-secondary" pButton pRipple
+                (click)="exportObject()">
+          <i class="pi pi-file-export"></i>&nbsp;
+          {{ "explorer.export.btn" | transloco }}
+        </button>
+      }
+      @if (targetData.entity.defaultActionDelete) {
+        <button class="p-button-sm p-button-danger" pButton pRipple
+                [disabled]="!canDeleteObject" (click)="deleteObject()">
+          <i class="pi pi-times"></i>&nbsp;
+          {{ "explorer.delete" | transloco }}
+        </button>
+      }
+      @if (targetData.entity.defaultActionSave) {
+        <button class="p-button-sm p-button-success" pButton pRipple
+                [disabled]="!entityForm.valid" (click)="saveObject()">
+          <i class="pi pi-save"></i>&nbsp;
+          {{ "explorer.save" | transloco }}
+        </button>
+      }
+    </div>
   </div>
-  <div>
-    <button *ngIf="canDuplicate" class="p-button-sm" pButton pRipple
-            (click)="duplicateObject()">
-      <i class="pi pi-copy"></i>&nbsp;
-      {{"explorer.duplicate" | transloco}}
-    </button>
-    <button *ngIf="canExport" class="p-button-sm p-button-secondary" pButton pRipple
-            (click)="exportObject()">
-      <i class="pi pi-file-export"></i>&nbsp;
-      {{"explorer.export.btn" | transloco}}
-    </button>
-    <button *ngIf="targetData.entity.defaultActionDelete" class="p-button-sm p-button-danger" pButton pRipple
-            [disabled]="!canDeleteObject" (click)="deleteObject()">
-      <i class="pi pi-times"></i>&nbsp;
-      {{"explorer.delete" | transloco}}
-    </button>
-    <button *ngIf="targetData.entity.defaultActionSave" class="p-button-sm p-button-success" pButton pRipple
-            [disabled]="!entityForm.valid" (click)="saveObject()">
-      <i class="pi pi-save"></i>&nbsp;
-      {{"explorer.save" | transloco}}
-    </button>
-  </div>
-</div>
+}
 
 <preloader *preloading="{state: false, channel: preloaderChannel}"/>
 
 <p-confirmDialog #delDialog>
   <ng-template pTemplate="header">
-    {{"explorer.msg.delete" | transloco}}
+    {{ "explorer.msg.delete" | transloco }}
   </ng-template>
   <ng-template pTemplate="footer">
     <button type="button" pButton (click)="delDialog.reject()">
-      {{"msg.cancel" | transloco}}
+      {{ "msg.cancel" | transloco }}
     </button>
     <button type="button" class="p-button-success" pButton
             (click)="delDialog.accept()">
-      {{"msg.accept" | transloco}}
+      {{ "msg.accept" | transloco }}
     </button>
   </ng-template>
 </p-confirmDialog>

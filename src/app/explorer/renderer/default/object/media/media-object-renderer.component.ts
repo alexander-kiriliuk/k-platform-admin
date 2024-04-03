@@ -16,7 +16,6 @@
 
 import {ChangeDetectionStrategy, Component, OnInit} from "@angular/core";
 import {Media} from "../../../../../modules/media/media.types";
-import {NgForOf, NgIf} from "@angular/common";
 import {AbstractExplorerObjectRenderer} from "../../abstract-explorer-object-renderer";
 import {MediaInputComponent} from "../../../../../modules/media/input/media-input.component";
 import {PaginatorModule} from "primeng/paginator";
@@ -31,8 +30,6 @@ import {MediaObjectRendererParams} from "./media-object-renderer.types";
   templateUrl: "./media-object-renderer.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgForOf,
-    NgIf,
     MediaInputComponent,
     PaginatorModule,
     ReactiveFormsModule,
