@@ -15,14 +15,13 @@
  */
 
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  input,
-  OnInit,
-  Output
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+inject,
+input,
+OnInit,
+output
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {DialogService} from "primeng/dynamicdialog";
@@ -65,7 +64,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
   multi = input<boolean>();
   placeholder = input<string>();
   params = input<PageableParams>();
-  @Output() changeData = new EventEmitter<unknown | unknown[]>();
+  changeData = output<unknown | unknown[]>();
   targetData: TargetData;
   disabled = false;
   targetLoadingState = true;

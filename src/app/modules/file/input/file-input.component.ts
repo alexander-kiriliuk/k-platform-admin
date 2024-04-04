@@ -18,12 +18,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   inject,
   input,
-  Input,
   OnChanges,
-  Output,
+  output,
   SimpleChanges
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
@@ -65,7 +63,7 @@ import {ExplorerService} from "../../../explorer/explorer.service";
 })
 export class FileInputComponent implements ControlValueAccessor, OnChanges {
 
-  @Output() changeFile = new EventEmitter<KFile | KFile[]>();
+  changeFile = output<KFile | KFile[]>();
   placeholder = input<string>();
   multi = input<boolean>();
   galleryEnabled = input(true);

@@ -15,14 +15,12 @@
  */
 
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  input,
-  Input,
-  Output
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+inject,
+input,
+output
 } from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {FileUploadEvent, Media} from "../media.types";
@@ -67,7 +65,7 @@ import {Store} from "../../store/store";
 })
 export class MediaInputComponent implements ControlValueAccessor {
 
-  @Output() changeMedia = new EventEmitter<Media | Media[]>();
+  changeMedia = output<Media | Media[]>();
   mediaType = input.required<MediaTypeVariant>();
   mediaId = input<number>();
   placeholder = input<string>();

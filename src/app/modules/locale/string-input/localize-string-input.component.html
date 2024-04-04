@@ -8,13 +8,13 @@
         </div>
       </ng-template>
       <div class="p-float-label">
-    <textarea pInputTextarea
-              [id]="id"
-              [disabled]="disabled"
-              [autoResize]="true"
-              [(ngModel)]="resData[lang.id].value"
-              (keydown)="synchronize()">
-    </textarea>
+        <textarea pInputTextarea
+                  [id]="id"
+                  [disabled]="disabled"
+                  [autoResize]="true"
+                  [(ngModel)]="resData[lang.id].value"
+                  (keydown)="synchronize()">
+        </textarea>
         <label [for]="id">{{ placeholder() }}</label>
       </div>
     </p-tabPanel>
