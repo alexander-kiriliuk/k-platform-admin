@@ -20,7 +20,7 @@ import {
   Component,
   ComponentRef,
   inject,
-  Input,
+  input,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -46,10 +46,10 @@ import {FormGroup} from "@angular/forms";
 })
 export class ExplorerActionRendererComponent extends AbstractExplorerActionRenderer implements OnInit, OnChanges {
 
-  @Input({required: true}) actions: ExplorerAction[];
-  @Input({required: true}) override target: TargetData;
-  @Input({required: true}) override data: unknown | unknown[];
-  @Input() override entityForm: FormGroup;
+  actions = input.required<ExplorerAction[]>();
+  override target = input.required<TargetData>();
+  override data = input.required<unknown | unknown[]>();
+  override entityForm = input<FormGroup>();
   protected viewContainer = inject(ViewContainerRef);
   protected readonly renderers = inject(EXPLORER_ACTION_RENDERER);
   private refs: ComponentRef<ExplorerActionRenderer>[] = [];
@@ -74,7 +74,7 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
       ref.destroy();
     }
     this.refs = [];
-    for (const action of this.actions) {
+    for (const action of this.actions()) {
       const code = action.code;
       const renderer = this.renderers.find(v => v.code === code);
       if (!renderer) {
@@ -103,7 +103,7 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
       if (!ref.instance.entityForm) {
         ref.instance.entityForm = this.entityForm;
       } else {
-        ref.instance.entityForm.patchValue(this.entityForm.getRawValue());
+        ref.instance.entityForm().patchValue(this.entityForm().getRawValue());
       }
       ref.injector.get(ChangeDetectorRef).detectChanges();
     }

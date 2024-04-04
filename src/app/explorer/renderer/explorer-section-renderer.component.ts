@@ -18,7 +18,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  Input,
+  input,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -42,9 +42,9 @@ import {AbstractExplorerRendererComponent} from "./abstract-explorer-renderer.co
 export class ExplorerSectionRendererComponent extends AbstractExplorerRendererComponent
   implements OnInit, OnChanges {
 
-  @Input({required: true}) target: TargetData;
-  @Input({required: true}) column: ExplorerColumn;
-  @Input({required: true}) data: { [k: string]: unknown };
+  target = input.required<TargetData>();
+  column = input.required<ExplorerColumn>();
+  data = input.required<{ [k: string]: unknown }>();
   protected viewContainer = inject(ViewContainerRef);
   protected readonly renderers = inject(EXPLORER_SECTION_RENDERER);
 
@@ -57,18 +57,18 @@ export class ExplorerSectionRendererComponent extends AbstractExplorerRendererCo
 
   ngOnInit(): void {
     let renderer: ExplorerRendererLoader;
-    const code = this.column.sectionRenderer?.code;
+    const code = this.column().sectionRenderer?.code;
     if (code) {
       renderer = this.getRendererByCode(code);
     } else {
-      renderer = this.getRendererByDataType(this.column.type as ColumnDataType);
+      renderer = this.getRendererByDataType(this.column().type as ColumnDataType);
     }
     if (!renderer) {
-      console.warn(`Renderer with ${code ? `code ${code}` : `type ${this.column.type}`} is not found`);
+      console.warn(`Renderer with ${code ? `code ${code}` : `type ${this.column().type}`} is not found`);
       renderer = this.getRendererByCode("string-section-renderer");
     }
-    const rendererParams = this.column?.sectionRenderer?.params ?? {};
-    const columnRendererParams = this.column?.sectionRendererParams ?? {};
+    const rendererParams = this.column()?.sectionRenderer?.params ?? {};
+    const columnRendererParams = this.column()?.sectionRendererParams ?? {};
     this.mergeParamsAndDrawComponent(renderer, rendererParams, columnRendererParams);
   }
 
@@ -86,7 +86,7 @@ export class ExplorerSectionRendererComponent extends AbstractExplorerRendererCo
         code = "date-section-renderer";
         break;
       case "reference":
-        if (this.column.referencedEntityName === "MediaEntity") {
+        if (this.column().referencedEntityName === "MediaEntity") {
           code = "media-section-renderer";
         } else {
           code = "reference-section-renderer";

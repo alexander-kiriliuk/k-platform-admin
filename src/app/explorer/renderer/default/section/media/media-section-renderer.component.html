@@ -1,4 +1,4 @@
-@for (item of dataSet; track item.id) {
+@for (item of dataSet; track item?.id) {
   @if (item) {
     <media-res format="thumb" [src]="item"/>
   } @else {

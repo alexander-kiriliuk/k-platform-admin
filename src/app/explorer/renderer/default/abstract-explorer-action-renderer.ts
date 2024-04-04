@@ -16,10 +16,12 @@
 
 import {ExplorerAction, ExplorerActionRenderer, TargetData} from "../../explorer.types";
 import {FormGroup} from "@angular/forms";
+import {InputSignal} from "@angular/core";
 
-export abstract class AbstractExplorerActionRenderer<Data = unknown> implements ExplorerActionRenderer {
-  target: TargetData;
+export abstract class AbstractExplorerActionRenderer<Data = unknown> implements ExplorerActionRenderer<Data> {
+  target: InputSignal<TargetData>;
+  data: InputSignal<Data | Data[]>;
+  entityForm: InputSignal<FormGroup>;
   action: ExplorerAction;
-  data: Data | Data[];
-  entityForm: FormGroup;
 }
+

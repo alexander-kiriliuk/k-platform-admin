@@ -20,7 +20,7 @@ import {
   Component,
   EventEmitter,
   inject,
-  Input,
+  input,
   OnInit,
   Output
 } from "@angular/core";
@@ -61,10 +61,10 @@ import {RefNamePipe} from "./ref-name.pipe";
 })
 export class RefInputComponent implements ControlValueAccessor, OnInit {
 
-  @Input({required: true}) target: string;
-  @Input() multi: boolean;
-  @Input() placeholder: string;
-  @Input() params: PageableParams;
+  target = input.required<string>();
+  multi = input<boolean>();
+  placeholder = input<string>();
+  params = input<PageableParams>();
   @Output() changeData = new EventEmitter<unknown | unknown[]>();
   targetData: TargetData;
   disabled = false;
@@ -84,7 +84,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit(): void {
-    this.cachedExplorerService.getTarget(this.target, "section").pipe(finalize(() => {
+    this.cachedExplorerService.getTarget(this.target(), "section").pipe(finalize(() => {
       this.targetLoadingState = false;
       this.cdr.markForCheck();
     })).subscribe(payload => {
@@ -105,7 +105,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
       this.dialogService.open(m.SectionComponent, {
         header: this.localizePipe.transform(this.targetData.entity.name, this.targetData.entity.target) as string,
         data: {
-          target: this.targetData, multi: this.multi, initialPageableParams: this.params
+          target: this.targetData, multi: this.multi(), initialPageableParams: this.params()
         } as SectionDialogConfig,
         modal: true,
         position: "top",
@@ -113,7 +113,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
         if (!res) {
           return;
         }
-        if (this.multi) {
+        if (this.multi()) {
           if (!this.data) {
             this.data = [];
           }
@@ -134,7 +134,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
   }
 
   removeItem(entity: PlainObject) {
-    if (!this.multi) {
+    if (!this.multi()) {
       this.data = null;
       this.synchronize();
       return;

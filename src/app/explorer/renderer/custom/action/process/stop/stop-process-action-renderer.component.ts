@@ -54,7 +54,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     TranslocoPipe
   ],
 })
-export class StopProcessActionRendererComponent extends AbstractExplorerActionRenderer<ProcessUnit>
+export class StopProcessActionRendererComponent extends AbstractExplorerActionRenderer
   implements OnInit {
 
   private readonly service = inject(ProcessService);
@@ -63,11 +63,11 @@ export class StopProcessActionRendererComponent extends AbstractExplorerActionRe
   private readonly injector = inject(Injector);
 
   get enabledCtrlValue() {
-    return this.entityForm.controls.enabled.value as boolean;
+    return this.entityForm().controls.enabled.value as boolean;
   }
 
   get statusControlValue() {
-    return this.entityForm.controls.status.value as ProcessStatus;
+    return this.entityForm().controls.status.value as ProcessStatus;
   }
 
   get preloaderChannel() {
@@ -76,7 +76,7 @@ export class StopProcessActionRendererComponent extends AbstractExplorerActionRe
 
   ngOnInit() {
     runInInjectionContext(this.injector, () => {
-      this.entityForm.controls.status.valueChanges
+      this.entityForm().controls.status.valueChanges
         .pipe(takeUntilDestroyed())
         .subscribe(() => {
           this.cdr.markForCheck();
@@ -86,7 +86,7 @@ export class StopProcessActionRendererComponent extends AbstractExplorerActionRe
 
   stop() {
     this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-    this.service.stop((this.data as ProcessUnit).code).pipe(
+    this.service.stop((this.data() as ProcessUnit).code).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
         return throwError(res);

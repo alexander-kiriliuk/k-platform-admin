@@ -1,9 +1,9 @@
-@if (!background) {
+@if (!background()) {
   <p-image
     [width]="width"
     [height]="height"
     [alt]="alt"
     [src]="url"
     [previewImageSrc]="originalUrl"
-    [preview]="zoom"/>
+    [preview]="zoom()"/>
 }

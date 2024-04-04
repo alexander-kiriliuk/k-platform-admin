@@ -20,6 +20,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  input,
   Input,
   OnChanges,
   Output,
@@ -65,11 +66,10 @@ import {ExplorerService} from "../../../explorer/explorer.service";
 export class FileInputComponent implements ControlValueAccessor, OnChanges {
 
   @Output() changeFile = new EventEmitter<KFile | KFile[]>();
-  @Input() mediaId: number;
-  @Input() placeholder: string;
-  @Input() multi: boolean;
-  @Input() galleryEnabled = true;
-  @Input() isPublic = true;
+  placeholder = input<string>();
+  multi = input<boolean>();
+  galleryEnabled = input(true);
+  isPublic = input(true);
   targetLoadingState: boolean;
   disabled = false;
   data: KFile | KFile[];
@@ -82,7 +82,7 @@ export class FileInputComponent implements ControlValueAccessor, OnChanges {
   private readonly explorerService = inject(ExplorerService);
 
   get uploadUrl() {
-    return `/file/upload?public=${this.isPublic}`;
+    return `/file/upload?public=${this.isPublic()}`;
   }
 
   get multiValue() {
@@ -113,7 +113,7 @@ export class FileInputComponent implements ControlValueAccessor, OnChanges {
       this.uploadedFiles.push(file);
     }
     const res = (event.originalEvent as HttpResponse<KFile>).body;
-    if (this.multi) {
+    if (this.multi()) {
       if (!this.data) {
         this.data = [];
       }
@@ -136,7 +136,7 @@ export class FileInputComponent implements ControlValueAccessor, OnChanges {
   }
 
   removeUploadedMedia(idx: number) {
-    if (!this.multi) {
+    if (!this.multi()) {
       this.data = undefined;
     } else {
       (this.data as KFile[]).splice(idx, 1);
@@ -154,14 +154,14 @@ export class FileInputComponent implements ControlValueAccessor, OnChanges {
       import("../../../explorer/section/section.component").then(m => {
         this.dialogService.open(m.SectionComponent, {
           header: this.localizePipe.transform(payload.entity.name, payload.entity.target) as string,
-          data: {target: payload, multi: this.multi} as SectionDialogConfig,
+          data: {target: payload, multi: this.multi()} as SectionDialogConfig,
           modal: true,
           position: "top",
         }).onClose.subscribe((res: KFile | KFile[]) => {
           if (!res) {
             return;
           }
-          if (this.multi) {
+          if (this.multi()) {
             if (!this.data) {
               this.data = [];
             }

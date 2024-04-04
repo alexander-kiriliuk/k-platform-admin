@@ -11,7 +11,7 @@
   (onError)="onUploadError($event)"
   (onUpload)="onUpload($event)">
   <ng-template pTemplate="toolbar">
-    @if (galleryEnabled) {
+    @if (galleryEnabled()) {
       <button pButton class="p-button-success"
               [disabled]="disabled"
               [loading]="targetLoadingState"
@@ -33,15 +33,15 @@
         </ul>
       </div>
     }
-    <h4>{{ placeholder }}</h4>
+    <h4>{{ placeholder() }}</h4>
     @if (data) {
       <div class="medias">
-        @if (!multi && singleValue) {
+        @if (!multi() && singleValue) {
           <div>
             <ng-container *ngTemplateOutlet="fileItem; context: {media: singleValue}"/>
           </div>
         }
-        @if (multi && multiValue.length) {
+        @if (multi() && multiValue.length) {
           @for (media of multiValue; track media.id; let i = $index) {
             <div>
               <ng-container *ngTemplateOutlet="fileItem; context: {media: media, idx: i}"/>

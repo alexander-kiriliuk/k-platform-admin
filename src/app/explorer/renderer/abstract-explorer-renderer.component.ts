@@ -20,15 +20,15 @@ ExplorerRenderer,
 ExplorerRendererLoader,
 TargetData
 } from "../explorer.types";
-import {ChangeDetectorRef, ComponentRef, ViewContainerRef} from "@angular/core";
+import {ChangeDetectorRef, ComponentRef, InputSignal, ViewContainerRef} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 
 export abstract class AbstractExplorerRendererComponent {
 
-  abstract target: TargetData;
-  abstract column: ExplorerColumn;
-  abstract data: { [k: string]: unknown };
-  entityForm: FormGroup;
+  abstract target: InputSignal<TargetData>;
+  abstract column: InputSignal<ExplorerColumn>;
+  abstract data: InputSignal<{ [k: string]: unknown }>;
+  entityForm: InputSignal<FormGroup>;
   protected abstract viewContainer: ViewContainerRef;
   protected abstract readonly renderers: ExplorerRendererLoader[];
   private ref: ComponentRef<ExplorerRenderer>;
@@ -46,10 +46,10 @@ export abstract class AbstractExplorerRendererComponent {
   }
 
   protected patchComponentData() {
-    this.ref.instance.column = this.column;
-    this.ref.instance.target = this.target;
-    this.ref.instance.data = this.data;
-    this.ref.instance.entityForm = this.entityForm;
+    this.ref.instance.column = this.column();
+    this.ref.instance.target = this.target();
+    this.ref.instance.data = this.data();
+    this.ref.instance.entityForm = this.entityForm ? this.entityForm() : undefined;
     this.ref.injector.get(ChangeDetectorRef).detectChanges();
   }
 

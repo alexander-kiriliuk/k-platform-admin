@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  inject,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from "@angular/core";
+import {ChangeDetectionStrategy, Component, HostBinding, inject, input} from "@angular/core";
 import {Media} from "./media.types";
 import {MediaFormat, ReservedMediaFormat} from "./media.constants";
 import {ImageModule} from "primeng/image";
@@ -42,44 +34,52 @@ import {DomSanitizer} from "@angular/platform-browser";
   ],
   providers: [MediaUrlPipe]
 })
-export class MediaComponent implements OnChanges {
+export class MediaComponent {
 
-  @Input({required: true}) src: Media;
-  @Input() format: MediaFormat = ReservedMediaFormat.ORIGINAL;
-  @Input() background: boolean;
-  @Input() zoom: boolean;
+  src = input.required<Media>();
+  format = input<MediaFormat>(ReservedMediaFormat.ORIGINAL);
+  background = input<boolean>();
+  zoom = input<boolean>();
   private readonly localizePipe = inject(LocalizePipe);
   private readonly mediaUrlPipe = inject(MediaUrlPipe);
   private readonly sanitizer = inject(DomSanitizer);
 
   @HostBinding("class.background")
   private get cssClass() {
-    return this.background;
+    return this.background();
   }
 
   @HostBinding("class.has-preview")
   private get previewClass() {
-    return this.zoom;
+    return this.zoom();
   }
 
   @HostBinding("style")
   private get styleAttr() {
-    if (!this.background) {
+    if (!this.background()) {
       return undefined;
     }
     return this.sanitizer.bypassSecurityTrustStyle(`background-image: url(${this.url});`);
   }
 
   private getUrl(format: string) {
-    return this.mediaUrlPipe.transform(this.src, format);
+    return this.mediaUrlPipe.transform(this.src(), format);
+  }
+
+  get mediaFormat() {
+    const ext = this.src()?.type?.ext?.code;
+    if (ext === "svg") {
+      return ReservedMediaFormat.ORIGINAL;
+    }
+    return this.format();
   }
 
   get url() {
-    return this.getUrl(this.format);
+    return this.getUrl(this.mediaFormat);
   }
 
   get file() {
-    return this.src?.files?.find(v => v.format.code === this.format);
+    return this.src()?.files?.find(v => v.format.code === this.mediaFormat);
   }
 
   get width() {
@@ -95,14 +95,7 @@ export class MediaComponent implements OnChanges {
   }
 
   get alt(): string {
-    return this.localizePipe.transform(this.src?.name) as string;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const ext = changes.src?.currentValue?.type?.ext?.code;
-    if (ext === "svg") {
-      this.format = ReservedMediaFormat.ORIGINAL;
-    }
+    return this.localizePipe.transform(this.src()?.name) as string;
   }
 
 }

@@ -18,7 +18,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  Input,
+  input,
   OnChanges,
   OnInit,
   SimpleChanges,
@@ -43,10 +43,10 @@ import {FormGroup} from "@angular/forms";
 export class ExplorerObjectRendererComponent extends AbstractExplorerRendererComponent
   implements OnInit, OnChanges {
 
-  @Input({required: true}) target: TargetData;
-  @Input({required: true}) column: ExplorerColumn;
-  @Input({required: true}) data: { [k: string]: unknown };
-  @Input({required: true}) override entityForm: FormGroup;
+  target = input.required<TargetData>();
+  column = input.required<ExplorerColumn>();
+  data = input.required<{ [k: string]: unknown }>();
+  override entityForm = input.required<FormGroup>();
   protected viewContainer = inject(ViewContainerRef);
   protected readonly renderers = inject(EXPLORER_OBJECT_RENDERER);
 
@@ -59,18 +59,18 @@ export class ExplorerObjectRendererComponent extends AbstractExplorerRendererCom
 
   ngOnInit(): void {
     let renderer: ExplorerRendererLoader;
-    const code = this.column.objectRenderer?.code;
+    const code = this.column().objectRenderer?.code;
     if (code) {
       renderer = this.getRendererByCode(code);
     } else {
-      renderer = this.getRendererByDataType(this.column.type as ColumnDataType);
+      renderer = this.getRendererByDataType(this.column().type as ColumnDataType);
     }
     if (!renderer) {
-      console.warn(`Renderer with ${code ? `code ${code}` : `type ${this.column.type}`} is not found`);
+      console.warn(`Renderer with ${code ? `code ${code}` : `type ${this.column().type}`} is not found`);
       renderer = this.getRendererByCode("string-object-renderer");
     }
-    const rendererParams = this.column?.objectRenderer?.params ?? {};
-    const columnRendererParams = this.column?.objectRendererParams ?? {};
+    const rendererParams = this.column()?.objectRenderer?.params ?? {};
+    const columnRendererParams = this.column()?.objectRendererParams ?? {};
     this.mergeParamsAndDrawComponent(renderer, rendererParams, columnRendererParams);
   }
 
@@ -88,7 +88,7 @@ export class ExplorerObjectRendererComponent extends AbstractExplorerRendererCom
         code = "date-object-renderer";
         break;
       case "reference":
-        switch (this.column.referencedEntityName) {
+        switch (this.column().referencedEntityName) {
           case "MediaEntity":
             code = "media-object-renderer";
             break;

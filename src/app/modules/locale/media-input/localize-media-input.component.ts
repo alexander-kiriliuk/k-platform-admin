@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input} from "@angular/core";
 import {Language, LocalizedMedia} from "../locale.types";
 import {NumberUtils} from "../../../global/util/number.utils";
 import {AVAIL_LANGS} from "../locale.constants";
@@ -56,9 +56,9 @@ import {MediaTypeVariant} from "../../media/media.constants";
     },
   ]
 })
-export class LocalizeMediaInputComponent  implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input({required: true}) mediaType: MediaTypeVariant;
+export class LocalizeMediaInputComponent implements ControlValueAccessor {
+  placeholder = input<string>();
+  mediaType = input.required<MediaTypeVariant>();
   resData: { [k: string]: LocalizedMedia };
   disabled = false;
   activeTab = 0;

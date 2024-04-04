@@ -1,6 +1,6 @@
-@if (placeholder) {
+@if (placeholder()) {
   <div class="label">
-    {{ placeholder }}
+    {{ placeholder() }}
     <p-button
       icon="pi pi-folder-open" severity="info"
       [disabled]="disabled"
@@ -21,7 +21,7 @@
 </ng-template>
 @if (entity) {
   <div class="content-wrapper">
-    @if (!multi) {
+    @if (!multi()) {
       <ng-container *ngTemplateOutlet="itemUI; context: {entity}"/>
     } @else {
       @for (item of entities; track item) {

@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input} from "@angular/core";
+import {
+ChangeDetectionStrategy,
+ChangeDetectorRef,
+Component,
+inject,
+input,
+Input
+} from "@angular/core";
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Language, LocalizedString} from "../locale.types";
 import {AVAIL_LANGS} from "../locale.constants";
@@ -46,7 +53,7 @@ import {NumberUtils} from "../../../global/util/number.utils";
 })
 export class LocalizeStringInputComponent implements ControlValueAccessor {
 
-  @Input() placeholder: string;
+  placeholder = input<string>();
   resData: { [k: string]: LocalizedString };
   disabled = false;
   activeTab = 0;

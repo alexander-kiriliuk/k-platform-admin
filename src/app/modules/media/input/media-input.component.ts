@@ -20,6 +20,7 @@ import {
   Component,
   EventEmitter,
   inject,
+  input,
   Input,
   Output
 } from "@angular/core";
@@ -67,11 +68,11 @@ import {Store} from "../../store/store";
 export class MediaInputComponent implements ControlValueAccessor {
 
   @Output() changeMedia = new EventEmitter<Media | Media[]>();
-  @Input({required: true}) mediaType: MediaTypeVariant;
-  @Input() mediaId: number;
-  @Input() placeholder: string;
-  @Input() multi: boolean;
-  @Input() galleryEnabled = true;
+  mediaType = input.required<MediaTypeVariant>();
+  mediaId = input<number>();
+  placeholder = input<string>();
+  multi = input<boolean>();
+  galleryEnabled = input<boolean>(true);
   disabled = false;
   uploadedFiles: File[];
   data: Media | Media[];
@@ -84,7 +85,7 @@ export class MediaInputComponent implements ControlValueAccessor {
   private readonly ts = inject(TranslocoService);
 
   get uploadUrl() {
-    return `/media/upload/${this.mediaType}${!this.mediaId ? "" : `?id=${this.mediaId}`}`;
+    return `/media/upload/${this.mediaType()}${!this.mediaId() ? "" : `?id=${this.mediaId()}`}`;
   }
 
   get multiValue() {
@@ -109,7 +110,7 @@ export class MediaInputComponent implements ControlValueAccessor {
       this.uploadedFiles.push(file);
     }
     const res = (event.originalEvent as HttpResponse<Media>).body;
-    if (this.multi) {
+    if (this.multi()) {
       if (!this.data) {
         this.data = [];
       }
@@ -140,14 +141,14 @@ export class MediaInputComponent implements ControlValueAccessor {
       import("../../../explorer/section/section.component").then(m => {
         this.dialogService.open(m.SectionComponent, {
           header: this.localizePipe.transform(payload.entity.name, payload.entity.target) as string,
-          data: {target: payload, multi: this.multi} as SectionDialogConfig,
+          data: {target: payload, multi: this.multi()} as SectionDialogConfig,
           modal: true,
           position: "top",
         }).onClose.subscribe((res: Media | Media[]) => {
           if (!res) {
             return;
           }
-          if (this.multi) {
+          if (this.multi()) {
             if (!this.data) {
               this.data = [];
             }
@@ -163,7 +164,7 @@ export class MediaInputComponent implements ControlValueAccessor {
   }
 
   removeUploadedMedia(idx: number) {
-    if (!this.multi) {
+    if (!this.multi()) {
       this.data = null;
     } else {
       (this.data as Media[]).splice(idx, 1);

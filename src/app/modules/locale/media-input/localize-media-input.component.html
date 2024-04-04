@@ -9,9 +9,9 @@
       </ng-template>
       <div class="p-float-label">
         <media-input
-          [mediaType]="mediaType"
+          [mediaType]="mediaType()"
           [disabled]="disabled"
-          [placeholder]="placeholder"
+          [placeholder]="placeholder()"
           [(ngModel)]="resData[lang.id].value"
           (changeMedia)="synchronize()"/>
       </div>

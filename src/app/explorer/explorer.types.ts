@@ -19,7 +19,7 @@ import {LocalizedString} from "../modules/locale/locale.types";
 import {Media} from "../modules/media/media.types";
 import {Params, QueryParamsHandling} from "@angular/router";
 import {PageableParams, UserRole} from "../global/types";
-import {Type, ValueProvider} from "@angular/core";
+import {InputSignal, Type, ValueProvider} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 
 export type ColumnDataType = "string" | "number" | "boolean" | "date" | "reference" | "unknown";
@@ -150,10 +150,10 @@ export interface ExplorerRendererProvider extends ValueProvider {
 }
 
 export interface ExplorerActionRenderer<Data = unknown> {
-  target: TargetData;
+  target: InputSignal<TargetData>;
   action: ExplorerAction;
-  data?: Data | Data[];
-  entityForm?: FormGroup;
+  data?: InputSignal<Data | Data[]>;
+  entityForm?: InputSignal<FormGroup>;
 }
 
 export type ExplorerActionRendererLoader = {

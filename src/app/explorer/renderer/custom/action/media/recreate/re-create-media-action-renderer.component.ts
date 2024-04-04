@@ -66,7 +66,7 @@ export class ReCreateMediaActionRendererComponent extends AbstractExplorerAction
       key: this.dialogKey,
       accept: () => {
         this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-        this.service.reCreate(this.entityForm.controls.id.value).pipe(
+        this.service.reCreate(this.entityForm().controls.id.value).pipe(
           catchError((res) => {
             this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
             return throwError(res);

@@ -18,15 +18,16 @@ import {
 AfterViewInit,
 Directive,
 inject,
-Input,
+input,
+InputSignal,
 TemplateRef,
 ViewContainerRef
 } from "@angular/core";
 import {Store} from "../store/store";
 import {PreloaderEvent} from "./preloader.event";
-import {TogglePreloader} from "./preloader.types";
 import {filter} from "rxjs/operators";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {TogglePreloader} from "./preloader.types";
 
 @Directive({
   selector: "[preloading]",
@@ -34,7 +35,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 })
 export class PreloaderDirective implements AfterViewInit {
 
-  @Input("preloading") ctx: TogglePreloader = {state: true};
+  ctx: InputSignal<TogglePreloader> = input({state: true} as TogglePreloader, {alias: "preloading"});
   private readonly store = inject(Store);
 
   constructor(
@@ -42,20 +43,20 @@ export class PreloaderDirective implements AfterViewInit {
     private viewContainer: ViewContainerRef) {
     this.store.on<string>(PreloaderEvent.Hide)
       .pipe(
-        filter(v => v.payload === this.ctx.channel),
+        filter(v => v.payload === this.ctx().channel),
         takeUntilDestroyed()
       )
       .subscribe(() => {
-        this.ctx.state = false;
+        this.ctx().state = false;
         this.checkContainer();
       });
     this.store.on<string>(PreloaderEvent.Show)
       .pipe(
-        filter(v => v.payload === this.ctx.channel),
+        filter(v => v.payload === this.ctx().channel),
         takeUntilDestroyed()
       )
       .subscribe(() => {
-        this.ctx.state = true;
+        this.ctx().state = true;
         this.checkContainer();
       });
   }
@@ -65,7 +66,7 @@ export class PreloaderDirective implements AfterViewInit {
   }
 
   private checkContainer() {
-    if (this.ctx.state) {
+    if (this.ctx().state) {
       this.viewContainer.createEmbeddedView(this.templateRef, {});
     } else {
       this.viewContainer.clear();

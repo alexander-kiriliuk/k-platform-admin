@@ -54,7 +54,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     NgClass
   ],
 })
-export class ToggleProcessActionRendererComponent extends AbstractExplorerActionRenderer<ProcessUnit>
+export class ToggleProcessActionRendererComponent extends AbstractExplorerActionRenderer
   implements OnInit {
 
   private readonly service = inject(ProcessService);
@@ -63,7 +63,7 @@ export class ToggleProcessActionRendererComponent extends AbstractExplorerAction
   private readonly injector = inject(Injector);
 
   get enabledCtrlValue() {
-    return this.entityForm.controls.enabled.value as boolean;
+    return this.entityForm().controls.enabled.value as boolean;
   }
 
   get preloaderChannel() {
@@ -72,7 +72,7 @@ export class ToggleProcessActionRendererComponent extends AbstractExplorerAction
 
   ngOnInit() {
     runInInjectionContext(this.injector, () => {
-      this.entityForm.controls.enabled.valueChanges
+      this.entityForm().controls.enabled.valueChanges
         .pipe(takeUntilDestroyed())
         .subscribe(() => {
           this.cdr.markForCheck();
@@ -82,7 +82,7 @@ export class ToggleProcessActionRendererComponent extends AbstractExplorerAction
 
   toggle() {
     this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-    this.service.toggle((this.data as ProcessUnit).code).pipe(
+    this.service.toggle((this.data() as ProcessUnit).code).pipe(
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
         return throwError(res);

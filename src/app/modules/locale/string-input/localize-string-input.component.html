@@ -15,7 +15,7 @@
               [(ngModel)]="resData[lang.id].value"
               (keydown)="synchronize()">
     </textarea>
-        <label [for]="id">{{ placeholder }}</label>
+        <label [for]="id">{{ placeholder() }}</label>
       </div>
     </p-tabPanel>
   }

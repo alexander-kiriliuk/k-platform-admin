@@ -38,7 +38,7 @@ import {Store} from "../../../../../../modules/store/store";
     LocalizePipe,
   ],
 })
-export class UpdateMediaFileActionRendererComponent extends AbstractExplorerActionRenderer<Media> {
+export class UpdateMediaFileActionRendererComponent extends AbstractExplorerActionRenderer {
 
   private readonly dialogService = inject(DialogService);
   private readonly ts = inject(TranslocoService);
@@ -49,7 +49,7 @@ export class UpdateMediaFileActionRendererComponent extends AbstractExplorerActi
       this.dialogService.open(m.UpdateMediaFileActionDialogComponent, {
         header: this.ts.translate("media.dialog.update"),
         modal: true,
-        data: this.data as Media,
+        data: this.data() as Media,
         position: "top",
       }).onClose.subscribe((media: Media) => {
         if (!media) {

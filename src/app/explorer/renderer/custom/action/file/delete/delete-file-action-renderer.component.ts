@@ -65,7 +65,7 @@ export class DeleteFileActionRendererComponent extends AbstractExplorerActionRen
       key: this.dialogKey,
       accept: () => {
         this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-        this.service.remove(this.entityForm.controls.id.value).pipe(
+        this.service.remove(this.entityForm().controls.id.value).pipe(
           catchError((res) => {
             this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
             return throwError(res);
