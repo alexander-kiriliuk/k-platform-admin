@@ -15,7 +15,7 @@
  */
 
 
-import {Language} from "../../modules/locale/locale.types";
+import {Language} from "@modules/locale/locale.types";
 import {registerLocaleData} from "@angular/common";
 
 export namespace LangUtils {

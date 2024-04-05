@@ -26,15 +26,15 @@ output
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {DialogService} from "primeng/dynamicdialog";
 import {finalize} from "rxjs";
-import {SectionDialogConfig, TargetData} from "../../explorer/explorer.types";
 import {LocalizePipe} from "../locale/localize.pipe";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {TranslocoPipe} from "@ngneat/transloco";
-import {PageableParams, PlainObject} from "../../global/types";
-import {CachedExplorerService} from "../../explorer/cached-explorer.service";
+import {PageableParams, PlainObject} from "@global/types";
 import {NgTemplateOutlet} from "@angular/common";
 import {RefNamePipe} from "./ref-name.pipe";
+import {CachedExplorerService} from "@components/explorer/cached-explorer.service";
+import {SectionDialogConfig, TargetData} from "@components/explorer/explorer.types";
 
 @Component({
   selector: "ref-input",
@@ -100,7 +100,7 @@ export class RefInputComponent implements ControlValueAccessor, OnInit {
   }
 
   openSection() {
-    import("../../explorer/section/section.component").then(m => {
+    import("@components/explorer/section/section.component").then(m => {
       this.dialogService.open(m.SectionComponent, {
         header: this.localizePipe.transform(this.targetData.entity.name, this.targetData.entity.target) as string,
         data: {

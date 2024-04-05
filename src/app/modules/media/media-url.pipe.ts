@@ -17,7 +17,7 @@
 import {inject, Pipe, PipeTransform} from "@angular/core";
 import {Media} from "./media.types";
 import {ReservedMediaFormat, WEBP_SUPPORT} from "./media.constants";
-import {environment} from "../../global/env/env";
+import {environment} from "@global/env/env";
 
 @Pipe({
   name: "mediaUrl",

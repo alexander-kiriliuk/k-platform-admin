@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {Media} from "../modules/media/media.types";
-import {LocalizedString} from "../modules/locale/locale.types";
+import {Media} from "@modules/media/media.types";
+import {LocalizedString} from "@modules/locale/locale.types";
 import {MenuItemCommandEvent} from "primeng/api";
 import {Translation} from "@ngneat/transloco";
 

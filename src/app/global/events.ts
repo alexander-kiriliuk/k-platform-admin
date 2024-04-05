@@ -26,3 +26,9 @@ export enum CurrentUserEvent {
   Set  = "current:user:set",
   Update  = "current:user:update",
 }
+
+export enum DashboardEvent {
+
+  PatchHeader = "dashboard:header:patch"
+
+}

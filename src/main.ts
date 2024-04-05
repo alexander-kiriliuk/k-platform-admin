@@ -14,36 +14,42 @@
  * limitations under the License.
  */
 
-import {environment} from "./app/global/env/env";
+import {environment} from "@global/env/env";
 import {APP_INITIALIZER, enableProdMode, isDevMode, LOCALE_ID} from "@angular/core";
-import {ThemeUtils} from "./app/global/util/theme.utils";
+import {ThemeUtils} from "@global/util/theme.utils";
 import {bootstrapApplication} from "@angular/platform-browser";
 import {AppComponent} from "./app/app.component";
 import {provideRouter} from "@angular/router";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideTransloco, provideTranslocoLoader} from "@ngneat/transloco";
-import {TranslocoHttpLoader} from "./app/global/internationalization/transloco-http-loader";
-import {Store} from "./app/modules/store/store";
-import {AppInitializer} from "./app/global/service/app-initializer";
+import {TranslocoHttpLoader} from "@global/internationalization/transloco-http-loader";
+import {Store} from "@modules/store/store";
+import {AppInitializer} from "@global/service/app-initializer";
 import {MessageService, PrimeNGConfig} from "primeng/api";
-import {CurrentUser} from "./app/global/service/current-user";
-import {AppInterceptor} from "./app/global/interceptor/app.interceptor";
-import {WEBP_SUPPORT} from "./app/modules/media/media.constants";
+import {CurrentUser} from "@global/service/current-user";
+import {AppInterceptor} from "@global/interceptor/app.interceptor";
+import {WEBP_SUPPORT} from "@modules/media/media.constants";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {DEVICE} from "./app/modules/device/device.constants";
-import {DeviceInfoImpl} from "./app/modules/device/device-info.impl";
-import {MediaUtils} from "./app/modules/media/media.utils";
-import {LocalizePipe} from "./app/modules/locale/localize.pipe";
+import {DEVICE} from "@modules/device/device.constants";
+import {DeviceInfoImpl} from "@modules/device/device-info.impl";
+import {MediaUtils} from "@modules/media/media.utils";
+import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {DialogService} from "primeng/dynamicdialog";
 import {APP_ROUTES} from "./app/app.routing";
-import {AVAIL_LANGS} from "./app/modules/locale/locale.constants";
-import {LangUtils} from "./app/global/util/lang.utils";
-import {provideExplorerSectionRenderers} from "./app/explorer/explorer-secrion-renderer-providers";
+import {AVAIL_LANGS} from "@modules/locale/locale.constants";
+import {
+provideExplorerSectionRenderers
+} from "@components/explorer/explorer-secrion-renderer-providers";
+import {
+provideExplorerObjectRenderers
+} from "@components/explorer/explorer-object-renderer-providers";
+import {
+provideExplorerActionRenderers
+} from "@components/explorer/explorer-action-renderer-providers";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import setNgTranslation = LangUtils.setNgTranslation;
-import {provideExplorerObjectRenderers} from "./app/explorer/explorer-object-renderer-providers";
-import {provideExplorerActionRenderers} from "./app/explorer/explorer-action-renderer-providers";
+import {LangUtils} from "@global/util/lang.utils";
 
 ThemeUtils.setDefaultTheme();
 

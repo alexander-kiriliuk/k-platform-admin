@@ -24,15 +24,15 @@ inject
 import {Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {MENU_STORE_KEY} from "./menu-tree.constants";
-import {Category} from "../../global/types";
-import {AppService} from "../../global/service/app.service";
+import {Category} from "@global/types";
+import {AppService} from "@global/service/app.service";
 import {finalize} from "rxjs";
-import {Store} from "../../modules/store/store";
-import {PreloaderEvent} from "../../modules/preloader/preloader.event";
+import {Store} from "@modules/store/store";
+import {PreloaderEvent} from "@modules/preloader/preloader.event";
 import {Dashboard} from "../dashboard.constants";
 import {NgClass, NgStyle, NgTemplateOutlet} from "@angular/common";
-import {LocalizePipe} from "../../modules/locale/localize.pipe";
-import {StopPropagationDirective} from "../../modules/events/stop-propagation.directive";
+import {LocalizePipe} from "@modules/locale/localize.pipe";
+import {StopPropagationDirective} from "@modules/events/stop-propagation.directive";
 
 
 @Component({

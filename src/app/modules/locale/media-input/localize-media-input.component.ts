@@ -16,7 +16,7 @@
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input} from "@angular/core";
 import {Language, LocalizedMedia} from "../locale.types";
-import {NumberUtils} from "../../../global/util/number.utils";
+import {NumberUtils} from "@global/util/number.utils";
 import {AVAIL_LANGS} from "../locale.constants";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {
@@ -26,11 +26,11 @@ NG_VALUE_ACCESSOR,
 ReactiveFormsModule
 } from "@angular/forms";
 import {InputTextareaModule} from "primeng/inputtextarea";
-import {MediaComponent} from "../../media/media.component";
+import {MediaComponent} from "@modules/media/media.component";
 import {SharedModule} from "primeng/api";
 import {TabViewModule} from "primeng/tabview";
-import {MediaInputComponent} from "../../media/input/media-input.component";
-import {MediaTypeVariant} from "../../media/media.constants";
+import {MediaInputComponent} from "@modules/media/input/media-input.component";
+import {MediaTypeVariant} from "@modules/media/media.constants";
 
 @Component({
   selector: "localize-media-input",

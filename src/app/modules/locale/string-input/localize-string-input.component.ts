@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-import {
-ChangeDetectionStrategy,
-ChangeDetectorRef,
-Component,
-inject,
-input,
-Input
-} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, input} from "@angular/core";
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Language, LocalizedString} from "../locale.types";
 import {AVAIL_LANGS} from "../locale.constants";
 import {TabViewModule} from "primeng/tabview";
-import {MediaComponent} from "../../media/media.component";
+import {MediaComponent} from "@modules/media/media.component";
 import {TranslocoService} from "@ngneat/transloco";
 import {InputTextareaModule} from "primeng/inputtextarea";
-import {NumberUtils} from "../../../global/util/number.utils";
+import {NumberUtils} from "@global/util/number.utils";
 
 @Component({
   selector: "localize-string-input",

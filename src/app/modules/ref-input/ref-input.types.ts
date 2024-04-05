@@ -15,7 +15,7 @@
  */
 
 import {BehaviorSubject, Observable} from "rxjs";
-import {TargetData} from "../../explorer/explorer.types";
+import {TargetData} from "@components/explorer/explorer.types";
 
 export namespace RefInput {
   export type Cache = { data$: BehaviorSubject<TargetData>, request: Observable<TargetData> }

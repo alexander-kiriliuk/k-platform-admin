@@ -15,10 +15,10 @@
  */
 
 import {inject, Pipe, PipeTransform} from "@angular/core";
-import {PlainObject} from "../../global/types";
-import {TargetData} from "../../explorer/explorer.types";
+import {PlainObject} from "@global/types";
 import {LocalizedString} from "../locale/locale.types";
 import {LocalizePipe} from "../locale/localize.pipe";
+import {TargetData} from "@components/explorer/explorer.types";
 
 @Pipe({
   name: "refName",

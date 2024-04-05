@@ -28,17 +28,17 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/fileupload";
 import {NgTemplateOutlet} from "@angular/common";
 import {HttpResponse} from "@angular/common/http";
-import {FileSizePipe} from "../../../global/service/file-size.pipe";
-import {LocalizePipe} from "../../locale/localize.pipe";
+import {FileSizePipe} from "@global/service/file-size.pipe";
+import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
-import {ToastData} from "../../../global/types";
-import {ToastEvent} from "../../../global/events";
-import {Store} from "../../store/store";
+import {ToastData} from "@global/types";
+import {ToastEvent} from "@global/events";
+import {Store} from "@modules/store/store";
 import {File as KFile} from "../file.types";
 import {finalize} from "rxjs";
-import {SectionDialogConfig} from "../../../explorer/explorer.types";
+import {SectionDialogConfig} from "@components/explorer/explorer.types";
 import {DialogService} from "primeng/dynamicdialog";
-import {ExplorerService} from "../../../explorer/explorer.service";
+import {ExplorerService} from "@components/explorer/explorer.service";
 
 @Component({
   selector: "file-input",
@@ -149,7 +149,7 @@ export class FileInputComponent implements ControlValueAccessor, OnChanges {
       this.targetLoadingState = false;
       this.cdr.markForCheck();
     })).subscribe(payload => {
-      import("../../../explorer/section/section.component").then(m => {
+      import("@components/explorer/section/section.component").then(m => {
         this.dialogService.open(m.SectionComponent, {
           header: this.localizePipe.transform(payload.entity.name, payload.entity.target) as string,
           data: {target: payload, multi: this.multi()} as SectionDialogConfig,

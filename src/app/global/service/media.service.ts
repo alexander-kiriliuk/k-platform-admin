@@ -16,8 +16,8 @@
 
 import {inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {StringUtils} from "../util/string.utils";
-import {Media} from "../../modules/media/media.types";
+import {StringUtils} from "@global/util/string.utils";
+import {Media} from "@modules/media/media.types";
 import fillParams = StringUtils.fillParams;
 
 @Injectable()

@@ -16,23 +16,22 @@
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
-import {MenuCommandHandler, User} from "../global/types";
-import {Store} from "../modules/store/store";
-import {AuthEvent} from "../auth/auth.event";
+import {MenuCommandHandler, User} from "@global/types";
+import {Store} from "@modules/store/store";
+import {AuthEvent} from "@components/auth/auth.event";
 import {Dashboard} from "./dashboard.constants";
-import {CurrentUser} from "../global/service/current-user";
+import {CurrentUser} from "@global/service/current-user";
 import {DialogService} from "primeng/dynamicdialog";
 import {AsyncPipe, NgClass} from "@angular/common";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {MenuTreeComponent} from "./menu/menu-tree.component";
-import {PreloaderComponent} from "../modules/preloader/preloader.component";
+import {PreloaderComponent} from "@modules/preloader/preloader.component";
 import {MenuModule} from "primeng/menu";
 import {AvatarModule} from "primeng/avatar";
-import {MediaComponent} from "../modules/media/media.component";
+import {MediaComponent} from "@modules/media/media.component";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
-import {PreloaderDirective} from "../modules/preloader/preloader.directive";
-import {DashboardEvent} from "./dashboard.event";
-import {CurrentUserEvent} from "../global/events";
+import {PreloaderDirective} from "@modules/preloader/preloader.directive";
+import {CurrentUserEvent, DashboardEvent} from "@global/events";
 
 
 @Component({
@@ -84,7 +83,7 @@ export class DashboardComponent implements MenuCommandHandler {
   onMenuCommand(event: MenuItemCommandEvent, id: string): void {
     switch (id) {
       case "profile":
-        import("../profile/profile.component").then(c => {
+        import("@components/profile/profile.component").then(c => {
           this.dialogService.open(c.ProfileComponent, {
             header: this.currentUser.fullName,
             resizable: true,

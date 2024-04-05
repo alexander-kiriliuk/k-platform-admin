@@ -17,9 +17,9 @@
 import {inject, Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs";
 import {AppConfig, User} from "../types";
-import {Store} from "../../modules/store/store";
+import {Store} from "@modules/store/store";
 import {CurrentUserEvent} from "../events";
-import {LocalizePipe} from "../../modules/locale/localize.pipe";
+import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {Roles} from "../constants";
 
 @Injectable({providedIn: "root"})

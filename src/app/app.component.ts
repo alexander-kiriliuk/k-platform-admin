@@ -16,23 +16,23 @@
 
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
-import {ProfileService} from "./profile/profile.service";
 import {finalize, throwError} from "rxjs";
 import {Router, RouterOutlet} from "@angular/router";
 import {catchError} from "rxjs/operators";
-import {Store} from "./modules/store/store";
-import {JwtDto} from "./auth/auth.types";
-import {AuthEvent} from "./auth/auth.event";
-import {AuthService} from "./auth/auth.service";
+import {Store} from "@modules/store/store";
 import {TranslocoService} from "@ngneat/transloco";
-import {ToastKey, ToastType} from "./global/constants";
-import {CurrentUserEvent, ToastEvent} from "./global/events";
+import {ToastKey, ToastType} from "@global/constants";
+import {CurrentUserEvent, ToastEvent} from "@global/events";
 import {MessageService} from "primeng/api";
-import {ToastData, User} from "./global/types";
-import {StoreMessage} from "./modules/store/store-message";
+import {ToastData, User} from "@global/types";
+import {StoreMessage} from "@modules/store/store-message";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ToastModule} from "primeng/toast";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {AuthService} from "@components/auth/auth.service";
+import {ProfileService} from "@components/profile/profile.service";
+import {JwtDto} from "@components/auth/auth.types";
+import {AuthEvent} from "@components/auth/auth.event";
 
 @Component({
   selector: "app-root",

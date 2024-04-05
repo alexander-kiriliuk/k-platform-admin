@@ -27,18 +27,18 @@ import {FileUploadEvent, Media} from "../media.types";
 import {FileUploadErrorEvent, FileUploadModule} from "primeng/fileupload";
 import {NgTemplateOutlet} from "@angular/common";
 import {HttpResponse} from "@angular/common/http";
-import {FileSizePipe} from "../../../global/service/file-size.pipe";
+import {FileSizePipe} from "@global/service/file-size.pipe";
 import {MediaComponent} from "../media.component";
-import {LocalizePipe} from "../../locale/localize.pipe";
+import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {MediaTypeVariant} from "../media.constants";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {DialogService} from "primeng/dynamicdialog";
-import {SectionDialogConfig} from "../../../explorer/explorer.types";
-import {ExplorerService} from "../../../explorer/explorer.service";
+import {SectionDialogConfig} from "@components/explorer/explorer.types";
+import {ExplorerService} from "@components/explorer/explorer.service";
 import {finalize} from "rxjs";
-import {ToastData} from "../../../global/types";
-import {ToastEvent} from "../../../global/events";
-import {Store} from "../../store/store";
+import {ToastData} from "@global/types";
+import {ToastEvent} from "@global/events";
+import {Store} from "@modules/store/store";
 
 @Component({
   selector: "media-input",
@@ -136,7 +136,7 @@ export class MediaInputComponent implements ControlValueAccessor {
       this.targetLoadingState = false;
       this.cdr.markForCheck();
     })).subscribe(payload => {
-      import("../../../explorer/section/section.component").then(m => {
+      import("@components/explorer/section/section.component").then(m => {
         this.dialogService.open(m.SectionComponent, {
           header: this.localizePipe.transform(payload.entity.name, payload.entity.target) as string,
           data: {target: payload, multi: this.multi()} as SectionDialogConfig,
