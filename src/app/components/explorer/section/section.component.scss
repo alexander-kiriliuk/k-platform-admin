@@ -1,5 +1,6 @@
 :host {
   --paginator-h: 10vh;
+  height: 100%;
 
   &.dialogMode {
     max-width: 90vw;
@@ -22,6 +23,10 @@
 
     .p-datatable-table {
       @apply border-separate;
+    }
+
+    .p-datatable-wrapper, .p-datatable {
+      @apply h-full;
     }
 
     .p-datatable-thead {

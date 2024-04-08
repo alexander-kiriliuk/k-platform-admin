@@ -1,8 +1,13 @@
 :host {
-  background: var(--neutral-a);
   @apply flex justify-between w-full h-full;
   & > div {
     @apply flex items-center justify-center w-full;
+  }
+
+  ::ng-deep{
+    input, .p-input-icon-right {
+      @apply w-full;
+    }
   }
 
   @screen max-lg {
@@ -49,14 +54,29 @@ button {
 }
 
 .promo {
-  background: var(--neutral-b);
   @apply relative;
   @screen max-lg {
     @apply hidden #{!important};
   }
+  background: var(--gradient-a);
+
   &:after {
     content: "";
     background-image: url("/assets/icons/promo.svg");
-    @apply absolute left-0 right-0 top-0 bottom-0 opacity-40;
+    @apply absolute left-0 right-0 top-0 bottom-0 opacity-40 bg-no-repeat bg-center;
+  }
+}
+
+re-captcha {
+  @apply overflow-hidden;
+  width: 298px;
+  height: 74px;
+
+  ::ng-deep {
+    & > div {
+      @apply relative;
+      top: -1px;
+      left: -2px;
+    }
   }
 }
