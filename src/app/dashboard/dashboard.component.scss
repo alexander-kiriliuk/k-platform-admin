@@ -1,6 +1,5 @@
 :host {
   @apply flex flex-col w-full h-full;
-  --sb-footer-h: 5vh;
 }
 
 .content-wrapper {
@@ -66,12 +65,7 @@
   }
 
   &-data {
-    height: calc(100vh - var(--logo-bar-h) - var(--sb-footer-h));
-  }
-
-  &-footer {
-    height: var(--sb-footer-h);
-    @apply py-2 px-2 flex items-center justify-between;
+    height: calc(100vh - var(--logo-bar-h));
   }
 
 }

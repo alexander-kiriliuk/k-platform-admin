@@ -9,6 +9,9 @@
       (click)="openSection()"/>
   </div>
 }
+<ng-template #emptyUi>
+  <span class="c-warn">{{"msg.empty" | transloco}}</span>
+</ng-template>
 <ng-template #itemUI let-entity="entity">
   <div>
     <p-button
@@ -24,9 +27,15 @@
     @if (!multi()) {
       <ng-container *ngTemplateOutlet="itemUI; context: {entity}"/>
     } @else {
-      @for (item of entities; track item) {
-        <ng-container *ngTemplateOutlet="itemUI; context: {entity: item}"/>
+      @if (entities.length){
+        @for (item of entities; track item) {
+          <ng-container *ngTemplateOutlet="itemUI; context: {entity: item}"/>
+        }
+      } @else {
+        <ng-container *ngTemplateOutlet="emptyUi"/>
       }
     }
   </div>
+} @else {
+  <ng-container *ngTemplateOutlet="emptyUi"/>
 }

@@ -1,5 +1,6 @@
 :host {
-  @apply block relative;
+  @apply block relative border px-4 pb-4 rounded;
+  border-color: var(--surface-d);
   ::ng-deep {
     .p-tabview-panels {
       @apply px-0 pb-0;

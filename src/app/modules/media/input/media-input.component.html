@@ -35,8 +35,8 @@
       </div>
     }
     <h4>{{ placeholder() }}</h4>
-    @if (data) {
-      <div class="medias">
+    <div class="medias">
+      @if (data) {
         @if (!multi() && singleValue) {
           <div>
             <ng-container *ngTemplateOutlet="mediaItem; context: {media: singleValue}"/>
@@ -47,8 +47,10 @@
             <ng-container *ngTemplateOutlet="mediaItem; context: {media: media, idx: i}"/>
           }
         }
-      </div>
-    }
+      } @else {
+        <span class="c-warn">{{"msg.empty" | transloco}}</span>
+      }
+    </div>
   </ng-template>
 </p-fileUpload>
 <ng-template #mediaItem let-media="media" let-idx="idx">

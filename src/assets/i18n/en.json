@@ -8,6 +8,7 @@
     "accept": "Accept",
     "status": "Status",
     "enabled": "Enabled",
+    "empty": "Empty",
     "disabled": "Disabled"
   },
   "config": {

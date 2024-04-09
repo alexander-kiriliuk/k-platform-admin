@@ -1,3 +1,8 @@
+:host {
+  @apply border block p-4 rounded;
+  border-color: var(--surface-d);
+}
+
 p-image {
   ::ng-deep{
     img {
