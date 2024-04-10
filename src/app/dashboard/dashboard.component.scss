@@ -81,8 +81,9 @@
 }
 
 .head-bar {
-  height: var(--header-bar-h);
   @apply px-6 flex items-center justify-between;
+  height: var(--header-bar-h);
+
   @screen max-lg {
     @apply px-4;
     background: var(--surface-a);

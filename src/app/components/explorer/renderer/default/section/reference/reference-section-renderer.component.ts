@@ -20,7 +20,7 @@ import {CachedExplorerService} from "@components/explorer/cached-explorer.servic
 import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {LocalizedString} from "@modules/locale/locale.types";
 import {
-AbstractExplorerSectionRenderer
+  AbstractExplorerSectionRenderer
 } from "@components/explorer/renderer/default/abstract-explorer-section-renderer";
 
 @Component({
@@ -35,7 +35,7 @@ export class ReferenceSectionRendererComponent extends AbstractExplorerSectionRe
   private readonly cachedExplorerService = inject(CachedExplorerService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly localizePipe = inject(LocalizePipe);
-  refTarget: TargetData;
+  private refTarget: TargetData;
 
   get value() {
     if (!this.refTarget) {

@@ -13,7 +13,16 @@
       width: max-content;
     }
 
+    .p-datatable-thead tr:first-child th {
+      @apply rounded-t;
+    }
+
+    .p-datatable-thead tr:last-child th, tbody tr:last-child td {
+      @apply border-0;
+    }
+
     .p-paginator {
+      @apply rounded-t;
       height: var(--paginator-h);
     }
 
