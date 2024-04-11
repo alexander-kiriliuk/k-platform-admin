@@ -70,6 +70,10 @@
 
 }
 
+.welcome {
+  @apply flex justify-center items-center h-full text-2xl pb-40;
+}
+
 .logo-bar {
   height: var(--logo-bar-h);
   @apply relative cursor-pointer;

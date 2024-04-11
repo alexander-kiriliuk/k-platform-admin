@@ -227,6 +227,7 @@
     }
   },
   "dashboard": {
+    "welcome": "Welcome",
     "lang": "System language",
     "theme": {
       "light": "Light theme",

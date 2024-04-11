@@ -37,9 +37,9 @@ import {ExplorerActionRendererComponent} from "../renderer/explorer-action-rende
 import {CurrentUser} from "@global/service/current-user";
 import {Roles} from "@global/constants";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {XdbExportDialogParams} from "@components/xdb/xdb.types";
 import NewItemToken = Explorer.NewItemToken;
 import DuplicateItemToken = Explorer.DuplicateItemToken;
-import {XdbExportDialogParams} from "@components/xdb/xdb.types";
 
 @Component({
   selector: "explorer-object",
@@ -256,6 +256,7 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   private initObject() {
+    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     const targetObs = this.explorerService.getTarget(this.target, "object");
     const entityObs = this.explorerService.getEntity<{ [k: string]: unknown }>(
       this.target, this.duplicateId ?? this.id
@@ -264,6 +265,9 @@ export class ExplorerObjectComponent implements OnInit {
       target: targetObs,
       entity: this.id === Explorer.NewItemToken && !this.duplicateId ? of(null) : entityObs
     }).pipe(
+      finalize(() => {
+        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
+      }),
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {
           title: res.error.message, message: res.error.statusCode
@@ -284,7 +288,9 @@ export class ExplorerObjectComponent implements OnInit {
       } else {
         title += " #new";
       }
-      this.store.emit<string>(DashboardEvent.PatchHeader, title);
+      if (!this.dialogMode) {
+        this.store.emit<string>(DashboardEvent.PatchHeader, title);
+      }
       for (const col of this.targetData.entity.columns) {
         if (!col.tab) {
           col.tab = this.restTab;

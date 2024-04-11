@@ -43,7 +43,11 @@
       </div>
     </div>
     <div class="content-block">
-      <router-outlet></router-outlet>
+      @if (isHomepage) {
+        <div class="welcome">{{ "dashboard.welcome" | transloco }}, {{ currentUser.fullName }}!</div>
+      } @else {
+        <router-outlet></router-outlet>
+      }
     </div>
   </div>
 </div>

@@ -306,9 +306,6 @@ export class SectionComponent implements AfterViewInit {
 
   private getTarget() {
     this.explorerService.getTarget(this.target, "section").pipe(
-      finalize(() => {
-        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
-      }),
       catchError((res) => {
         this.store.emit<ToastData>(ToastEvent.Error, {
           title: res.error.message, message: res.error.statusCode

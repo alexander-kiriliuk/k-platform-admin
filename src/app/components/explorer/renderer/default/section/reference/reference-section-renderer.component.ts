@@ -39,6 +39,7 @@ export class ReferenceSectionRendererComponent extends AbstractExplorerSectionRe
 
   get value() {
     if (!this.refTarget) {
+      this.checkTarget();
       return "<object>";
     }
     if (this.column.multiple) {
@@ -85,6 +86,10 @@ export class ReferenceSectionRendererComponent extends AbstractExplorerSectionRe
   }
 
   ngOnInit(): void {
+    this.checkTarget();
+  }
+
+  private checkTarget() {
     this.cachedExplorerService.getTarget(this.column.referencedEntityName, "section").subscribe(refTarget => {
       this.refTarget = refTarget;
       this.cdr.markForCheck();

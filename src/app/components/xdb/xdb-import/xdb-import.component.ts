@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
@@ -52,7 +52,7 @@ import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/f
     FileUploadModule
   ],
 })
-export class XdbImportComponent implements OnInit {
+export class XdbImportComponent {
 
   readonly ctrl: FormControl<string> = new FormControl("", [Validators.required]);
   private readonly ts = inject(TranslocoService);
@@ -67,7 +67,7 @@ export class XdbImportComponent implements OnInit {
     return "/xdb/import-file";
   }
 
-  ngOnInit(): void {
+  constructor() {
     this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("xdb.title"));
   }
 
