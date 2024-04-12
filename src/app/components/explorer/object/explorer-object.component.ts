@@ -40,6 +40,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {XdbExportDialogParams} from "@components/xdb/xdb.types";
 import NewItemToken = Explorer.NewItemToken;
 import DuplicateItemToken = Explorer.DuplicateItemToken;
+import {TooltipModule} from "primeng/tooltip";
 
 @Component({
   selector: "explorer-object",
@@ -66,6 +67,7 @@ import DuplicateItemToken = Explorer.DuplicateItemToken;
     InputTextModule,
     ReactiveFormsModule,
     ExplorerActionRendererComponent,
+    TooltipModule,
   ],
 })
 export class ExplorerObjectComponent implements OnInit {

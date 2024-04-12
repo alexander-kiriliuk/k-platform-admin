@@ -85,6 +85,12 @@ p-paginator {
   }
 }
 
+.dialog-mode {
+  .p-dialog-content {
+    @apply p-0 #{!important};
+  }
+}
+
 .p-dialog-content {
   @screen max-lg {
     @apply px-2 py-2 #{!important};

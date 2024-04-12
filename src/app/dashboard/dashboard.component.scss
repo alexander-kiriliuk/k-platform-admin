@@ -16,9 +16,12 @@
 
 .content-block {
   max-height: calc(100vh - var(--header-bar-h));
-  @apply px-6 overflow-auto h-full;
+  @apply h-full px-6 overflow-x-auto overflow-y-scroll;
   @screen max-lg {
     @apply px-0;
+  }
+  &.home {
+    @apply overflow-y-auto;
   }
 }
 

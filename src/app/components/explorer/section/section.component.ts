@@ -261,6 +261,7 @@ export class SectionComponent implements AfterViewInit {
           modal: true,
           position: "top",
           maximizable: true,
+          styleClass: "dialog-mode",
           width: "100vw",
         });
       });

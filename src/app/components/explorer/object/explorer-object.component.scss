@@ -6,6 +6,7 @@
     & > p-tabview {
       @apply block;
       min-height: calc(100vh - var(--header-bar-h) - var(--actions-h));
+
       & > div > .p-tabview-panels {
         @apply p-0 #{!important};
       }
@@ -23,6 +24,12 @@
   @apply p-4 rounded-t flex justify-between sticky bottom-0 z-50;
   background: var(--neutral-b);
   height: var(--actions-h);
+
+  &.dialog-mode {
+    @apply mx-4;
+    background: var(--surface-a);
+  }
+
   explorer-action-renderer, & > div {
     @apply flex items-center justify-end gap-x-4;
   }

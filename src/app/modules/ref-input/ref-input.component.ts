@@ -51,6 +51,7 @@ import {SectionDialogConfig, TargetData} from "@components/explorer/explorer.typ
   ],
   providers: [
     CachedExplorerService,
+    DialogService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,

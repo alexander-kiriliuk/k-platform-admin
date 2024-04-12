@@ -56,6 +56,7 @@ import {Store} from "@modules/store/store";
   ],
   providers: [
     ExplorerService,
+    DialogService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,

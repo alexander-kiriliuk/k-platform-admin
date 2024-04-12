@@ -82,6 +82,7 @@ import createTabForm = ObjectDetails.createTabForm;
     CheckboxModule,
   ],
   providers: [
+    DialogService,
     ExplorerService,
     ConfirmationService
   ]

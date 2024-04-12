@@ -32,8 +32,9 @@ import {MediaComponent} from "@modules/media/media.component";
 import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
 import {PreloaderDirective} from "@modules/preloader/preloader.directive";
 import {CurrentUserEvent, DashboardEvent} from "@global/events";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -65,13 +66,17 @@ export class DashboardComponent implements MenuCommandHandler {
   private readonly ts = inject(TranslocoService);
   private readonly dialogService = inject(DialogService);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly ar = inject(ActivatedRoute);
+  private readonly titleService = inject(Title);
+
   private readonly router = inject(Router);
 
   constructor() {
     this.menuModel = Dashboard.createMenuModel(this, this.ts);
     this.store.on<string>(DashboardEvent.PatchHeader).subscribe(v => {
       this.title = v.payload;
+      this.titleService.setTitle(
+        this.title?.length ? this.title.replace(/<\S[^><]*>/g, "") : this.ts.translate("dashboard.welcome")
+      );
       this.cdr.markForCheck();
     });
     this.router.events.pipe(takeUntilDestroyed()).subscribe(event => {
@@ -80,6 +85,8 @@ export class DashboardComponent implements MenuCommandHandler {
       }
       if (this.isHomepage) {
         this.store.emit<string>(DashboardEvent.PatchHeader, "");
+      } else {
+        this.cdr.markForCheck();
       }
     });
   }

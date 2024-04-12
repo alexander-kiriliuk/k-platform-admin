@@ -22,7 +22,7 @@
     }
 
     .p-paginator {
-      @apply rounded-t;
+      @apply rounded-t border-0;
       height: var(--paginator-h);
     }
 

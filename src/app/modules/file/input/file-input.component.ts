@@ -54,6 +54,7 @@ import {ExplorerService} from "@components/explorer/explorer.service";
     NgTemplateOutlet
   ],
   providers: [
+    DialogService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,

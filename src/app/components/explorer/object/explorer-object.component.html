@@ -10,6 +10,9 @@
                 <div class="box">
                   @if (col.objectVisibility) {
                     <explorer-object-renderer
+                      tooltipPosition="left"
+                      [pTooltip]="col.property"
+                      [showDelay]="1000"
                       [target]="targetData"
                       [column]="col"
                       [data]="entityData"
@@ -25,7 +28,7 @@
   }
 </p-tabView>
 @if (targetData?.entity) {
-  <div class="actions">
+  <div class="actions" [ngClass]="{'dialog-mode': dialogMode}">
     <div>
       @if (targetData.entity.actions?.length) {
         <explorer-action-renderer
