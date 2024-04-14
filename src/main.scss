@@ -92,7 +92,7 @@ p-paginator {
 }
 
 .p-dialog-content {
-  @screen max-lg {
+  @screen sm {
     @apply px-2 py-2 #{!important};
   }
 }

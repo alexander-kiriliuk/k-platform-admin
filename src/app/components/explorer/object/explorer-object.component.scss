@@ -21,7 +21,11 @@
 }
 
 .actions {
-  @apply p-4 rounded-t flex justify-between sticky bottom-0 z-50;
+  @screen md {
+    --actions-h: auto;
+    @apply rounded-t;
+  }
+  @apply p-4 z-50 sticky bottom-0 flex justify-between;
   background: var(--neutral-b);
   height: var(--actions-h);
 
@@ -30,8 +34,38 @@
     background: var(--surface-a);
   }
 
+  &-btn {
+    @screen sm {
+      @apply hidden;
+    }
+    ::ng-deep {
+      & > * {
+        @apply px-2 w-auto #{!important};
+      }
+    }
+  }
+
+  ::ng-deep {
+    .p-dialog-content {
+      @apply flex flex-wrap gap-4;
+      @apply px-6 pb-6 #{!important};
+      explorer-action-renderer {
+        @apply hidden #{!important};
+      }
+    }
+  }
+
   explorer-action-renderer, & > div {
     @apply flex items-center justify-end gap-x-4;
+  }
+
+  button {
+    min-width: auto;
+  }
+
+  span {
+    @apply hidden pl-2;
+    @apply sm:inline;
   }
 
 }

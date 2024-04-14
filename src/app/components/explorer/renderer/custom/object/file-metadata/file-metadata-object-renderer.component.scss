@@ -11,6 +11,9 @@ table {
   @apply text-xs;
   td {
     @apply py-1 px-2;
+    &:last-child {
+      @apply break-all;
+    }
   }
 }
 

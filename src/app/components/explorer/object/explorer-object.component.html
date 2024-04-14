@@ -27,44 +27,71 @@
     }
   }
 </p-tabView>
+<ng-template #actionsUi>
+  <explorer-action-renderer
+    [entityForm]="entityForm"
+    [target]="targetData"
+    [data]="entityData"
+    [actions]="targetData.entity.actions"/>
+</ng-template>
 @if (targetData?.entity) {
   <div class="actions" [ngClass]="{'dialog-mode': dialogMode}">
     <div>
+      <p-button
+        class="actions-btn"
+        icon="pi pi-arrow-left"
+        size="small"
+        [rounded]="true"
+        [text]="true"
+        (click)="navBack()"/>
       @if (targetData.entity.actions?.length) {
-        <explorer-action-renderer
-          [entityForm]="entityForm"
-          [target]="targetData"
-          [data]="entityData"
-          [actions]="targetData.entity.actions"/>
+        <p-button
+          class="actions-btn"
+          severity="warning"
+          icon="pi pi-ellipsis-v"
+          size="small"
+          [rounded]="true"
+          [text]="true"
+          (click)="actionsDialogVisibility = true"/>
+        @if (device.isDesktop) {
+          <ng-container *ngTemplateOutlet="actionsUi"/>
+        } @else {
+          <p-dialog
+            position="bottom"
+            [header]="'explorer.actions' | transloco"
+            [(visible)]="actionsDialogVisibility">
+            <ng-container *ngTemplateOutlet="actionsUi"/>
+          </p-dialog>
+        }
       }
     </div>
     <div>
       @if (canDuplicate) {
         <button class="p-button-sm" pButton pRipple
                 (click)="duplicateObject()">
-          <i class="pi pi-copy"></i>&nbsp;
-          {{ "explorer.duplicate" | transloco }}
+          <i class="pi pi-copy"></i>
+          <span>{{ "explorer.duplicate" | transloco }}</span>
         </button>
       }
       @if (canExport) {
         <button class="p-button-sm p-button-secondary" pButton pRipple
                 (click)="exportObject()">
-          <i class="pi pi-file-export"></i>&nbsp;
-          {{ "explorer.export.btn" | transloco }}
+          <i class="pi pi-file-export"></i>
+          <span>{{ "explorer.export.btn" | transloco }}</span>
         </button>
       }
       @if (targetData.entity.defaultActionDelete) {
         <button class="p-button-sm p-button-danger" pButton pRipple
                 [disabled]="!canDeleteObject" (click)="deleteObject()">
-          <i class="pi pi-times"></i>&nbsp;
-          {{ "explorer.delete" | transloco }}
+          <i class="pi pi-times"></i>
+          <span>{{ "explorer.delete" | transloco }}</span>
         </button>
       }
       @if (targetData.entity.defaultActionSave) {
         <button class="p-button-sm p-button-success" pButton pRipple
                 [disabled]="!entityForm.valid" (click)="saveObject()">
-          <i class="pi pi-save"></i>&nbsp;
-          {{ "explorer.save" | transloco }}
+          <i class="pi pi-save"></i>
+          <span>{{ "explorer.save" | transloco }}</span>
         </button>
       }
     </div>

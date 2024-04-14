@@ -8,9 +8,10 @@
 }
 
 .head {
-  @apply mb-8;
+  @apply mb-2 mt-2 px-4;
+  @apply sm:px-0 sm:mb-8 sm:mt-0;
   @apply w-full;
-  input {
+  input, & > div {
     @apply w-full;
   }
 }

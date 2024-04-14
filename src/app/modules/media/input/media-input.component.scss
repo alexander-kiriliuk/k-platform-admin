@@ -5,7 +5,20 @@
     }
 
     .p-button-success {
-      @apply inline-flex items-center gap-x-1;
+      @apply inline-flex items-center justify-center gap-x-1;
+    }
+
+    @screen max-md {
+      .p-fileupload-buttonbar {
+        @apply flex flex-col gap-y-2;
+        button {
+          @apply w-full;
+        }
+
+        .p-fileupload-choose {
+          @apply mr-0;
+        }
+      }
     }
   }
 }

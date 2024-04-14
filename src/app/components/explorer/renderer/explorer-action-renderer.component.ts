@@ -103,7 +103,7 @@ export class ExplorerActionRendererComponent extends AbstractExplorerActionRende
       if (!ref.instance.entityForm) {
         ref.instance.entityForm = this.entityForm;
       } else {
-        ref.instance.entityForm().patchValue(this.entityForm().getRawValue());
+        ref.instance.entityForm()?.patchValue(this.entityForm().getRawValue());
       }
       ref.injector.get(ChangeDetectorRef).detectChanges();
     }

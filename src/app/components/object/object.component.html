@@ -1,6 +1,8 @@
-<div class="head p-input-icon-left">
-  <i class="pi pi-search"></i>
-  <input type="text" pInputText [placeholder]="'object.search' | transloco" [formControl]="ctrl"/>
+<div class="head">
+  <div class="p-input-icon-left">
+    <i class="pi pi-search"></i>
+    <input type="text" pInputText [placeholder]="'object.search' | transloco" [formControl]="ctrl"/>
+  </div>
 </div>
 <div class="contents">
   @for (item of targetList$ | async; track item.target) {

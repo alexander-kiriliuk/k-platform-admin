@@ -15,7 +15,7 @@ ObjectDialogConfig,
 TargetData
 } from "../explorer.types";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
-import {NgClass} from "@angular/common";
+import {NgClass, NgTemplateOutlet} from "@angular/common";
 import {FormBuilder, FormControl, ReactiveFormsModule} from "@angular/forms";
 import {TabViewModule} from "primeng/tabview";
 import {ExplorerObject} from "./explorer-object.constants";
@@ -38,9 +38,10 @@ import {CurrentUser} from "@global/service/current-user";
 import {Roles} from "@global/constants";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {XdbExportDialogParams} from "@components/xdb/xdb.types";
+import {TooltipModule} from "primeng/tooltip";
+import {DialogModule} from "primeng/dialog";
 import NewItemToken = Explorer.NewItemToken;
 import DuplicateItemToken = Explorer.DuplicateItemToken;
-import {TooltipModule} from "primeng/tooltip";
 
 @Component({
   selector: "explorer-object",
@@ -68,6 +69,8 @@ import {TooltipModule} from "primeng/tooltip";
     ReactiveFormsModule,
     ExplorerActionRendererComponent,
     TooltipModule,
+    NgTemplateOutlet,
+    DialogModule,
   ],
 })
 export class ExplorerObjectComponent implements OnInit {
@@ -81,10 +84,10 @@ export class ExplorerObjectComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly store = inject(Store);
   private readonly fb = inject(FormBuilder);
-  private readonly device = inject(DEVICE);
   private readonly ts = inject(TranslocoService);
   private readonly router = inject(Router);
   private readonly confirmationService = inject(ConfirmationService);
+  readonly device = inject(DEVICE);
   readonly currentUser = inject(CurrentUser);
   readonly entityForm = this.fb.group({});
   readonly restTab = ExplorerObject.RestTab;
@@ -92,6 +95,7 @@ export class ExplorerObjectComponent implements OnInit {
   entityData: { [k: string]: unknown };
   tabs: ExplorerTab[] = [];
   activeTabIndex = 0;
+  actionsDialogVisibility: boolean;
 
   constructor() {
     this.store.on<ExplorerObjectDto>(ExplorerEvent.SaveObject).pipe(takeUntilDestroyed())
@@ -100,6 +104,7 @@ export class ExplorerObjectComponent implements OnInit {
       .subscribe(data => this.handleDeleteEvent(data));
     this.store.on<void>(ExplorerEvent.ReloadObject).pipe(takeUntilDestroyed())
       .subscribe(() => {
+        this.actionsDialogVisibility = false;
         this.tabs = [];
         this.initObject();
       });
@@ -163,6 +168,10 @@ export class ExplorerObjectComponent implements OnInit {
     this.initObject();
   }
 
+  navBack() {
+    history.back();
+  }
+
   hasColumns(tab: ExplorerTab) {
     return this.targetData.entity.columns.find(v => v.tab.id === tab.id);
   }
@@ -207,6 +216,7 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   private handleSaveEvent(data: StoreMessage<ExplorerObjectDto>) {
+    this.actionsDialogVisibility = false;
     this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.explorerService.saveEntity(data.payload.entity, data.payload.target, data.payload.id).pipe(
       finalize(() => {
@@ -232,6 +242,7 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   private handleDeleteEvent(data: StoreMessage<ExplorerObjectDto>) {
+    this.actionsDialogVisibility = false;
     this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
     this.explorerService.removeEntity(data.payload.target, data.payload.id).pipe(
       finalize(() => {

@@ -243,6 +243,7 @@
     }
   },
   "explorer": {
+    "actions": "Actions",
     "create": "Create",
     "save": "Save",
     "delete": "Delete",
