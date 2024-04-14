@@ -79,6 +79,8 @@ export class DashboardComponent implements MenuCommandHandler {
       );
       this.cdr.markForCheck();
     });
+    this.store.on<boolean>(DashboardEvent.ToggleSidebar)
+      .subscribe((v) => this.sidebarOverMode = !!v.payload);
     this.router.events.pipe(takeUntilDestroyed()).subscribe(event => {
       if (!(event instanceof NavigationEnd)) {
         return;

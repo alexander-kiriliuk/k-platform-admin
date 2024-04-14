@@ -33,6 +33,7 @@ import {Dashboard} from "../dashboard.constants";
 import {NgClass, NgStyle, NgTemplateOutlet} from "@angular/common";
 import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {StopPropagationDirective} from "@modules/events/stop-propagation.directive";
+import {DashboardEvent} from "@global/events";
 
 
 @Component({
@@ -81,6 +82,7 @@ export class MenuTreeComponent implements AfterViewInit {
   openBranch(item: Category) {
     if (item.url) {
       this.router.navigateByUrl(item.url);
+      this.store.emit(DashboardEvent.ToggleSidebar);
       return;
     }
     if (!item.children?.length) {

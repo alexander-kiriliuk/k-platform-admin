@@ -68,6 +68,13 @@ th {
   }
 }
 
+.line {
+  &:hover {
+    @apply cursor-pointer select-none;
+    background: var(--surface-c);
+  }
+}
+
 .indicator {
   color: var(--primary-color);
   @apply cursor-pointer;

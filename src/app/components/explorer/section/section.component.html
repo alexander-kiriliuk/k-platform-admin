@@ -64,7 +64,7 @@
       </tr>
     </ng-template>
     <ng-template let-item pTemplate="body">
-      <tr [ngClass]="{selected: isSelected(item)}" (dblclick)="openObjectUi(item)">
+      <tr class="line" [ngClass]="{selected: isSelected(item)}" (click)="openObjectUi(item)">
         @if (dialogMode) {
           <td class="set-btn" (click)="selectEntityAndCloseDialog(item)">
             <i class="pi pi-arrow-down-left"></i>
