@@ -60,7 +60,7 @@ p-confirmDialog {
 
 .content-wrapper {
   @apply grid grid-cols-1 gap-x-4 w-full;
-  @apply sm:grid-cols-2 sm:gap-x-8;
+  @apply lg:grid-cols-2 lg:gap-x-8;
 }
 
 .data-grid {

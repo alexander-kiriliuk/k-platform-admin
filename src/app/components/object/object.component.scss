@@ -9,7 +9,7 @@
 
 .head {
   @apply mb-2 mt-2 px-4;
-  @apply sm:px-0 sm:mb-8 sm:mt-0;
+  @apply lg:px-0 lg:mb-8 lg:mt-0;
   @apply w-full;
   input, & > div {
     @apply w-full;

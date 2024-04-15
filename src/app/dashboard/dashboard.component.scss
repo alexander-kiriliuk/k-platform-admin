@@ -8,7 +8,7 @@
 
 .content-area {
   width: calc(100vw - var(--side-menu-w));
-  max-height: calc(100vh - var(--header-bar-h));
+  @apply overflow-hidden;
   @screen max-lg {
     @apply w-full;
   }
