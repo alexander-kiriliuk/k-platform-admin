@@ -37,13 +37,15 @@
 @if (targetData?.entity) {
   <div class="actions" [ngClass]="{'dialog-mode': dialogMode}">
     <div>
-      <p-button
-        class="actions-btn"
-        icon="pi pi-arrow-left"
-        size="small"
-        [rounded]="true"
-        [text]="true"
-        (click)="navBack()"/>
+      @if (!dialogMode) {
+        <p-button
+          class="actions-btn"
+          icon="pi pi-arrow-left"
+          size="small"
+          [rounded]="true"
+          [text]="true"
+          (click)="navBack()"/>
+      }
       @if (targetData.entity.actions?.length) {
         <p-button
           class="actions-btn"

@@ -30,7 +30,8 @@
   height: var(--actions-h);
 
   &.dialog-mode {
-    @apply mx-4;
+    @apply mx-0;
+    @apply md:mx-4;
     background: var(--surface-a);
   }
 

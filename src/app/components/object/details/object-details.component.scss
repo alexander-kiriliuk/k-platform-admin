@@ -18,17 +18,28 @@ p-confirmDialog {
   }
 
   & > div {
-    @apply flex justify-between gap-4;
+    @apply flex flex-col justify-between gap-0;
+    @apply md:flex-row md:gap-4;
     & > div {
       @apply flex items-center gap-x-2;
+      &:last-child {
+        @apply justify-end flex-row-reverse gap-x-0;
+        @apply md:justify-start md:flex-row md:gap-x-2;
+      }
     }
   }
+
 }
 
 .cols {
   @apply flex flex-col gap-4;
   & > div:first-child {
-    @apply my-2;
+    @apply my-2 w-full;
+    ::ng-deep {
+      input {
+        @apply w-full;
+      }
+    }
   }
 }
 
@@ -48,12 +59,14 @@ p-confirmDialog {
 }
 
 .content-wrapper {
-  @apply grid grid-cols-2 gap-x-8 w-full;
+  @apply grid grid-cols-1 gap-x-4 w-full;
+  @apply sm:grid-cols-2 sm:gap-x-8;
 }
 
 .data-grid {
   & > div {
-    @apply grid grid-cols-2 gap-4 py-1;
+    @apply grid grid-cols-1 gap-2 py-1;
+    @apply md:grid-cols-2 md:gap-4;
     & > div {
       @apply flex items-center gap-x-2;
       &:first-child {

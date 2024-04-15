@@ -91,12 +91,6 @@ p-paginator {
   }
 }
 
-.p-dialog-content {
-  @screen sm {
-    @apply px-2 py-2 #{!important};
-  }
-}
-
 .c-primary {
   color: var(--primary-color)
 }

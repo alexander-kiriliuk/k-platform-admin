@@ -1,7 +1,8 @@
 .content-wrapper {
   max-width: 100%;
   min-width: 50vw;
-  @apply flex gap-8 justify-between w-full;
+  @apply flex flex-col gap-8 justify-between w-full;
+  @apply md:flex-row;
 }
 
 .tab {
