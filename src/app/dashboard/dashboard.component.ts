@@ -67,7 +67,6 @@ export class DashboardComponent implements MenuCommandHandler {
   private readonly dialogService = inject(DialogService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly titleService = inject(Title);
-
   private readonly router = inject(Router);
 
   constructor() {

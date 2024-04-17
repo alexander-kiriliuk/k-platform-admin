@@ -62,7 +62,7 @@ button {
 
   &:after {
     content: "";
-    background-image: url("/assets/icons/promo.svg");
+    background-image: url("/assets/icons/promo.png");
     @apply absolute left-0 right-0 top-0 bottom-0 opacity-40 bg-no-repeat bg-center;
   }
 }

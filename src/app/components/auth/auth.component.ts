@@ -14,38 +14,22 @@
  * limitations under the License.
  */
 
-import {
-ChangeDetectionStrategy,
-ChangeDetectorRef,
-Component,
-inject,
-OnInit,
-ViewChild
-} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject, OnInit, ViewChild} from "@angular/core";
 import {InputTextModule} from "primeng/inputtext";
 import {PasswordModule} from "primeng/password";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {CardModule} from "primeng/card";
 import {ImageModule} from "primeng/image";
-import {Auth} from "./auth.constants";
 import {ReactiveFormsModule} from "@angular/forms";
-import {AuthService} from "./auth.service";
-import {Store} from "@modules/store/store";
-import {AuthEvent} from "./auth.event";
 import {TranslocoPipe} from "@ngneat/transloco";
-import {catchError} from "rxjs/operators";
-import {finalize, throwError} from "rxjs";
-import {ToastEvent} from "@global/events";
-import {CaptchaResponse, ToastData} from "@global/types";
 import {CaptchaService} from "@global/service/captcha.service";
-import {LoginPayload} from "./auth.types";
 import {PreloaderComponent} from "@modules/preloader/preloader.component";
 import {PreloaderDirective} from "@modules/preloader/preloader.directive";
-import {PreloaderEvent} from "@modules/preloader/preloader.event";
 import {RecaptchaComponent, RecaptchaModule} from "ng-recaptcha";
-import {ThemeUtils} from "@global/util/theme.utils";
-import getCurrentTheme = ThemeUtils.getCurrentTheme;
+import {AuthViewModel} from "@components/auth/auth.view-model";
+import {takeUntilDestroyed, toObservable} from "@angular/core/rxjs-interop";
+import {skip} from "rxjs";
 
 @Component({
   selector: "auth",
@@ -54,6 +38,7 @@ import getCurrentTheme = ThemeUtils.getCurrentTheme;
   styleUrls: ["./auth.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    AuthViewModel,
     CaptchaService
   ],
   imports: [
@@ -72,68 +57,25 @@ import getCurrentTheme = ThemeUtils.getCurrentTheme;
 })
 export class AuthComponent implements OnInit {
 
-  @ViewChild(RecaptchaComponent) recaptcha: RecaptchaComponent;
-  readonly form = Auth.createLoginForm();
-  private readonly store = inject(Store);
-  private readonly authService = inject(AuthService);
-  private readonly captchaService = inject(CaptchaService);
-  private readonly cdr = inject(ChangeDetectorRef);
+  @ViewChild(RecaptchaComponent) readonly recaptcha: RecaptchaComponent;
+  readonly vm = inject(AuthViewModel);
 
-  reCaptchaResolved: boolean;
-  captchaConfig: CaptchaResponse;
-
-  get preloaderChannel() {
-    return Auth.PreloaderCn;
+  constructor() {
+    toObservable(this.vm.reCaptchaResolved)
+      .pipe(takeUntilDestroyed(), skip(1))
+      .subscribe(result => {
+        if (!result) {
+          this.recaptcha.reset();
+        }
+      });
   }
 
-  get theme() {
-    return getCurrentTheme();
-  }
-
-  get isReCaptcha() {
-    return this.captchaConfig.type === "google";
+  get captchaConfig() {
+    return this.vm.captchaConfig();
   }
 
   ngOnInit(): void {
-    this.getCaptcha();
-  }
-
-  getCaptcha() {
-    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-    this.captchaService.getCaptcha().pipe(
-      finalize(() => this.store.emit(PreloaderEvent.Hide, this.preloaderChannel))
-    ).subscribe(payload => {
-      this.captchaConfig = payload;
-      if (payload.enabled) {
-        this.form.controls.captchaPayload.reset();
-        this.form.controls.captchaId.setValue(payload.id);
-      }
-      this.cdr.markForCheck();
-    });
-  }
-
-  onCaptchaResolved(payload: string) {
-    this.form.controls.captchaPayload.setValue(payload);
-    this.reCaptchaResolved = true;
-    this.cdr.markForCheck();
-  }
-
-  onSubmit() {
-    const data = this.form.value;
-    this.authService.login(data as LoginPayload).pipe(catchError((res) => {
-      this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
-      if (this.isReCaptcha) {
-        this.reCaptchaResolved = false;
-        this.form.controls.captchaPayload.reset();
-        this.recaptcha.reset();
-        this.cdr.markForCheck();
-      } else {
-        this.getCaptcha();
-      }
-      return throwError(res);
-    })).subscribe(v => {
-      this.store.emit(AuthEvent.Success, v);
-    });
+    this.vm.getCaptcha();
   }
 
 }

@@ -114,6 +114,10 @@ export class ExplorerObjectComponent implements OnInit {
     return this.config?.data as ObjectDialogConfig;
   }
 
+  private get entityTargetOrAlias() {
+    return this.targetData.entity.alias || this.targetData.entity.target;
+  }
+
   get dialogMode() {
     return !!this.dialogRef;
   }
@@ -177,7 +181,7 @@ export class ExplorerObjectComponent implements OnInit {
   }
 
   duplicateObject() {
-    const p1 = this.getEntityTargetOrAlias();
+    const p1 = this.entityTargetOrAlias;
     const prop = this.targetData.primaryColumn.property;
     const url = `/object/${p1}/${NewItemToken}?${DuplicateItemToken}=${this.entityData[prop]}`;
     window.open(url, "_blank");
@@ -233,7 +237,7 @@ export class ExplorerObjectComponent implements OnInit {
         title: this.ts.translate("explorer.msg.object.save.success")
       });
       if (this.id === Explorer.NewItemToken) {
-        const p1 = this.getEntityTargetOrAlias();
+        const p1 = this.entityTargetOrAlias;
         this.router.navigate([
           `/object/${p1}/${(entity as { [k: string]: unknown })[this.targetData.primaryColumn.property]}`
         ], {replaceUrl: true});
@@ -259,13 +263,9 @@ export class ExplorerObjectComponent implements OnInit {
         title: this.ts.translate("explorer.msg.object.delete.success")
       });
       this.router.navigate([
-        `/section/${this.getEntityTargetOrAlias()}`
+        `/section/${this.entityTargetOrAlias}`
       ], {replaceUrl: true});
     });
-  }
-
-  private getEntityTargetOrAlias() {
-    return this.targetData.entity.alias || this.targetData.entity.target;
   }
 
   private initObject() {

@@ -1,37 +1,37 @@
 <div>
   <p-card>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="vm.form" (ngSubmit)="vm.doLogin()">
       <div class="logo"></div>
       <div class="p-input-icon-right">
         <i class="pi pi-user"></i>
         <input pInputText
                [placeholder]="'auth.login' | transloco"
-               [formControl]="form.controls.login"/>
+               [formControl]="vm.form.controls.login"/>
       </div>
       <div class="p-input-icon-right">
         <i class="pi pi-lock"></i>
         <p-password
           [placeholder]="'auth.password' | transloco"
-          [formControl]="form.controls.password"
+          [formControl]="vm.form.controls.password"
           [toggleMask]="true"
           [feedback]="false"/>
       </div>
       @if (captchaConfig?.enabled) {
         <div class="captcha">
-          @if (!isReCaptcha) {
+          @if (!vm.isReCaptcha) {
             <div>
               <img alt="captcha" [src]="captchaConfig.image"/>
               <p-button icon="pi pi-replay"
                         [rounded]="true"
-                        (click)="getCaptcha()"/>
+                        (click)="vm.getCaptcha()"/>
             </div>
             <input pInputText
                    [placeholder]="'auth.captcha.value' | transloco"
-                   [formControl]="form.controls.captchaPayload"/>
+                   [formControl]="vm.form.controls.captchaPayload"/>
           } @else {
             <re-captcha [siteKey]="captchaConfig.id"
-                        [theme]="theme"
-                        (resolved)="onCaptchaResolved($event)"
+                        [theme]="vm.theme"
+                        (resolved)="vm.onCaptchaResolved($event)"
             />
           }
         </div>
@@ -41,9 +41,9 @@
               icon="pi pi-sign-in"
               iconPos="right"
               [label]="'auth.sign.in' | transloco"
-              [disabled]="!form.valid || !captchaConfig || (isReCaptcha && !reCaptchaResolved)">
+              [disabled]="!vm.form.valid || !captchaConfig || (vm.isReCaptcha && !vm.reCaptchaResolved())">
       </button>
-      <preloader *preloading="{state: false, channel: preloaderChannel}"/>
+      <preloader *preloading="{state: false, channel: vm.preloaderChannel}"/>
     </form>
   </p-card>
 </div>
