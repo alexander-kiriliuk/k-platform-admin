@@ -1,11 +1,11 @@
-<p-tabView [scrollable]="true" [ngClass]="{single: tabs.length < 2}" [(activeIndex)]="activeTabIndex">
-  @for (tab of tabs; track tab.id) {
+<p-tabView [scrollable]="true" [ngClass]="{single: vm.tabs.length < 2}" [(activeIndex)]="activeTabIndex">
+  @for (tab of vm.tabs; track tab.id) {
     @if (hasColumns(tab)) {
       <p-tabPanel
-        [header]="tab.id === restTab.id ? ('explorer.tab.rest' | transloco) : (tab.name | localize: tab.id).toString()">
-        @if (targetData?.entity?.columns) {
+        [header]="tab.id === vm.restTab.id ? ('explorer.tab.rest' | transloco) : (tab.name | localize: tab.id).toString()">
+        @if (vm.targetData?.entity?.columns) {
           <div [ngClass]="tabClassName">
-            @for (col of targetData.entity.columns; track col.id) {
+            @for (col of vm.targetData.entity.columns; track col.id) {
               @if (col.tab?.id === tab.id && col.objectVisibility) {
                 <div class="box">
                   @if (col.objectVisibility) {
@@ -13,10 +13,10 @@
                       tooltipPosition="left"
                       [pTooltip]="col.property"
                       [showDelay]="1000"
-                      [target]="targetData"
+                      [target]="vm.targetData"
                       [column]="col"
-                      [data]="entityData"
-                      [entityForm]="entityForm"/>
+                      [data]="vm.entityData"
+                      [entityForm]="vm.entityForm"/>
                   }
                 </div>
               }
@@ -29,15 +29,15 @@
 </p-tabView>
 <ng-template #actionsUi>
   <explorer-action-renderer
-    [entityForm]="entityForm"
-    [target]="targetData"
-    [data]="entityData"
-    [actions]="targetData.entity.actions"/>
+    [entityForm]="vm.entityForm"
+    [target]="vm.targetData"
+    [data]="vm.entityData"
+    [actions]="vm.targetData.entity.actions"/>
 </ng-template>
-@if (targetData?.entity) {
-  <div class="actions" [ngClass]="{'dialog-mode': dialogMode}">
+@if (vm.targetData?.entity) {
+  <div class="actions" [ngClass]="{'dialog-mode': vm.dialogMode}">
     <div>
-      @if (!dialogMode) {
+      @if (!vm.dialogMode) {
         <p-button
           class="actions-btn"
           icon="pi pi-arrow-left"
@@ -46,7 +46,7 @@
           [text]="true"
           (click)="navBack()"/>
       }
-      @if (targetData.entity.actions?.length) {
+      @if (vm.targetData.entity.actions?.length) {
         <p-button
           class="actions-btn"
           severity="warning"
@@ -54,14 +54,15 @@
           size="small"
           [rounded]="true"
           [text]="true"
-          (click)="actionsDialogVisibility = true"/>
+          (click)="vm.actionsDialogVisibility.set(true)"/>
         @if (device.isDesktop) {
           <ng-container *ngTemplateOutlet="actionsUi"/>
         } @else {
           <p-dialog
             position="bottom"
             [header]="'explorer.actions' | transloco"
-            [(visible)]="actionsDialogVisibility">
+            [visible]="vm.actionsDialogVisibility()"
+            (visibleChange)="vm.actionsDialogVisibility.set($event)">
             <ng-container *ngTemplateOutlet="actionsUi"/>
           </p-dialog>
         }
@@ -82,16 +83,16 @@
           <span>{{ "explorer.export.btn" | transloco }}</span>
         </button>
       }
-      @if (targetData.entity.defaultActionDelete) {
+      @if (vm.targetData.entity.defaultActionDelete) {
         <button class="p-button-sm p-button-danger" pButton pRipple
-                [disabled]="!canDeleteObject" (click)="deleteObject()">
+                [disabled]="!vm.canDeleteObject" (click)="vm.deleteObject()">
           <i class="pi pi-times"></i>
           <span>{{ "explorer.delete" | transloco }}</span>
         </button>
       }
-      @if (targetData.entity.defaultActionSave) {
+      @if (vm.targetData.entity.defaultActionSave) {
         <button class="p-button-sm p-button-success" pButton pRipple
-                [disabled]="!entityForm.valid" (click)="saveObject()">
+                [disabled]="!vm.entityForm.valid" (click)="vm.saveObject()">
           <i class="pi pi-save"></i>
           <span>{{ "explorer.save" | transloco }}</span>
         </button>
@@ -100,7 +101,7 @@
   </div>
 }
 
-<preloader *preloading="{state: true, channel: preloaderChannel}"/>
+<preloader *preloading="{state: true, channel: vm.preloaderChannel}"/>
 
 <p-confirmDialog #delDialog>
   <ng-template pTemplate="header">
