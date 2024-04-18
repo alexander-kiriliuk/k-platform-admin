@@ -1,5 +1,5 @@
 <ul>
-  @if (!isReference) {
+  @if (!vm.isReference) {
     <li>
     <span>
       <i class="pi pi-sort-alt"></i>
@@ -7,13 +7,13 @@
     </span>
       <ul>
         <li>
-          <a (click)="setOrder('ASC')">
+          <a (click)="vm.setOrder('ASC')">
             <i class="pi pi-sort-amount-up" [ngClass]="{active: isSortAscActive}"></i>
             {{ "explorer.asc" | transloco }}
           </a>
         </li>
         <li>
-          <a (click)="setOrder('DESC')">
+          <a (click)="vm.setOrder('DESC')">
             <i class="pi pi-sort-amount-down" [ngClass]="{active: isSortDescActive}"></i>
             {{ "explorer.desc" | transloco }}
           </a>
@@ -24,35 +24,35 @@
   <li>
     <span>
       <i class="pi pi-sliders-h"></i>
-      {{ column.type !== 'date' ? ("explorer.filter.label" | transloco) : ("explorer.filter.date" | transloco) }}
+      {{ vm.column.type !== 'date' ? ("explorer.filter.label" | transloco) : ("explorer.filter.date" | transloco) }}
     </span>
     <ul>
-      @if (isReference) {
+      @if (vm.isReference) {
         <li class="reference">
-          <a class="select-field" (click)="showRefTargetDialog()">
+          <a class="select-field" (click)="vm.showRefTargetDialog()">
             <i class="pi pi-window-maximize"></i>
-            <span [ngClass]="{orange: referenceField?.ref}">
-            {{ referenceField?.ref ? referenceField.ref : ("explorer.filter.select" | transloco) }}
+            <span [ngClass]="{orange: vm.referenceField?.ref}">
+            {{ vm.referenceField?.ref ? vm.referenceField.ref : ("explorer.filter.select" | transloco) }}
           </span>
           </a>
-          @if (referenceField?.ref && referencedColumn?.type !== "date") {
-            <a class="red" (click)="openSectionDialog()">
+          @if (vm.referenceField?.ref && vm.referencedColumn?.type !== "date") {
+            <a class="red" (click)="vm.openSectionDialog()">
               <i class="pi pi-arrow-up-right"></i>
             </a>
           }
         </li>
       }
-      @if (!isReference || (isReference && referenceField?.ref)) {
+      @if (!vm.isReference || (vm.isReference && vm.referenceField?.ref)) {
         <li>
-          @if (form.controls.name.value.length) {
-            @if (column.type !== "reference") {
-              <ng-container *ngTemplateOutlet="editorCtrl; context: {type: column.type}"/>
+          @if (vm.form.controls.name.value.length) {
+            @if (vm.column.type !== "reference") {
+              <ng-container *ngTemplateOutlet="editorCtrl; context: {type: vm.column.type}"/>
             }
-            @if (column.type === "reference" && referencedColumn) {
-              <ng-container *ngTemplateOutlet="editorCtrl; context: {type: referencedColumn.type}"/>
+            @if (vm.column.type === "reference" && vm.referencedColumn) {
+              <ng-container *ngTemplateOutlet="editorCtrl; context: {type: vm.referencedColumn.type}"/>
             }
             <div class="actions">
-              <button class="p-button-sm" pButton [disabled]="!applyButtonEnabled" (click)="applyFilter()">
+              <button class="p-button-sm" pButton [disabled]="!applyButtonEnabled" (click)="vm.applyFilter()">
                 {{ "explorer.apply" | transloco }}
               </button>
             </div>
@@ -63,10 +63,10 @@
   </li>
 </ul>
 
-<preloader *preloading="{state: false, channel: preloaderChannel}"/>
+<preloader *preloading="{state: false, channel: vm.preloaderChannel}"/>
 
 <ng-template #editorCtrl let-type="type">
-  <ng-container [formGroup]="form">
+  <ng-container [formGroup]="vm.form">
     @switch (type) {
       @default {
         <div class="p-input-icon-left">
@@ -100,7 +100,7 @@
     }
     @if (type !== "boolean" && type !== "date") {
       <div class="ctrl-wrapper">
-        <p-checkbox inputId="em" [binary]="true" [formControl]="form.controls.exactMatch"/>
+        <p-checkbox inputId="em" [binary]="true" [formControl]="vm.form.controls.exactMatch"/>
         <label for="em">{{ "explorer.exact" | transloco }}</label>
       </div>
     }
