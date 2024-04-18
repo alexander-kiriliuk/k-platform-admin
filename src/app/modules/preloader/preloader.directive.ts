@@ -37,10 +37,10 @@ export class PreloaderDirective implements AfterViewInit {
 
   ctx: InputSignal<TogglePreloader> = input({state: true} as TogglePreloader, {alias: "preloading"});
   private readonly store = inject(Store);
+  private readonly templateRef = inject(TemplateRef);
+  private readonly viewContainer = inject(ViewContainerRef);
 
-  constructor(
-    private templateRef: TemplateRef<unknown>,
-    private viewContainer: ViewContainerRef) {
+  constructor() {
     this.store.on<string>(PreloaderEvent.Hide)
       .pipe(
         filter(v => v.payload === this.ctx().channel),

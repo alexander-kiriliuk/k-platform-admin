@@ -82,7 +82,6 @@ export class ReferenceSectionRendererComponent extends AbstractExplorerSectionRe
       }
       return property[this.refTarget.namedColumn.property] || property[this.refTarget.primaryColumn.property];
     }
-
   }
 
   ngOnInit(): void {

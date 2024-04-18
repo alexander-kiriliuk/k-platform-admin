@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from "@angular/core";
+import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
 import {ExplorerService} from "../explorer.service";
 import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {ExplorerObjectRendererComponent} from "../renderer/explorer-object-renderer.component";
@@ -94,7 +94,7 @@ export class ExplorerObjectComponent implements OnInit {
     history.back();
   }
 
-  hasColumns(tab: ExplorerTab) {  // todo create pipe?
+  hasColumns(tab: ExplorerTab) {
     return this.vm.targetData.entity.columns.find(v => v.tab.id === tab.id);
   }
 
