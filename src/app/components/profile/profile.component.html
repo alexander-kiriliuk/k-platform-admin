@@ -1,4 +1,4 @@
-<div class="wrap" [formGroup]="form">
+<div class="wrap" [formGroup]="vm.form">
   <div>
     <div class="p-float-label">
       <input pInputText id="id" formControlName="id"/>
@@ -52,7 +52,7 @@
 </div>
 
 <div>
-  <button pButton (click)="save()">{{ "profile.save" | transloco }}</button>
+  <button pButton (click)="vm.save()">{{ "profile.save" | transloco }}</button>
 </div>
 
-<preloader *preloading="{state: false, channel: preloaderChannel}"/>
+<preloader *preloading="{state: false, channel: vm.preloaderChannel}"/>

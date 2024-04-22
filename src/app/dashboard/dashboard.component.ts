@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, inject} from "@angular/core";
-import {MenuItem, MenuItemCommandEvent} from "primeng/api";
-import {MenuCommandHandler, User} from "@global/types";
-import {Store} from "@modules/store/store";
-import {AuthEvent} from "@components/auth/auth.event";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {Dashboard} from "./dashboard.constants";
 import {CurrentUser} from "@global/service/current-user";
-import {DialogService} from "primeng/dynamicdialog";
 import {AsyncPipe, NgClass} from "@angular/common";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {MenuTreeComponent} from "./menu/menu-tree.component";
@@ -29,12 +24,9 @@ import {PreloaderComponent} from "@modules/preloader/preloader.component";
 import {MenuModule} from "primeng/menu";
 import {AvatarModule} from "primeng/avatar";
 import {MediaComponent} from "@modules/media/media.component";
-import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
+import {TranslocoPipe} from "@ngneat/transloco";
 import {PreloaderDirective} from "@modules/preloader/preloader.directive";
-import {CurrentUserEvent, DashboardEvent} from "@global/events";
-import {NavigationEnd, Router} from "@angular/router";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {Title} from "@angular/platform-browser";
+import {DashboardViewModel} from "./dashboard.view-model";
 
 
 @Component({
@@ -43,6 +35,9 @@ import {Title} from "@angular/platform-browser";
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    DashboardViewModel
+  ],
   imports: [
     NgClass,
     ScrollPanelModule,
@@ -56,87 +51,13 @@ import {Title} from "@angular/platform-browser";
     PreloaderDirective
   ],
 })
-export class DashboardComponent implements MenuCommandHandler {
+export class DashboardComponent {
 
-  menuModel: MenuItem[] = [];
-  sidebarOverMode: boolean;
-  title: string;
+  readonly vm = inject(DashboardViewModel);
   readonly currentUser = inject(CurrentUser);
-  private readonly store = inject(Store);
-  private readonly ts = inject(TranslocoService);
-  private readonly dialogService = inject(DialogService);
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly titleService = inject(Title);
-  private readonly router = inject(Router);
-
-  constructor() {
-    this.menuModel = Dashboard.createMenuModel(this, this.ts);
-    this.store.on<string>(DashboardEvent.PatchHeader).subscribe(v => {
-      this.title = v.payload;
-      this.titleService.setTitle(
-        this.title?.length ? this.title.replace(/<\S[^><]*>/g, "") : this.ts.translate("dashboard.welcome")
-      );
-      this.cdr.markForCheck();
-    });
-    this.store.on<boolean>(DashboardEvent.ToggleSidebar)
-      .subscribe((v) => this.sidebarOverMode = !!v.payload);
-    this.router.events.pipe(takeUntilDestroyed()).subscribe(event => {
-      if (!(event instanceof NavigationEnd)) {
-        return;
-      }
-      if (this.isHomepage) {
-        this.store.emit<string>(DashboardEvent.PatchHeader, "");
-      } else {
-        this.cdr.markForCheck();
-      }
-    });
-  }
-
-  get isHomepage() {
-    return this.router.url === "/";
-  }
 
   get preloaderChannel() {
     return Dashboard.MenuPreloaderCn;
-  }
-
-  toggleSideBarMode() {
-    this.sidebarOverMode = !this.sidebarOverMode;
-  }
-
-  onMenuCommand(event: MenuItemCommandEvent, id: string): void {
-    switch (id) {
-      case "profile":
-        import("@components/profile/profile.component").then(c => {
-          this.dialogService.open(c.ProfileComponent, {
-            header: this.currentUser.fullName,
-            resizable: true,
-            draggable: true,
-            modal: false,
-            position: "topright"
-          }).onClose.subscribe(data => {
-            if (!data) {
-              return;
-            }
-            this.store.emit<User>(CurrentUserEvent.Set, data);
-          });
-        });
-        break;
-      case "settings":
-        import("./app-settings/app-settings.component").then(c => {
-          this.dialogService.open(c.AppSettingsComponent, {
-            header: this.ts.translate("dashboard.menu.settings"),
-            resizable: true,
-            draggable: true,
-            modal: false,
-            position: "topright"
-          });
-        });
-        break;
-      case "exit":
-        this.store.emit(AuthEvent.Logout);
-        break;
-    }
   }
 
 }

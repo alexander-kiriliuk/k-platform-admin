@@ -1,11 +1,11 @@
-<ng-container [formGroup]="form">
+<ng-container [formGroup]="vm.form">
   <div class="label">
     <div>
-      {{form.controls.target.value}}
-      [{{data.target.primaryColumn.property}}]={{form.controls.id.value}}
+      {{vm.form.controls.target.value}}
+      [{{data.target.primaryColumn.property}}]={{vm.form.controls.id.value}}
     </div>
     <button class="p-button-sm p-button-success" pButton pRipple
-            (click)="export()">
+            (click)="vm.export()">
       <i class="pi pi-file-export"></i>&nbsp;
       {{"xdb.export.btn" | transloco}}
     </button>
@@ -36,4 +36,4 @@
   />
 </ng-container>
 
-<preloader *preloading="{state: false, channel: preloaderChannel}"/>
+<preloader *preloading="{state: false, channel: vm.preloaderChannel}"/>

@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-import {ChangeDetectionStrategy, Component, inject, OnInit} from "@angular/core";
-import {CurrentUser} from "@global/service/current-user";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {ButtonModule} from "primeng/button";
-import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {InputTextModule} from "primeng/inputtext";
-import {CreateProfileForm, Profile} from "./profile.constants";
 import {ReactiveFormsModule} from "@angular/forms";
 import {PasswordModule} from "primeng/password";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {CheckboxModule} from "primeng/checkbox";
-import {ProfileService} from "./profile.service";
-import {ToastData, User} from "@global/types";
 import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {MediaInputComponent} from "@modules/media/input/media-input.component";
 import {PreloaderComponent} from "@modules/preloader/preloader.component";
 import {PreloaderDirective} from "@modules/preloader/preloader.directive";
-import {PreloaderEvent} from "@modules/preloader/preloader.event";
-import {finalize, throwError} from "rxjs";
-import {Store} from "@modules/store/store";
-import {catchError} from "rxjs/operators";
-import {ToastEvent} from "@global/events";
+import {ProfileViewModel} from "@components/profile/profile.view-model";
 
 @Component({
   selector: "profile",
@@ -44,6 +35,7 @@ import {ToastEvent} from "@global/events";
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   providers: [
+    ProfileViewModel,
     LocalizePipe
   ],
   imports: [
@@ -60,43 +52,17 @@ import {ToastEvent} from "@global/events";
     PreloaderDirective,
   ]
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
 
-  readonly currentUser = inject(CurrentUser);
-  readonly form = CreateProfileForm();
+  readonly vm = inject(ProfileViewModel);
   private readonly localizePipe = inject(LocalizePipe);
-  private readonly ref = inject(DynamicDialogRef);
-  private readonly profileService = inject(ProfileService);
-  private readonly store = inject(Store);
 
   get roles() {
     const res: string[] = [];
-    this.form.controls.roles.value.forEach(role => {
+    this.vm.form.controls.roles.value.forEach(role => {
       res.push(this.localizePipe.transform(role.name, role.code) as string);
     });
     return res;
-  }
-
-  get preloaderChannel() {
-    return Profile.PreloaderCn;
-  }
-
-  ngOnInit(): void {
-    this.form.patchValue(this.currentUser.data);
-  }
-
-  save() {
-    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-    this.profileService.updateUser(this.form.value as User).pipe(
-      catchError((res) => {
-        this.store.emit<ToastData>(ToastEvent.Error, {message: res.error.message});
-        return throwError(res);
-      }),
-      finalize(() => {
-        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
-      })).subscribe(user => {
-      this.ref.close(user);
-    });
   }
 
 }

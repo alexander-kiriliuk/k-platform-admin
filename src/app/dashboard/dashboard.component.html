@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <div class="sidebar content-area"
-       [ngClass]="{over: sidebarOverMode}">
-    <div class="sidebar-overlay" (click)="toggleSideBarMode()"></div>
+       [ngClass]="{over: vm.sidebarOverMode}">
+    <div class="sidebar-overlay" (click)="vm.toggleSideBarMode()"></div>
     <div class="sidebar-content">
       <div class="logo-bar" routerLink="/"></div>
       <div class="sidebar-data">
@@ -17,13 +17,13 @@
   <div class="content-area">
     <div class="head-bar">
       <div>
-        <i class="menu-ctrl pi pi-bars" (click)="toggleSideBarMode()"></i>
-        @if (title?.length) {
-          <h1 class="heading-2xl" [innerHTML]="title"></h1>
+        <i class="menu-ctrl pi pi-bars" (click)="vm.toggleSideBarMode()"></i>
+        @if (vm.title?.length) {
+          <h1 class="heading-2xl" [innerHTML]="vm.title"></h1>
         }
       </div>
       <div>
-        <p-menu #menu [model]="menuModel" [popup]="true"/>
+        <p-menu #menu [model]="vm.menuModel" [popup]="true"/>
         @if (currentUser.asObservable | async; as user) {
           <a (click)="menu.toggle($event)">
             <p-avatar shape="circle" [label]="currentUser.data.avatar ? '' : currentUser.initials">
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="content-block">
-      @if (isHomepage) {
+      @if (vm.isHomepage) {
         <div class="welcome">{{ "dashboard.welcome" | transloco }}, {{ currentUser.fullName }}!</div>
       } @else {
         <router-outlet></router-outlet>

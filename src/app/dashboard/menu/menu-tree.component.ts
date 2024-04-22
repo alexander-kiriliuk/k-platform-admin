@@ -14,26 +14,12 @@
  * limitations under the License.
  */
 
-import {
-AfterViewInit,
-ChangeDetectionStrategy,
-ChangeDetectorRef,
-Component,
-inject
-} from "@angular/core";
-import {Router} from "@angular/router";
+import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {MENU_STORE_KEY} from "./menu-tree.constants";
-import {Category} from "@global/types";
-import {AppService} from "@global/service/app.service";
-import {finalize} from "rxjs";
-import {Store} from "@modules/store/store";
-import {PreloaderEvent} from "@modules/preloader/preloader.event";
-import {Dashboard} from "../dashboard.constants";
 import {NgClass, NgStyle, NgTemplateOutlet} from "@angular/common";
 import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {StopPropagationDirective} from "@modules/events/stop-propagation.directive";
-import {DashboardEvent} from "@global/events";
+import {MenuTreeViewModel} from "./menu-tree.view-model";
 
 
 @Component({
@@ -49,6 +35,9 @@ import {DashboardEvent} from "@global/events";
       transition("collapsed <=> expanded", animate("400ms ease-out")),
     ]),
   ],
+  providers: [
+    MenuTreeViewModel
+  ],
   imports: [
     NgStyle,
     NgClass,
@@ -57,53 +46,8 @@ import {DashboardEvent} from "@global/events";
     StopPropagationDirective
   ]
 })
-export class MenuTreeComponent implements AfterViewInit {
+export class MenuTreeComponent {
 
-  openedNodes: { [k: number]: boolean } = {};
-  data: Category<{ iconClass: string }>[] = [];
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly router = inject(Router);
-  private readonly appService = inject(AppService);
-  private readonly store = inject(Store);
-
-  ngAfterViewInit(): void {
-    this.appService.getMenu().pipe(finalize(() => {
-      this.store.emit(PreloaderEvent.Hide, Dashboard.MenuPreloaderCn);
-      const payload = localStorage.getItem(MENU_STORE_KEY);
-      if (payload) {
-        this.openedNodes = JSON.parse(payload);
-      }
-      this.cdr.markForCheck();
-    })).subscribe(v => {
-      this.data = v.children;
-    });
-  }
-
-  openBranch(item: Category) {
-    if (item.url) {
-      this.router.navigateByUrl(item.url);
-      this.store.emit(DashboardEvent.ToggleSidebar);
-      return;
-    }
-    if (!item.children?.length) {
-      return;
-    }
-    this.openedNodes[item.id] = true;
-    this.syncNodes();
-  }
-
-  closeBranch(item: Category) {
-    if (!this.openedNodes[item.id]) {
-      this.openBranch(item);
-      return;
-    }
-    delete this.openedNodes[item.id];
-    this.syncNodes();
-  }
-
-  private syncNodes() {
-    const payload = JSON.stringify(this.openedNodes);
-    localStorage.setItem(MENU_STORE_KEY, payload);
-  }
+  readonly vm = inject(MenuTreeViewModel);
 
 }

@@ -18,19 +18,13 @@ import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
-import {TranslocoPipe, TranslocoService} from "@ngneat/transloco";
+import {TranslocoPipe} from "@ngneat/transloco";
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Store} from "@modules/store/store";
 import {XdbService} from "../xdb.service";
-import {Xdb} from "../xdb.constants";
 import {PreloaderComponent} from "@modules/preloader/preloader.component";
 import {PreloaderDirective} from "@modules/preloader/preloader.directive";
-import {PreloaderEvent} from "@modules/preloader/preloader.event";
-import {finalize, throwError} from "rxjs";
-import {catchError} from "rxjs/operators";
-import {ToastData} from "@global/types";
-import {DashboardEvent, ToastEvent} from "@global/events";
-import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/fileupload";
+import {FileUploadModule} from "primeng/fileupload";
+import {XDBImportViewModel} from "@components/xdb/xdb-import/xdb-import.view-model";
 
 @Component({
   selector: "xdb-import",
@@ -39,6 +33,7 @@ import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/f
   styleUrls: ["./xdb-import.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    XDBImportViewModel,
     XdbService
   ],
   imports: [
@@ -55,57 +50,10 @@ import {FileUploadErrorEvent, FileUploadEvent, FileUploadModule} from "primeng/f
 export class XdbImportComponent {
 
   readonly ctrl: FormControl<string> = new FormControl("", [Validators.required]);
-  private readonly ts = inject(TranslocoService);
-  private readonly xdbService = inject(XdbService);
-  private readonly store = inject(Store);
-
-  get preloaderChannel() {
-    return Xdb.PreloaderCn;
-  }
+  readonly vm = inject(XDBImportViewModel);
 
   get uploadUrl() {
     return "/xdb/import-file";
-  }
-
-  constructor() {
-    this.store.emit<string>(DashboardEvent.PatchHeader, this.ts.translate("xdb.title"));
-  }
-
-  onBeforeUploadFile() {
-    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-  }
-
-  onUploadFile(payload: FileUploadEvent) {
-    this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
-    this.store.emit<ToastData>(ToastEvent.Success, {
-      title: this.ts.translate("xdb.success.upload"), message: payload.files[0].name
-    });
-  }
-
-  onErrorFileUpload(payload: FileUploadErrorEvent) {
-    this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
-    this.store.emit<ToastData>(ToastEvent.Error, {
-      title: payload.error.error.message, message: payload.error.error.statusCode
-    });
-  }
-
-  doImport() {
-    this.store.emit(PreloaderEvent.Show, this.preloaderChannel);
-    this.xdbService.importData(this.ctrl.value).pipe(
-      finalize(() => {
-        this.store.emit(PreloaderEvent.Hide, this.preloaderChannel);
-      }),
-      catchError((res) => {
-        this.store.emit<ToastData>(ToastEvent.Error, {
-          title: res.error.message, message: res.error.statusCode
-        });
-        return throwError(() => res);
-      })
-    ).subscribe(() => {
-      this.store.emit<ToastData>(ToastEvent.Success, {
-        title: this.ts.translate("xdb.success.import")
-      });
-    });
   }
 
 }
