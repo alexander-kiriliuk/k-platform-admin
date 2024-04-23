@@ -255,7 +255,7 @@
     "apply": "Apply",
     "exact": "Exact match",
     "sate": "State",
-    "title": "{{name}} <span class=\"c-primary\">{{count}}</span>",
+    "title": "{{name}} <sup class=\"c-primary\">{{count}}</sup>",
     "export": {
       "btn": "Export",
       "label": "Export object"
