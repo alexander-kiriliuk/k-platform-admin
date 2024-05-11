@@ -14,42 +14,39 @@
  * limitations under the License.
  */
 
-import {environment} from "@global/env/env";
 import {APP_INITIALIZER, enableProdMode, isDevMode, LOCALE_ID} from "@angular/core";
-import {ThemeUtils} from "@global/util/theme.utils";
 import {bootstrapApplication} from "@angular/platform-browser";
 import {AppComponent} from "./app/app.component";
 import {provideRouter} from "@angular/router";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideTransloco, provideTranslocoLoader} from "@ngneat/transloco";
-import {TranslocoHttpLoader} from "@global/internationalization/transloco-http-loader";
-import {Store} from "@modules/store/store";
-import {AppInitializer} from "@global/service/app-initializer";
 import {MessageService, PrimeNGConfig} from "primeng/api";
-import {CurrentUser} from "@global/service/current-user";
-import {AppInterceptor} from "@global/interceptor/app.interceptor";
-import {WEBP_SUPPORT} from "@modules/media/media.constants";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {DEVICE} from "@modules/device/device.constants";
-import {DeviceInfoImpl} from "@modules/device/device-info.impl";
-import {MediaUtils} from "@modules/media/media.utils";
-import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {DialogService} from "primeng/dynamicdialog";
 import {APP_ROUTES} from "./app/app.routing";
-import {AVAIL_LANGS} from "@modules/locale/locale.constants";
 import {
-provideExplorerSectionRenderers
-} from "@components/explorer/explorer-secrion-renderer-providers";
-import {
-provideExplorerObjectRenderers
-} from "@components/explorer/explorer-object-renderer-providers";
-import {
-provideExplorerActionRenderers
-} from "@components/explorer/explorer-action-renderer-providers";
+AppInitializer,
+AppInterceptor,
+AVAIL_LANGS,
+CurrentUser,
+DEVICE,
+DeviceInfoImpl,
+LangUtils,
+LocalizePipe,
+MediaUtils,
+provideExplorerActionRenderers,
+provideExplorerObjectRenderers,
+provideExplorerSectionRenderers,
+Store,
+ThemeUtils,
+TranslocoHttpLoader,
+WEBP_SUPPORT
+} from "@k-platform/client-core";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import setNgTranslation = LangUtils.setNgTranslation;
-import {LangUtils} from "@global/util/lang.utils";
+import {environment} from "./app/env/env";
+
 
 ThemeUtils.setDefaultTheme();
 

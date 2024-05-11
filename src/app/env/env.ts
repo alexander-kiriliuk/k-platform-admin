@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-export enum ToastEvent {
-  All = "toast:message:*",
-  Error = "toast:message:error",
-  Warn = "toast:message:warn",
-  Info = "toast:message:info",
-  Success = "toast:message:success",
-}
 
-export enum CurrentUserEvent {
-  Set = "current:user:set",
-  Update = "current:user:update",
-}
+import {Env} from "@k-platform/client-core";
 
-export enum DashboardEvent {
-
-  PatchHeader = "dashboard:header:patch",
-  ToggleSidebar = "dashboard:sidebar:toggle",
-
-}
+export const environment: Env = {
+	production: false,
+	frontEndUrl: "http://localhost:3002",
+	apiUrl: "http://localhost:3001/api/v1",
+	mediaUrl: "http://localhost:3001/media",
+  fileUrl: "http://localhost:3001/file",
+  tmpUrl: "http://localhost:3001/tmp"
+};

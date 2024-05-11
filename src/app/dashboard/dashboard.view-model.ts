@@ -15,18 +15,22 @@
  */
 
 import {ChangeDetectorRef, inject, Injectable, signal} from "@angular/core";
-import {MenuCommandHandler, User} from "@global/types";
 import {MenuItem, MenuItemCommandEvent} from "primeng/api";
-import {CurrentUserEvent, DashboardEvent} from "@global/events";
-import {AuthEvent} from "@components/auth/auth.event";
 import {Dashboard} from "./dashboard.constants";
 import {TranslocoService} from "@ngneat/transloco";
 import {DialogService} from "primeng/dynamicdialog";
-import {CurrentUser} from "@global/service/current-user";
-import {Store} from "@modules/store/store";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {NavigationEnd, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import {
+  AuthEvent,
+  CurrentUser,
+  CurrentUserEvent,
+  DashboardEvent,
+  MenuCommandHandler,
+  Store,
+  User
+} from "@k-platform/client-core";
 
 
 @Injectable()
@@ -79,7 +83,7 @@ export class DashboardViewModel implements MenuCommandHandler {
   onMenuCommand(event: MenuItemCommandEvent, id: string): void {
     switch (id) {
       case "profile":
-        import("@components/profile/profile.component").then(c => {
+        import("@k-platform/client-core").then(c => {
           this.dialogService.open(c.ProfileComponent, {
             header: this.currentUser.fullName,
             resizable: true,

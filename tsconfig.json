@@ -24,18 +24,7 @@
     "lib": [
       "ES2022",
       "dom"
-    ],
-    "paths": {
-      "@components/*": [
-        "src/app/components/*"
-      ],
-      "@modules/*": [
-        "src/app/modules/*"
-      ],
-      "@global/*": [
-        "src/app/global/*"
-      ]
-    }
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
