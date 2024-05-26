@@ -14,42 +14,44 @@
  * limitations under the License.
  */
 
-import {environment} from "@global/env/env";
 import {APP_INITIALIZER, enableProdMode, isDevMode, LOCALE_ID} from "@angular/core";
-import {ThemeUtils} from "@global/util/theme.utils";
 import {bootstrapApplication} from "@angular/platform-browser";
 import {AppComponent} from "./app/app.component";
 import {provideRouter} from "@angular/router";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideTransloco, provideTranslocoLoader} from "@ngneat/transloco";
-import {TranslocoHttpLoader} from "@global/internationalization/transloco-http-loader";
-import {Store} from "@modules/store/store";
-import {AppInitializer} from "@global/service/app-initializer";
 import {MessageService, PrimeNGConfig} from "primeng/api";
-import {CurrentUser} from "@global/service/current-user";
-import {AppInterceptor} from "@global/interceptor/app.interceptor";
-import {WEBP_SUPPORT} from "@modules/media/media.constants";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {DEVICE} from "@modules/device/device.constants";
-import {DeviceInfoImpl} from "@modules/device/device-info.impl";
-import {MediaUtils} from "@modules/media/media.utils";
-import {LocalizePipe} from "@modules/locale/localize.pipe";
 import {DialogService} from "primeng/dynamicdialog";
 import {APP_ROUTES} from "./app/app.routing";
-import {AVAIL_LANGS} from "@modules/locale/locale.constants";
 import {
-provideExplorerSectionRenderers
-} from "@components/explorer/explorer-secrion-renderer-providers";
-import {
-provideExplorerObjectRenderers
-} from "@components/explorer/explorer-object-renderer-providers";
-import {
-provideExplorerActionRenderers
-} from "@components/explorer/explorer-action-renderer-providers";
+  API_URL,
+  AVAIL_LANGS,
+  CurrentUser,
+  DEVICE,
+  DeviceInfoImpl,
+  FILE_URL,
+  FRONT_END_URL,
+  LocalizePipe,
+  MEDIA_URL,
+  MediaUtils,
+  provideExplorerActionRenderers,
+  provideExplorerObjectRenderers,
+  provideExplorerSectionRenderers,
+  Store,
+  ThemeUtils,
+  TMP_URL,
+  WEBP_SUPPORT
+} from "@k-platform/client";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
+import {environment} from "./app/env/env";
+import {TranslocoHttpLoader} from "./app/global/internationalization/transloco-http-loader";
+import {AppInitializer} from "./app/global/service/app-initializer";
+import {AppInterceptor} from "./app/global/interceptor/app.interceptor";
+import {LangUtils} from "./app/global/utils/lang.utils";
 import setNgTranslation = LangUtils.setNgTranslation;
-import {LangUtils} from "@global/util/lang.utils";
+
 
 ThemeUtils.setDefaultTheme();
 
@@ -87,15 +89,35 @@ bootstrapApplication(AppComponent, {
       useFactory: () => {
         const lang = LangUtils.getCurrentLang();
         switch (lang) {
-          case "ru":
-            import("@angular/common/locales/ru").then(setNgTranslation);
-            break;
-          case "en":
-            import("@angular/common/locales/en").then(setNgTranslation);
-            break;
+        case "ru":
+          import("@angular/common/locales/ru").then(setNgTranslation);
+          break;
+        case "en":
+          import("@angular/common/locales/en").then(setNgTranslation);
+          break;
         }
         return navigator.language;
       },
+    },
+    {
+      provide: API_URL,
+      useValue: environment.apiUrl
+    },
+    {
+      provide: FRONT_END_URL,
+      useValue: environment.frontEndUrl
+    },
+    {
+      provide: MEDIA_URL,
+      useValue: environment.mediaUrl
+    },
+    {
+      provide: FILE_URL,
+      useValue: environment.fileUrl
+    },
+    {
+      provide: TMP_URL,
+      useValue: environment.tmpUrl
     },
     {
       provide: HTTP_INTERCEPTORS,

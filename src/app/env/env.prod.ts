@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import {inject, Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {Category, Language} from "@k-platform/client";
 
-@Injectable({providedIn: "root"})
-export class AppService {
+import {Env} from "@k-platform/client";
 
-  private readonly http = inject(HttpClient);
-
-  getOptions() {
-    return this.http.get<{ langs: Language[] }>("/app/options");
-  }
-
-  getMenu() {
-    return this.http.get<Category<{ iconClass: string }>>("/app/menu");
-  }
-
-}
+export const environment: Env = {
+  production: true,
+  frontEndUrl: "http://localhost:3002",
+  apiUrl: "http://localhost:3001/api/v1",
+  mediaUrl: "http://localhost:3001/media",
+  fileUrl: "http://localhost:3001/file",
+  tmpUrl: "http://localhost:3001/tmp"
+};

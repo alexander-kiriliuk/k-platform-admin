@@ -15,22 +15,27 @@
  */
 
 import {ChangeDetectorRef, inject, Injectable} from "@angular/core";
-import {ToastKey, ToastType} from "@global/constants";
 import {DOCUMENT} from "@angular/common";
 import {Router} from "@angular/router";
-import {AuthService} from "@components/auth/auth.service";
-import {Store} from "@modules/store/store";
 import {TranslocoService} from "@ngneat/transloco";
-import {ProfileService} from "@components/profile/profile.service";
 import {MessageService} from "primeng/api";
-import {JwtDto} from "@components/auth/auth.types";
-import {AuthEvent} from "@components/auth/auth.event";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {ToastData, User} from "@global/types";
-import {CurrentUserEvent, ToastEvent} from "@global/events";
 import {catchError} from "rxjs/operators";
 import {finalize, throwError} from "rxjs";
-import {StoreMessage} from "@modules/store/store-message";
+import {
+  AuthEvent,
+  AuthService,
+  CurrentUserEvent,
+  JwtDto,
+  ProfileService,
+  Store,
+  StoreMessage,
+  ToastData,
+  ToastEvent,
+  ToastKey,
+  ToastType,
+  User
+} from "@k-platform/client";
 
 @Injectable()
 export class AppViewModel {
@@ -95,23 +100,23 @@ export class AppViewModel {
     let summary: string = data.payload?.title;
     const detail: string = data.payload?.message;
     switch (data.key) {
-      case ToastEvent.Error:
-        severity = ToastType.Error;
-        if (!summary) {
-          summary = this.ts.translate("msg.error");
-        }
-        break;
-      case ToastEvent.Success:
-        severity = ToastType.Success;
-        break;
-      case ToastEvent.Warn:
-        severity = ToastType.Warn;
-        if (!summary) {
-          summary = this.ts.translate("msg.warn");
-        }
-        break;
-      case ToastEvent.Info:
-        break;
+    case ToastEvent.Error:
+      severity = ToastType.Error;
+      if (!summary) {
+        summary = this.ts.translate("msg.error");
+      }
+      break;
+    case ToastEvent.Success:
+      severity = ToastType.Success;
+      break;
+    case ToastEvent.Warn:
+      severity = ToastType.Warn;
+      if (!summary) {
+        summary = this.ts.translate("msg.warn");
+      }
+      break;
+    case ToastEvent.Info:
+      break;
     }
     this.messageService.add({key: ToastKey.Global, severity, summary, detail});
   }

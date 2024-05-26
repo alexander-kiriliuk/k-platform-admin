@@ -19,7 +19,7 @@ import {RouterOutlet} from "@angular/router";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ToastModule} from "primeng/toast";
 import {AppViewModel} from "./app.view-model";
-import {ToastKey} from "@global/constants";
+import {ToastKey} from "@k-platform/client";
 
 @Component({
   selector: "app-root",

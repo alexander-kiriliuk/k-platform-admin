@@ -26,11 +26,12 @@ import {
 import {Observable, switchMap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {environment} from "../env/env";
+import {API_URL} from "@k-platform/client";
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
+  private readonly apiUrl = inject(API_URL);
   private readonly router = inject(Router);
   private readonly http = inject(HttpClient);
 
@@ -68,7 +69,7 @@ export class AppInterceptor implements HttpInterceptor {
     if (url.indexOf("//") !== -1 || lastSegment.indexOf(".") !== -1) {
       return encodeURI(url);
     }
-    url = `${environment.apiUrl}${url}`;
+    url = `${this.apiUrl}${url}`;
     return encodeURI(url);
   }
 

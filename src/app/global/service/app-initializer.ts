@@ -17,10 +17,10 @@
 import {inject} from "@angular/core";
 import {AppService} from "./app.service";
 import {map} from "rxjs/operators";
-import {LangUtils} from "../util/lang.utils";
 import {TranslocoService} from "@ngneat/transloco";
 import {PrimeNGConfig} from "primeng/api";
-import {CurrentUser} from "./current-user";
+import {CurrentUser} from "@k-platform/client";
+import {LangUtils} from "../utils/lang.utils";
 import getCurrentLang = LangUtils.getCurrentLang;
 
 export function AppInitializer(config: PrimeNGConfig, currentUser: CurrentUser) {

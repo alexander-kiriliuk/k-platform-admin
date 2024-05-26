@@ -15,7 +15,7 @@
  */
 
 import {ChangeDetectionStrategy, Component} from "@angular/core";
-import {ThemeUtils} from "@global/util/theme.utils";
+import {ThemeUtils} from "@k-platform/client";
 import {TranslocoPipe} from "@ngneat/transloco";
 import {NgClass} from "@angular/common";
 import getCurrentTheme = ThemeUtils.getCurrentTheme;
