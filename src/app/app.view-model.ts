@@ -23,18 +23,18 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {catchError} from "rxjs/operators";
 import {finalize, throwError} from "rxjs";
 import {
-AuthEvent,
-AuthService,
-CurrentUserEvent,
-JwtDto,
-ProfileService,
-Store,
-StoreMessage,
-ToastData,
-ToastEvent,
-ToastKey,
-ToastType,
-User
+  AuthEvent,
+  AuthService,
+  CurrentUserEvent,
+  JwtDto,
+  ProfileService,
+  Store,
+  StoreMessage,
+  ToastData,
+  ToastEvent,
+  ToastKey,
+  ToastType,
+  User
 } from "@k-platform/client-core";
 
 @Injectable()
@@ -100,23 +100,23 @@ export class AppViewModel {
     let summary: string = data.payload?.title;
     const detail: string = data.payload?.message;
     switch (data.key) {
-      case ToastEvent.Error:
-        severity = ToastType.Error;
-        if (!summary) {
-          summary = this.ts.translate("msg.error");
-        }
-        break;
-      case ToastEvent.Success:
-        severity = ToastType.Success;
-        break;
-      case ToastEvent.Warn:
-        severity = ToastType.Warn;
-        if (!summary) {
-          summary = this.ts.translate("msg.warn");
-        }
-        break;
-      case ToastEvent.Info:
-        break;
+    case ToastEvent.Error:
+      severity = ToastType.Error;
+      if (!summary) {
+        summary = this.ts.translate("msg.error");
+      }
+      break;
+    case ToastEvent.Success:
+      severity = ToastType.Success;
+      break;
+    case ToastEvent.Warn:
+      severity = ToastType.Warn;
+      if (!summary) {
+        summary = this.ts.translate("msg.warn");
+      }
+      break;
+    case ToastEvent.Info:
+      break;
     }
     this.messageService.add({key: ToastKey.Global, severity, summary, detail});
   }

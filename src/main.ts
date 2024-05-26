@@ -26,26 +26,31 @@ import {DeviceDetectorService} from "ngx-device-detector";
 import {DialogService} from "primeng/dynamicdialog";
 import {APP_ROUTES} from "./app/app.routing";
 import {
-AppInitializer,
-AppInterceptor,
-AVAIL_LANGS,
-CurrentUser,
-DEVICE,
-DeviceInfoImpl,
-LangUtils,
-LocalizePipe,
-MediaUtils,
-provideExplorerActionRenderers,
-provideExplorerObjectRenderers,
-provideExplorerSectionRenderers,
-Store,
-ThemeUtils,
-TranslocoHttpLoader,
-WEBP_SUPPORT
+  API_URL,
+  AVAIL_LANGS,
+  CurrentUser,
+  DEVICE,
+  DeviceInfoImpl,
+  FILE_URL,
+  FRONT_END_URL,
+  LocalizePipe,
+  MEDIA_URL,
+  MediaUtils,
+  provideExplorerActionRenderers,
+  provideExplorerObjectRenderers,
+  provideExplorerSectionRenderers,
+  Store,
+  ThemeUtils,
+  TMP_URL,
+  WEBP_SUPPORT
 } from "@k-platform/client-core";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
-import setNgTranslation = LangUtils.setNgTranslation;
 import {environment} from "./app/env/env";
+import {TranslocoHttpLoader} from "./app/global/internationalization/transloco-http-loader";
+import {AppInitializer} from "./app/global/service/app-initializer";
+import {AppInterceptor} from "./app/global/interceptor/app.interceptor";
+import {LangUtils} from "./app/global/utils/lang.utils";
+import setNgTranslation = LangUtils.setNgTranslation;
 
 
 ThemeUtils.setDefaultTheme();
@@ -84,15 +89,35 @@ bootstrapApplication(AppComponent, {
       useFactory: () => {
         const lang = LangUtils.getCurrentLang();
         switch (lang) {
-          case "ru":
-            import("@angular/common/locales/ru").then(setNgTranslation);
-            break;
-          case "en":
-            import("@angular/common/locales/en").then(setNgTranslation);
-            break;
+        case "ru":
+          import("@angular/common/locales/ru").then(setNgTranslation);
+          break;
+        case "en":
+          import("@angular/common/locales/en").then(setNgTranslation);
+          break;
         }
         return navigator.language;
       },
+    },
+    {
+      provide: API_URL,
+      useValue: environment.apiUrl
+    },
+    {
+      provide: FRONT_END_URL,
+      useValue: environment.frontEndUrl
+    },
+    {
+      provide: MEDIA_URL,
+      useValue: environment.mediaUrl
+    },
+    {
+      provide: FILE_URL,
+      useValue: environment.fileUrl
+    },
+    {
+      provide: TMP_URL,
+      useValue: environment.tmpUrl
     },
     {
       provide: HTTP_INTERCEPTORS,

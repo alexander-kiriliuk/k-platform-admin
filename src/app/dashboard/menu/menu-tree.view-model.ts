@@ -19,11 +19,11 @@ import {Category} from "@k-platform/client-core";
 import {DashboardEvent} from "@k-platform/client-core";
 import {MENU_STORE_KEY} from "./menu-tree.constants";
 import {Router} from "@angular/router";
-import {AppService} from "@k-platform/client-core";
 import {Store} from "@k-platform/client-core";
 import {finalize} from "rxjs";
 import {Dashboard} from "../dashboard.constants";
 import {PreloaderEvent} from "@k-platform/client-core";
+import {AppService} from "../../global/service/app.service";
 
 
 @Injectable()

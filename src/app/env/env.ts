@@ -18,10 +18,10 @@
 import {Env} from "@k-platform/client-core";
 
 export const environment: Env = {
-	production: false,
-	frontEndUrl: "http://localhost:3002",
-	apiUrl: "http://localhost:3001/api/v1",
-	mediaUrl: "http://localhost:3001/media",
+  production: false,
+  frontEndUrl: "http://localhost:3002",
+  apiUrl: "http://localhost:3001/api/v1",
+  mediaUrl: "http://localhost:3001/media",
   fileUrl: "http://localhost:3001/file",
   tmpUrl: "http://localhost:3001/tmp"
 };

@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
+import {inject, Injectable} from "@angular/core";
+import {Translation, TranslocoLoader} from "@ngneat/transloco";
+import {HttpClient} from "@angular/common/http";
 
-import {Env} from "@k-platform/client-core";
+@Injectable()
+export class TranslocoHttpLoader implements TranslocoLoader {
 
-export const environment: Env = {
-  production: true,
-  frontEndUrl: "http://localhost:3002",
-  apiUrl: "http://localhost:3001/api/v1",
-  mediaUrl: "http://localhost:3001/media",
-  fileUrl: "http://localhost:3001/file",
-  tmpUrl: "http://localhost:3001/tmp"
-};
+  private readonly http = inject(HttpClient);
+
+  getTranslation(lang: string) {
+    return this.http.get<Translation>(`/assets/i18n/${lang}.json`);
+  }
+
+}
