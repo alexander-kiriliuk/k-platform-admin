@@ -43,7 +43,7 @@ import {
   ThemeUtils,
   TMP_URL,
   WEBP_SUPPORT
-} from "@k-platform/client-core";
+} from "@k-platform/client";
 import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import {environment} from "./app/env/env";
 import {TranslocoHttpLoader} from "./app/global/internationalization/transloco-http-loader";

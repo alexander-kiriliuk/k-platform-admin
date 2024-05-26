@@ -18,7 +18,7 @@
 export const APP_ROUTES = [
   {
     path: "auth",
-    loadComponent: () => import("@k-platform/client-core")
+    loadComponent: () => import("@k-platform/client")
       .then(m => m.AuthComponent)
   },
   {

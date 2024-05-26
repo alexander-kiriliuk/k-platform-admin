@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MenuCommandHandler} from "@k-platform/client-core";
+import {MenuCommandHandler} from "@k-platform/client";
 import {MenuItem} from "primeng/api";
 import {TranslocoService} from "@ngneat/transloco";
 

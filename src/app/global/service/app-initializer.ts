@@ -19,7 +19,7 @@ import {AppService} from "./app.service";
 import {map} from "rxjs/operators";
 import {TranslocoService} from "@ngneat/transloco";
 import {PrimeNGConfig} from "primeng/api";
-import {CurrentUser} from "@k-platform/client-core";
+import {CurrentUser} from "@k-platform/client";
 import {LangUtils} from "../utils/lang.utils";
 import getCurrentLang = LangUtils.getCurrentLang;
 

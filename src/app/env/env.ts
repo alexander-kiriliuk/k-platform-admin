@@ -15,7 +15,7 @@
  */
 
 
-import {Env} from "@k-platform/client-core";
+import {Env} from "@k-platform/client";
 
 export const environment: Env = {
   production: false,

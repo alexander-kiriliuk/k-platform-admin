@@ -35,7 +35,7 @@ import {
   ToastKey,
   ToastType,
   User
-} from "@k-platform/client-core";
+} from "@k-platform/client";
 
 @Injectable()
 export class AppViewModel {

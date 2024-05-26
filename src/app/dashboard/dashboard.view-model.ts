@@ -30,7 +30,7 @@ import {
   MenuCommandHandler,
   Store,
   User
-} from "@k-platform/client-core";
+} from "@k-platform/client";
 
 
 @Injectable()
@@ -83,7 +83,7 @@ export class DashboardViewModel implements MenuCommandHandler {
   onMenuCommand(event: MenuItemCommandEvent, id: string): void {
     switch (id) {
     case "profile":
-      import("@k-platform/client-core").then(c => {
+      import("@k-platform/client").then(c => {
         this.dialogService.open(c.ProfileComponent, {
           header: this.currentUser.fullName,
           resizable: true,
