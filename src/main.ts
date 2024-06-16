@@ -19,38 +19,37 @@ import {bootstrapApplication} from "@angular/platform-browser";
 import {AppComponent} from "./app/app.component";
 import {provideRouter} from "@angular/router";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
-import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideTransloco, provideTranslocoLoader} from "@ngneat/transloco";
 import {MessageService, PrimeNGConfig} from "primeng/api";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {DialogService} from "primeng/dynamicdialog";
 import {APP_ROUTES} from "./app/app.routing";
-import {
-  API_URL,
-  AVAIL_LANGS,
-  CurrentUser,
-  DEVICE,
-  DeviceInfoImpl,
-  FILE_URL,
-  FRONT_END_URL,
-  LocalizePipe,
-  MEDIA_URL,
-  MediaUtils,
-  provideExplorerActionRenderers,
-  provideExplorerObjectRenderers,
-  provideExplorerSectionRenderers,
-  Store,
-  ThemeUtils,
-  TMP_URL,
-  WEBP_SUPPORT
-} from "@k-platform/client";
-import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 import {environment} from "./app/env/env";
 import {TranslocoHttpLoader} from "./app/global/internationalization/transloco-http-loader";
 import {AppInitializer} from "./app/global/service/app-initializer";
 import {AppInterceptor} from "./app/global/interceptor/app.interceptor";
 import {LangUtils} from "./app/global/utils/lang.utils";
+import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
+import {MediaUtils, ThemeUtils} from "@k-platform/client";
+import {Store} from "@k-platform/client";
+import {AVAIL_LANGS, LocalizePipe} from "@k-platform/client";
+import {DEVICE, DeviceInfoImpl} from "@k-platform/client";
+import {
+  provideExplorerActionRenderers,
+  provideExplorerObjectRenderers,
+  provideExplorerSectionRenderers
+} from "@k-platform/client";
+import {CurrentUser} from "@k-platform/client";
+import {
+  API_URL,
+  FILE_URL,
+  FRONT_END_URL,
+  MEDIA_URL,
+  TMP_URL,
+  WEBP_SUPPORT
+} from "@k-platform/client";
 import setNgTranslation = LangUtils.setNgTranslation;
+import detectWebpSupportFactory = MediaUtils.detectWebpSupportFactory;
 
 
 ThemeUtils.setDefaultTheme();
@@ -59,86 +58,88 @@ if (environment.production) {
   enableProdMode();
 }
 
-bootstrapApplication(AppComponent, {
-  providers: [
-    Store,
-    LocalizePipe,
-    MessageService,
-    DialogService,
-    provideHttpClient(withInterceptorsFromDi()),
-    provideAnimations(),
-    provideRouter(APP_ROUTES),
-    provideTranslocoLoader(TranslocoHttpLoader),
-    provideExplorerSectionRenderers(),
-    provideExplorerObjectRenderers(),
-    provideExplorerActionRenderers(),
-    provideTransloco({
-      config: {
-        defaultLang: LangUtils.DefaultLang,
-        prodMode: !isDevMode()
+document.addEventListener("DOMContentLoaded", () => {
+  bootstrapApplication(AppComponent, {
+    providers: [
+      Store,
+      LocalizePipe,
+      MessageService,
+      DialogService,
+      provideHttpClient(withInterceptorsFromDi()),
+      provideAnimationsAsync(),
+      provideRouter(APP_ROUTES),
+      provideTranslocoLoader(TranslocoHttpLoader),
+      provideExplorerSectionRenderers(),
+      provideExplorerObjectRenderers(),
+      provideExplorerActionRenderers(),
+      provideTransloco({
+        config: {
+          defaultLang: LangUtils.DefaultLang,
+          prodMode: !isDevMode()
+        },
+      }),
+      {
+        provide: APP_INITIALIZER,
+        useFactory: AppInitializer,
+        multi: true,
+        deps: [PrimeNGConfig, CurrentUser]
       },
-    }),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: AppInitializer,
-      multi: true,
-      deps: [PrimeNGConfig, CurrentUser]
-    },
-    {
-      provide: LOCALE_ID,
-      useFactory: () => {
-        const lang = LangUtils.getCurrentLang();
-        switch (lang) {
-        case "ru":
-          import("@angular/common/locales/ru").then(setNgTranslation);
-          break;
-        case "en":
-          import("@angular/common/locales/en").then(setNgTranslation);
-          break;
-        }
-        return navigator.language;
+      {
+        provide: LOCALE_ID,
+        useFactory: () => {
+          const lang = LangUtils.getCurrentLang();
+          switch (lang) {
+          case "ru":
+            import("@angular/common/locales/ru").then(setNgTranslation);
+            break;
+          case "en":
+            import("@angular/common/locales/en").then(setNgTranslation);
+            break;
+          }
+          return navigator.language;
+        },
       },
-    },
-    {
-      provide: API_URL,
-      useValue: environment.apiUrl
-    },
-    {
-      provide: FRONT_END_URL,
-      useValue: environment.frontEndUrl
-    },
-    {
-      provide: MEDIA_URL,
-      useValue: environment.mediaUrl
-    },
-    {
-      provide: FILE_URL,
-      useValue: environment.fileUrl
-    },
-    {
-      provide: TMP_URL,
-      useValue: environment.tmpUrl
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AppInterceptor,
-      multi: true
-    },
-    {
-      provide: WEBP_SUPPORT,
-      useFactory: detectWebpSupportFactory,
-      deps: [
-        DeviceDetectorService
-      ]
-    },
-    {
-      provide: AVAIL_LANGS,
-      useFactory: LangUtils.getAvailableLangs
-    },
-    {
-      provide: DEVICE,
-      useClass: DeviceInfoImpl,
-      deps: [DeviceDetectorService]
-    },
-  ]
-}).catch(err => console.error(err));
+      {
+        provide: API_URL,
+        useValue: environment.apiUrl
+      },
+      {
+        provide: FRONT_END_URL,
+        useValue: environment.frontEndUrl
+      },
+      {
+        provide: MEDIA_URL,
+        useValue: environment.mediaUrl
+      },
+      {
+        provide: FILE_URL,
+        useValue: environment.fileUrl
+      },
+      {
+        provide: TMP_URL,
+        useValue: environment.tmpUrl
+      },
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AppInterceptor,
+        multi: true
+      },
+      {
+        provide: WEBP_SUPPORT,
+        useFactory: detectWebpSupportFactory,
+        deps: [
+          DeviceDetectorService
+        ]
+      },
+      {
+        provide: AVAIL_LANGS,
+        useFactory: LangUtils.getAvailableLangs
+      },
+      {
+        provide: DEVICE,
+        useClass: DeviceInfoImpl,
+        deps: [DeviceDetectorService]
+      },
+    ]
+  }).catch(err => console.error(err));
+});

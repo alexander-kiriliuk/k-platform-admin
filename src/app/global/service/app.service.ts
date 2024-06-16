@@ -16,7 +16,8 @@
 
 import {inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Category, Language} from "@k-platform/client";
+import {Language} from "@k-platform/client";
+import {Category} from "@k-platform/client";
 
 @Injectable({providedIn: "root"})
 export class AppService {

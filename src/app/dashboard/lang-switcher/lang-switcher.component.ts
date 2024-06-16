@@ -19,9 +19,9 @@ import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {TranslocoService} from "@ngneat/transloco";
 import {DropdownModule} from "primeng/dropdown";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {LangUtils} from "../../global/utils/lang.utils";
 import getCurrentLang = LangUtils.getCurrentLang;
 import setLang = LangUtils.setLang;
-import {LangUtils} from "../../global/utils/lang.utils";
 
 @Component({
   selector: "lang-switcher",

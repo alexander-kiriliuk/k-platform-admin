@@ -16,17 +16,16 @@
 
 import {ChangeDetectionStrategy, Component, inject} from "@angular/core";
 import {Dashboard} from "./dashboard.constants";
-import {CurrentUser} from "@k-platform/client";
 import {AsyncPipe, NgClass} from "@angular/common";
 import {ScrollPanelModule} from "primeng/scrollpanel";
 import {MenuTreeComponent} from "./menu/menu-tree.component";
-import {PreloaderComponent} from "@k-platform/client";
 import {MenuModule} from "primeng/menu";
 import {AvatarModule} from "primeng/avatar";
-import {MediaComponent} from "@k-platform/client";
 import {TranslocoPipe} from "@ngneat/transloco";
-import {PreloaderDirective} from "@k-platform/client";
 import {DashboardViewModel} from "./dashboard.view-model";
+import {PreloaderComponent, PreloaderDirective} from "@k-platform/client";
+import {MediaComponent} from "@k-platform/client";
+import {CurrentUser} from "@k-platform/client";
 
 
 @Component({

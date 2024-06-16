@@ -22,14 +22,11 @@ import {MessageService} from "primeng/api";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {catchError} from "rxjs/operators";
 import {finalize, throwError} from "rxjs";
+import {AuthEvent, AuthService, JwtDto} from "@k-platform/client";
+import {Store, StoreMessage} from "@k-platform/client";
+import {ProfileService} from "@k-platform/client";
 import {
-  AuthEvent,
-  AuthService,
   CurrentUserEvent,
-  JwtDto,
-  ProfileService,
-  Store,
-  StoreMessage,
   ToastData,
   ToastEvent,
   ToastKey,

@@ -32,7 +32,6 @@ import {
   User
 } from "@k-platform/client";
 
-
 @Injectable()
 export class DashboardViewModel implements MenuCommandHandler {
 
